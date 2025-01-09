@@ -36,3 +36,7 @@ override.tf.json
 .terraformrc
 terraform.rc
 remote-state/remote.tfbackend
+**/dev/outputs/*
+**/prod/outputs/*
+patch.yaml
+remote.tfbackend
