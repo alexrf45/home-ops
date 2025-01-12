@@ -31,7 +31,7 @@ module "dev" {
     name          = "fr3d"
     endpoint      = "10.3.3.60"
     gateway       = "10.3.3.1"
-    talos_version = "v1.9.0"
+    talos_version = "v1.9.1"
     platform      = "nocloud"
     iso_datastore = "local"
   }
