@@ -1,5 +1,7 @@
 !#/bin/bash
 
+#### this was very manual and I want to get it to work with tf alone
+
 talosctl bootstrap -n 10.3.3.60 --endpoints 10.3.3.60 --talosconfig=./outputs/talosconfig
 
 talosctl patch mc -n 10.3.3.60 --endpoints 10.3.3.60 @patch.yaml --talosconfig=./outputs/talosconfig

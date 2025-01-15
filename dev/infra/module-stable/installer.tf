@@ -6,7 +6,6 @@ data "talos_image_factory_extensions_versions" "this" {
       "crun",
       "iscsi-tools",
       "util-linux-tools",
-      "gvisor",
       "qemu-guest-agent",
       "tailscale",
       "vmtoolsd-quest-agent"

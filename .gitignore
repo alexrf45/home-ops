@@ -40,3 +40,5 @@ remote-state/remote.tfbackend
 **/prod/outputs/*
 patch.yaml
 remote.tfbackend
+.env
+.envrc

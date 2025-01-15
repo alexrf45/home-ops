@@ -1,0 +1,15 @@
+variable "env" {
+  description = "environment where kubernetes resources reside"
+  type        = string
+  default     = "dev"
+}
+
+variable "username" {
+  description = "username for basic auth"
+  type        = string
+}
+
+variable "password" {
+  description = "password for basic auth"
+  type        = string
+}
