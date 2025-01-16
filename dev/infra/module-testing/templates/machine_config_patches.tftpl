@@ -1,0 +1,25 @@
+machine:
+  kernel:
+      modules:
+          - name: tun
+  kubelet:
+    nodeIP:
+      validSubnets:
+        - 10.3.3.0/24
+    extraMounts:
+      - destination: /var/lib/longhorn
+        type: bind
+        source: /var/lib/longhorn
+        options:
+          - rbind
+          - rshared
+          - rw
+  disks:
+    - device: /dev/vdb
+      partitions:
+        - mountpoint: /var/lib/longhorn
+  install:
+    disk: ${install_disk}
+    image: ${install_image}
+  network:
+    hostname: ${hostname}

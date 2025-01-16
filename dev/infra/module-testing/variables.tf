@@ -1,3 +1,38 @@
+variable "github_repository" {
+  description = "Information about new GitHub repository for FluxCD"
+  type = object({
+    name        = string
+    description = string
+    visibility  = string
+  })
+  default = {
+    name        = "fr3d"
+    description = "Homelab built with Talos on Proxmox and managed with Flux"
+    visibility  = "private"
+  }
+}
+
+variable "github_owner" {
+  description = "Owner of the repository"
+  type        = string
+  default     = ""
+}
+
+variable "github_pat" {
+  description = "GitHub Personal Access Token that is used for FluxCD provisioning"
+  type        = string
+  sensitive   = true
+}
+
+
+
+variable "pve_nodes" {
+  description = "hostname/id of pve host"
+  type        = list(string)
+  default     = ["pve"]
+}
+
+
 variable "cluster" {
   description = "Cluster configuration"
   type = object({
@@ -10,45 +45,32 @@ variable "cluster" {
   })
 }
 
+
+
 variable "node_data" {
   description = "A map of node data"
   type = object({
     controlplanes = map(object({
+      datastore_id  = string
+      hostname      = optional(string)
+      node          = string
+      memory        = number
+      size          = number
+      storage       = number
       install_disk  = string
       install_image = string
-      hostname      = optional(string)
     }))
     workers = map(object({
+      datastore_id  = string
+      hostname      = optional(string)
+      node          = string
+      memory        = number
+      size          = number
+      storage       = number
       install_disk  = string
       install_image = string
-      hostname      = optional(string)
     }))
   })
-  default = {
-    controlplanes = {
-      "192.168.1.150" = {
-        install_disk  = "/dev/vda"
-        install_image = "factory.talos.dev/installer/ce4c980550dd2ab1b17bbf2b08801c7eb59418eafe8f279833297925d67c7515:v1.8.2"
-      },
-    }
-    workers = {
-      "192.168.1.151" = {
-        install_disk  = "/dev/vda"
-        install_image = "factory.talos.dev/installer/ce4c980550dd2ab1b17bbf2b08801c7eb59418eafe8f279833297925d67c7515:v1.8.2"
-      },
-      "192.168.1.152" = {
-        install_disk  = "/dev/vda"
-        install_image = "factory.talos.dev/installer/ce4c980550dd2ab1b17bbf2b08801c7eb59418eafe8f279833297925d67c7515:v1.8.2"
-      }
-    }
-  }
-}
-
-
-variable "proxmox_iso_datastore" {
-  description = "Datastore to put the image"
-  type        = string
-  default     = "local"
 }
 
 
@@ -59,48 +81,9 @@ variable "vm_cores" {
 }
 
 
-
 variable "vm_type" {
   description = "proxmox emulated CPU type, x86-64-v2-AES recommended"
   type        = string
   default     = "x86-64-v2-AES"
 }
 
-
-variable "talos_cluster_name" {
-  description = "Name of the Talos cluster"
-  type        = string
-  default     = "default"
-}
-
-variable "talos_version" {
-  description = "Version of Talos to use"
-  type        = string
-  default     = "v1.9.1"
-
-}
-
-variable "platform" {
-  description = "type of talos linux image"
-  type        = string
-  default     = "metal"
-}
-
-variable "talos_arch" {
-  description = "Architecture of Talos to use"
-  type        = string
-  default     = "amd64"
-}
-
-
-variable "machine_config_patches" {
-  description = "List of YAML patches to apply to the control machine configuration"
-  type        = list(string)
-  default = [
-    <<EOT
-machine:
-  install:
-    disk: "/dev/sda"
-EOT
-  ]
-}

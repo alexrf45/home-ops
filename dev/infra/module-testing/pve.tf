@@ -1,36 +1,24 @@
 resource "proxmox_virtual_environment_download_file" "talos_image" {
-  for_each                = var.controlplanes
+  count                   = length(var.pve_nodes)
   content_type            = "iso"
   datastore_id            = var.cluster.iso_datastore
-  node_name               = each.value.host_node
+  node_name               = var.pve_nodes[count.index]
   url                     = data.talos_image_factory_urls.this.urls.disk_image
   decompression_algorithm = "zst"
   file_name               = "talos.img"
-  #overwrite               = true
-  #overwrite_unmanaged     = true
 }
-resource "proxmox_virtual_environment_download_file" "talos_image_2" {
-  for_each                = var.nodes
-  content_type            = "iso"
-  datastore_id            = var.cluster.iso_datastore
-  node_name               = each.value.host_node
-  url                     = data.talos_image_factory_urls.this.urls.disk_image
-  decompression_algorithm = "zst"
-  file_name               = "talos.img"
-  #overwrite               = true
-  #overwrite_unmanaged     = true
-}
+
 resource "proxmox_virtual_environment_vm" "talos_vm_control_plane" {
-  for_each        = var.controlplanes
-  name            = each.key
-  node_name       = each.value.host_node
-  description     = each.value.machine_type == "controlplane" ? "Talos Control Plane" : "Talos Worker"
-  tags            = each.value.machine_type == "controlplane" ? ["k8s", "control-plane"] : ["k8s", "worker"]
-  vm_id           = each.value.vm_id
+  for_each        = var.node_data.controlplanes
+  name            = format("k8s-control-plane-%s", index(keys(var.node_data.controlplanes), each.key))
+  node_name       = each.value.node
+  description     = "K8s Control Plane Node"
+  tags            = ["k8s", "controlplane", "talos"]
   machine         = "q35"
   scsi_hardware   = "virtio-scsi-single"
   stop_on_destroy = true
   bios            = "ovmf"
+
   agent {
     enabled = true
     trim    = true
@@ -54,7 +42,7 @@ resource "proxmox_virtual_environment_vm" "talos_vm_control_plane" {
   disk {
     datastore_id = each.value.datastore_id
     interface    = "virtio0"
-    file_id      = proxmox_virtual_environment_download_file.talos_image[each.key].id
+    file_id      = proxmox_virtual_environment_download_file.talos_image[0].id
     file_format  = "raw"
     ssd          = true
     iothread     = true
@@ -80,7 +68,7 @@ resource "proxmox_virtual_environment_vm" "talos_vm_control_plane" {
     }
     ip_config {
       ipv4 {
-        address = "${each.value.ip}/24"
+        address = "${each.key}/24"
         gateway = var.cluster.gateway
       }
     }
@@ -98,13 +86,13 @@ resource "proxmox_virtual_environment_vm" "talos_vm_control_plane" {
 }
 
 resource "proxmox_virtual_environment_vm" "talos_vm" {
-  depends_on      = [proxmox_virtual_environment_vm.talos_vm_control_plane, talos_machine_bootstrap.this, talos_machine_configuration_apply.this]
-  for_each        = var.nodes
-  name            = each.key
-  node_name       = each.value.host_node
-  description     = each.value.machine_type == "controlplane" ? "Talos Control Plane" : "Talos Worker"
-  tags            = each.value.machine_type == "controlplane" ? ["k8s", "control-plane"] : ["k8s", "worker"]
-  vm_id           = each.value.vm_id
+  depends_on = [proxmox_virtual_environment_vm.talos_vm_control_plane]
+
+  for_each        = var.node_data.workers
+  name            = format("k8s-node-%s", index(keys(var.node_data.workers), each.key))
+  node_name       = each.value.node
+  description     = "K8s Worker Node"
+  tags            = ["k8s", "worker", "talos"]
   machine         = "q35"
   scsi_hardware   = "virtio-scsi-single"
   stop_on_destroy = true
@@ -132,7 +120,7 @@ resource "proxmox_virtual_environment_vm" "talos_vm" {
   disk {
     datastore_id = each.value.datastore_id
     interface    = "virtio0"
-    file_id      = proxmox_virtual_environment_download_file.talos_image_2[each.key].id
+    file_id      = proxmox_virtual_environment_download_file.talos_image[0].id
     file_format  = "raw"
     ssd          = true
     iothread     = true
@@ -158,7 +146,7 @@ resource "proxmox_virtual_environment_vm" "talos_vm" {
     }
     ip_config {
       ipv4 {
-        address = "${each.value.ip}/24"
+        address = "${each.key}/24"
         gateway = var.cluster.gateway
       }
     }

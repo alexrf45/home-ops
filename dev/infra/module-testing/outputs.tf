@@ -11,7 +11,7 @@ output "installer_disk_image" {
 }
 
 output "controlplane_config" {
-  value     = data.talos_machine_configuration.this.machine_configuration
+  value     = data.talos_machine_configuration.controlplane.machine_configuration
   sensitive = true
 }
 #
@@ -29,3 +29,5 @@ output "kube_config" {
   value     = talos_cluster_kubeconfig.this.kubeconfig_raw
   sensitive = true
 }
+
+

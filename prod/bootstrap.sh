@@ -1,36 +1,17 @@
 !#/bin/bash
 
-#### this was very manual and I want to get it to work with tf alone
+set -e
 
-talosctl bootstrap -n 10.3.3.60 --endpoints 10.3.3.60 --talosconfig=./outputs/talosconfig
+terraform init -backend-config="remote.tfbackend" -upgrade
 
-talosctl patch mc -n 10.3.3.60 --endpoints 10.3.3.60 @patch.yaml --talosconfig=./outputs/talosconfig
-#adjust based on HA requirements
+terraform plan
 
-talosctl apply-config --insecure \
-  --nodes 10.3.3.61 --talosconfig=./outputs/talosconfig
+terraform apply --auto-approve
 
-talosctl apply-config --insecure \
-  --nodes 10.3.3.62 --talosconfig=./outputs/talosconfig
+terraform output
 
-talosctl apply-config --insecure \
-  --nodes 10.3.3.61 --talosconfig=./outputs/talosconfig
-
+#talosctl bootstrap -n 10.3.3.60 --endpoints 10.3.3.60 --talosconfig=./outputs/talosconfig
+#talosctl patch mc -n 10.3.3.60 -p @patch.yaml --talosconfig=./outputs/talosconfig
 #adjust depending on number of nodes
-talosctl apply-config -f worker_config.yaml --insecure \
-  --nodes 10.3.3.63 --talosconfig=./outputs/talosconfig
-
-talosctl apply-config -f worker_config.yaml --insecure \
-  --nodes 10.3.3.64 --talosconfig=./outputs/talosconfig
-
-talosctl apply-config -f worker_config.yaml --insecure \
-  --nodes 10.3.3.65 --talosconfig=./outputs/talosconfig
-
-talosctl apply-config -f worker_config.yaml --insecure \
-  --nodes 10.3.3.65 --talosconfig=./outputs/talosconfig
-
-#tf uses localfiles to save these but you can alos manually grab them with
-# the commands below
-#terraform output control_plane_config >./outputs/controlplane.yaml
-
-#terraform output worker_config >./outputs/worker.yaml
+#
+#

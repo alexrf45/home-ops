@@ -8,12 +8,26 @@ terraform {
       source  = "siderolabs/talos"
       version = ">= 0.7.0"
     }
+    github = {
+      source  = "integrations/github"
+      version = "6.4.0"
+    }
+    flux = {
+      source  = "fluxcd/flux"
+      version = "1.4.0"
+    }
+    helm = {
+      source  = "hashicorp/helm"
+      version = "2.17.0"
+    }
   }
   backend "s3" {
 
   }
 }
 
+provider "talos" {
+}
 
 provider "proxmox" {
   endpoint = "https://10.3.3.9:8006"
@@ -21,12 +35,43 @@ provider "proxmox" {
   password = var.password
   insecure = true
   ssh {
-    agent = true
+    agent = false
+  }
+}
+provider "flux" {
+  kubernetes = {
+    config_path = "${path.root}/configs/kubeconfig"
+  }
+  git = {
+    url = "https://github.com/${var.github_owner}/${var.github_repository.name}.git"
+    http = {
+      username = "fr3d" # This can be any string when using a personal access token
+      password = var.github_pat
+    }
   }
 }
 
-module "dev" {
-  source = "./module/"
+provider "github" {
+  owner = var.github_owner
+  token = var.github_pat
+}
+
+provider "helm" {
+  kubernetes {
+    config_path = "${path.root}/configs/kubeconfig"
+  }
+}
+
+module "dev-test" {
+  source       = "./module-testing/"
+  github_owner = var.github_owner
+  github_pat   = var.github_pat
+  github_repository = {
+    name        = "home-ops-flux"
+    description = "Flux git repo for ${module.dev-test.name} cluster" #TODO: fix module path
+    visibility  = "private"
+  }
+  pve_nodes = ["anubis", "cairo"]
   cluster = {
     name          = "fr3d"
     endpoint      = "10.3.3.60"
@@ -35,100 +80,37 @@ module "dev" {
     platform      = "nocloud"
     iso_datastore = "local"
   }
-  controlplanes = {
-    "ctrl-01" = {
-      host_node    = "cairo"
-      machine_type = "controlplane"
-      datastore_id = "data"
-      memory       = 8092
-      size         = 50
-      storage      = 100
-      ip           = "10.3.3.60"
-      vm_id        = "7000"
-    },
-    # "ctrl-02" = {
-    #   host_node    = "cairo"
-    #   machine_type = "controlplane"
-    #   datastore_id = "data"
-    #   memory       = 4096
-    #   size         = 30
-    #   ip           = "10.3.3.61"
-    #   vm_id        = "7001"
-    # },
-    # "ctrl-03" = {
-    #   host_node    = "cairo"
-    #   machine_type = "controlplane"
-    #   datastore_id = "data"
-    #   memory       = 4096
-    #   size         = 20
-    #   ip           = "10.3.3.62"
-    #   vm_id        = "7002"
-    # }
+  node_data = {
+    controlplanes = {
+      "10.3.3.60" = {
+        install_disk  = "/dev/vda"
+        install_image = "${module.dev-test.schematic_id}"
+        datastore_id  = "data"
+        node          = "cairo"
+        memory        = 8092
+        size          = 50
+        storage       = 150
+      },
+    }
+    workers = {
+      "10.3.3.61" = {
+        install_disk  = "/dev/vda"
+        install_image = "${module.dev-test.schematic_id}"
+        datastore_id  = "data"
+        node          = "anubis"
+        memory        = 8092
+        size          = 50
+        storage       = 150
+      },
+      "10.3.3.62" = {
+        install_disk  = "/dev/vda"
+        install_image = "${module.dev-test.schematic_id}"
+        datastore_id  = "data"
+        node          = "anubis"
+        memory        = 8092
+        size          = 50
+        storage       = 150
+      }
+    }
   }
-  nodes = {
-    "node-02" = {
-      host_node    = "cairo"
-      machine_type = "worker"
-      datastore_id = "data"
-      memory       = 8092
-      size         = 45
-      storage      = 100
-      ip           = "10.3.3.63"
-      vm_id        = "8002"
-    },
-    "node-03" = {
-      host_node    = "cairo"
-      machine_type = "worker"
-      datastore_id = "data"
-      memory       = 8092
-      size         = 45
-      storage      = 100
-      ip           = "10.3.3.64"
-      vm_id        = "8003"
-    },
-  }
-  machine_config_patches = [
-    <<EOT
-machine:
-  kubelet:
-    nodeIP:
-      validSubnets:
-        - 10.3.3.0/24
-    extraMounts:
-      - destination: /var/lib/longhorn
-        type: bind
-        source: /var/lib/longhorn
-        options:
-          - rbind
-          - rshared
-          - rw
-  disks:
-    - device: /dev/vdb # The name of the disk to use.
-      partitions:
-        - mountpoint: /var/lib/longhorn
-  install:
-    disk: /dev/vda
-EOT
-  ]
-}
-
-resource "local_file" "kubeconfig" {
-  content         = module.dev.kube_config
-  filename        = "./outputs/kubeconfig"
-  file_permission = "0600"
-}
-
-resource "local_file" "talo_config" {
-  content  = module.dev.client_configuration
-  filename = "./outputs/talosconfig"
-}
-
-resource "local_file" "controlplaneconf" {
-  content  = module.dev.controlplane_config
-  filename = "./outputs/controlplane.yaml"
-}
-
-resource "local_file" "workerconf" {
-  content  = module.dev.worker_config
-  filename = "./outputs/worker.yaml"
 }
