@@ -6,7 +6,7 @@ provider "talos" {
 }
 
 provider "kubernetes" {
-  config_path = "./module-testing/configs/kubeconfig"
+  config_path = "./configs/kubeconfig"
 }
 
 provider "proxmox" {
@@ -20,7 +20,7 @@ provider "proxmox" {
 }
 provider "flux" {
   kubernetes = {
-    config_path = "./module-testing/configs/kubeconfig"
+    config_path = "./configs/kubeconfig"
   }
   git = {
     url = "https://github.com/${var.github_owner}/${var.github_repository.name}.git"
@@ -38,6 +38,6 @@ provider "github" {
 
 provider "helm" {
   kubernetes {
-    config_path = "./module-testing/configs/kubeconfig"
+    config_path = "./configs/kubeconfig"
   }
 }

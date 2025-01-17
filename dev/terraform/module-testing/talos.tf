@@ -38,7 +38,8 @@ resource "talos_machine_configuration_apply" "controlplane" {
   ]
   for_each   = var.node_data.controlplanes
   apply_mode = "auto"
-  node       = var.cluster.endpoint
+  #node       = var.cluster.endpoint
+  node = each.key
   #endpoint                    = var.cluster.endpoint
   client_configuration        = talos_machine_secrets.this.client_configuration
   machine_configuration_input = data.talos_machine_configuration.controlplane.machine_configuration
@@ -125,21 +126,21 @@ resource "time_sleep" "wait_until_bootstrap" {
 
 resource "local_sensitive_file" "kubeconfig" {
   content         = talos_cluster_kubeconfig.this.kubeconfig_raw
-  filename        = "${path.module}/configs/kubeconfig"
+  filename        = "${path.root}/configs/kubeconfig"
   file_permission = "0600"
 }
 
 resource "local_sensitive_file" "talosconfig" {
   content  = data.talos_client_configuration.this.talos_config
-  filename = "${path.module}/configs/talosconfig"
+  filename = "${path.root}/configs/talosconfig"
 }
 
 resource "local_sensitive_file" "controlplane_config" {
   content  = data.talos_machine_configuration.controlplane.machine_configuration
-  filename = "${path.module}/configs/controlplane.yaml"
+  filename = "${path.root}/configs/controlplane.yaml"
 }
 
 resource "local_sensitive_file" "worker_config" {
   content  = data.talos_machine_configuration.worker.machine_configuration
-  filename = "${path.module}/configs/worker.yaml"
+  filename = "${path.root}/configs/worker.yaml"
 }

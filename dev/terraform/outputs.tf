@@ -30,7 +30,3 @@ output "worker_config" {
   sensitive = true
 }
 
-# output "password" {
-#   value     = module.cluster.password
-#   sensitive = true
-# }
