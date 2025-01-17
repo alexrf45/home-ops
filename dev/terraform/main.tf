@@ -1,5 +1,5 @@
-module "dev-test" {
-  source       = "./module-testing/"
+module "dev" {
+  source       = "github.com/alexrf45/lab//talos-pve-flux?ref=talos-pve"
   github_owner = var.github_owner
   github_pat   = var.github_pat
   github_repository = {
@@ -7,7 +7,7 @@ module "dev-test" {
     description = "Flux git repo for cluster"
     visibility  = "private"
   }
-  pve_nodes = ["anubis", "cairo", "bastet", "horus"]
+  pve_nodes = ["anubis", "cairo"]
   cluster = {
     name          = "fr3d"
     endpoint      = "10.3.3.60"
@@ -20,7 +20,7 @@ module "dev-test" {
     controlplanes = {
       "10.3.3.60" = {
         install_disk  = "/dev/vda"
-        install_image = "${module.dev-test.schematic_id}"
+        install_image = "${module.dev.schematic_id}"
         datastore_id  = "data"
         node          = "cairo"
         memory        = 8092
@@ -49,7 +49,7 @@ module "dev-test" {
     workers = {
       "10.3.3.61" = {
         install_disk  = "/dev/vda"
-        install_image = "${module.dev-test.schematic_id}"
+        install_image = "${module.dev.schematic_id}"
         datastore_id  = "data"
         node          = "anubis"
         memory        = 8092
@@ -58,7 +58,7 @@ module "dev-test" {
       },
       "10.3.3.62" = {
         install_disk  = "/dev/vda"
-        install_image = "${module.dev-test.schematic_id}"
+        install_image = "${module.dev.schematic_id}"
         datastore_id  = "data"
         node          = "anubis"
         memory        = 8092
