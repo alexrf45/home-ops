@@ -29,3 +29,8 @@ output "worker_config" {
   value     = module.dev-test.worker_config
   sensitive = true
 }
+
+# output "password" {
+#   value     = module.cluster.password
+#   sensitive = true
+# }

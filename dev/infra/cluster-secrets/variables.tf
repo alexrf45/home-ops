@@ -8,8 +8,3 @@ variable "username" {
   description = "username for basic auth"
   type        = string
 }
-
-variable "password" {
-  description = "password for basic auth"
-  type        = string
-}

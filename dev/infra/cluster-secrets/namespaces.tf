@@ -9,24 +9,32 @@ resource "kubernetes_namespace" "external-secrets" {
       env = var.env
     }
 
-    name = "external-secrets"
+  }
+}
+resource "kubernetes_namespace" "monitoring" {
+  metadata {
+    name = "monitoring"
+
+    labels = {
+      "pod-security.kubernetes.io/enforce" = "privileged"
+      app                                  = "prometheus"
+      env                                  = var.env
+    }
   }
 }
 
 resource "kubernetes_namespace" "storage" {
   metadata {
-    annotations = {
-      name = "storage"
-    }
+    name = "storage"
 
     labels = {
-      app = "longhorn"
-      env = var.env
+      "pod-security.kubernetes.io/enforce" = "privileged"
+      app                                  = "longhorn"
+      env                                  = var.env
     }
-
-    name = "storage"
   }
 }
+
 
 resource "kubernetes_namespace" "argo-cd" {
   metadata {
@@ -39,7 +47,6 @@ resource "kubernetes_namespace" "argo-cd" {
       env = var.env
     }
 
-    name = "argo-cd"
   }
 }
 
@@ -47,7 +54,7 @@ resource "kubernetes_namespace" "argo-cd" {
 resource "kubernetes_namespace" "pihole-system" {
   metadata {
     annotations = {
-      name = "pihole"
+      name = "pihole-system"
     }
 
     labels = {
@@ -55,7 +62,6 @@ resource "kubernetes_namespace" "pihole-system" {
       env = var.env
     }
 
-    name = "pihole"
   }
 }
 resource "kubernetes_namespace" "nginx-system" {
@@ -69,34 +75,5 @@ resource "kubernetes_namespace" "nginx-system" {
       env = var.env
     }
 
-    name = "nginx-system"
-  }
-}
-resource "kubernetes_namespace" "argo-cd" {
-  metadata {
-    annotations = {
-      name = "argo-cd"
-    }
-
-    labels = {
-      app = "argo-cd"
-      env = "dev"
-    }
-
-    name = "argo-cd"
-  }
-}
-resource "kubernetes_namespace" "argo-cd" {
-  metadata {
-    annotations = {
-      name = "argo-cd"
-    }
-
-    labels = {
-      app = "argo-cd"
-      env = "dev"
-    }
-
-    name = "argo-cd"
   }
 }

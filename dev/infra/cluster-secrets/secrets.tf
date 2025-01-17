@@ -14,13 +14,21 @@ resource "kubernetes_secret" "pihole_password" {
   }
 
   data = {
-    # Populate this map dynamically with the contents of .pihole.env
-    for key, value in tomap(file("${path.module}/secrets-folder/.pihole.env"))
-    : key => base64encode(value)
+    username = var.username
+    password = random_string.pihole-password.result
   }
 
   type = "Opaque"
 }
+
+data "aws_iam_user" "this" {
+  user_name = "external-secrets"
+}
+
+resource "aws_iam_access_key" "external-secrets" {
+  user = data.aws_iam_user.this.user_name
+}
+
 
 # Secret for AWS SM access keys
 resource "kubernetes_secret" "awssm_secret" {
@@ -30,8 +38,8 @@ resource "kubernetes_secret" "awssm_secret" {
   }
 
   data = {
-    "access-key"        = base64encode(file("${path.module}/secrets-folder/access-key"))
-    "secret-access-key" = base64encode(file("${path.module}/secrets-folder/secret-access-key"))
+    "access-key"        = base64encode(aws_iam_access_key.external-secrets.id)
+    "secret-access-key" = base64encode(aws_iam_access_key.external-secrets.secret)
   }
 
   type = "Opaque"
