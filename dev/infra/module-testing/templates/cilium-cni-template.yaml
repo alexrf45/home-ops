@@ -1,4 +1,3 @@
----
 cluster:
   network:
     cni:

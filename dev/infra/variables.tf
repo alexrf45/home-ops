@@ -28,15 +28,3 @@ variable "github_repository" {
     visibility  = "private"
   }
 }
-
-variable "cluster" {
-  description = "Cluster configuration"
-  type = object({
-    name          = string
-    endpoint      = string
-    gateway       = string
-    talos_version = string
-    platform      = string
-    iso_datastore = string
-  })
-}

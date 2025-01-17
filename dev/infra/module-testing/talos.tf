@@ -49,7 +49,7 @@ resource "talos_machine_configuration_apply" "controlplane" {
       install_image = each.value.install_image
     }),
     file("${path.module}/patches/cp-scheduling.yaml"),
-    file("${path.module}/patches/cilium-cni-patch.yaml"),
+    #file("${path.module}/patches/cilium-cni-patch.yaml")
 
   ]
   timeouts = {
@@ -59,6 +59,8 @@ resource "talos_machine_configuration_apply" "controlplane" {
 }
 resource "talos_machine_configuration_apply" "worker" {
   depends_on = [
+    data.helm_template.cilium_template,
+    local_file.cilium_config,
     proxmox_virtual_environment_vm.talos_vm,
     proxmox_virtual_environment_vm.talos_vm_control_plane,
     talos_machine_configuration_apply.controlplane,
@@ -74,7 +76,8 @@ resource "talos_machine_configuration_apply" "worker" {
       install_disk  = each.value.install_disk
       install_image = each.value.install_image
     }),
-    file("${path.module}/patches/cilium-cni-patch.yaml"),
+    #file("${path.module}/patches/cilium-cni-patch.yaml"),
+
   ]
   timeouts = {
     create = "5m"

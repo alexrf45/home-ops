@@ -40,7 +40,7 @@ provider "proxmox" {
 }
 provider "flux" {
   kubernetes = {
-    config_path = "${path.root}/configs/kubeconfig"
+    config_path = "./module-testing/configs/kubeconfig"
   }
   git = {
     url = "https://github.com/${var.github_owner}/${var.github_repository.name}.git"
@@ -58,7 +58,7 @@ provider "github" {
 
 provider "helm" {
   kubernetes {
-    config_path = "${path.root}/configs/kubeconfig"
+    config_path = "./module-testing/configs/kubeconfig"
   }
 }
 
@@ -68,7 +68,7 @@ module "dev-test" {
   github_pat   = var.github_pat
   github_repository = {
     name        = "home-ops-flux"
-    description = "Flux git repo for ${module.dev-test.name} cluster" #TODO: fix module path
+    description = "Flux git repo for cluster"
     visibility  = "private"
   }
   pve_nodes = ["anubis", "cairo"]

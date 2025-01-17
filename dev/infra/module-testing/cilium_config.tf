@@ -1,7 +1,7 @@
 data "helm_template" "cilium_template" {
-  name             = "cilium"
-  create_namespace = true
-  repository       = "https://helm.cilium.io/"
+  name       = "cilium"
+  namespace  = "kube-system"
+  repository = "https://helm.cilium.io/"
 
   chart        = "cilium"
   version      = "1.16.5"
@@ -13,7 +13,7 @@ data "helm_template" "cilium_template" {
     ipam:
       mode: kubernetes
     kubeProxyReplacement: true
-    
+
     l2announcements:
       enabled: true
     l7Proxy: false
@@ -66,12 +66,13 @@ data "helm_template" "cilium_template" {
     externalIPs:
       enabled: true
   EOF
+
   ]
 }
 
 resource "local_file" "cilium_config" {
   depends_on = [data.helm_template.cilium_template]
   content    = templatefile("${path.module}/templates/cilium-cni-template.yaml", { cilium_yaml = data.helm_template.cilium_template.manifest })
-  filename   = "${path.root}/patches/cilium-cni-patch.yaml"
+  filename   = "${path.module}/patches/cilium-cni-patch.yaml"
 }
 

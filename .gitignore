@@ -42,3 +42,4 @@ patch.yaml
 remote.tfbackend
 .env
 .envrc
+**configs/
