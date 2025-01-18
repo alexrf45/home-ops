@@ -1,5 +1,5 @@
 module "dev" {
-  source       = "github.com/alexrf45/lab//talos-pve-flux?ref=talos-pve"
+  source       = "github.com/alexrf45/lab//talos-pve-flux?ref=v1.0.0"
   github_owner = var.github_owner
   github_pat   = var.github_pat
   github_repository = {
