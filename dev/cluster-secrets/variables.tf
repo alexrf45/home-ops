@@ -8,3 +8,7 @@ variable "username" {
   description = "username for basic auth"
   type        = string
 }
+
+variable "token" {
+  description = "clouflare token"
+}

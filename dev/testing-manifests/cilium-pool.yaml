@@ -1,0 +1,19 @@
+apiVersion: "cilium.io/v2alpha1"
+kind: CiliumLoadBalancerIPPool
+metadata:
+  name: "dev-pool"
+spec:
+  blocks:
+  - cidr: "10.3.3.80/28"
+  - cidr: "10.3.3.96/27"
+  - cidr: "10.3.3.128/27"
+  - cidr: "10.3.3.160/32"
+---
+apiVersion: "cilium.io/v2alpha1"
+kind: CiliumL2AnnouncementPolicy
+metadata:
+  name: l2policy
+spec:
+  loadBalancerIPs: true
+  interfaces:
+    - eth0

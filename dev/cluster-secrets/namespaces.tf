@@ -3,7 +3,7 @@ resource "kubernetes_namespace" "external-secrets" {
     annotations = {
       name = "external-secrets"
     }
-
+    name = "external-secrets"
     labels = {
       app = "eso"
       env = var.env
@@ -46,7 +46,7 @@ resource "kubernetes_namespace" "argo-cd" {
       app = "argo-cd"
       env = var.env
     }
-
+    name = "argo-cd"
   }
 }
 
@@ -61,7 +61,7 @@ resource "kubernetes_namespace" "pihole-system" {
       app = "pihole"
       env = var.env
     }
-
+    name = "pihole-system"
   }
 }
 resource "kubernetes_namespace" "nginx-system" {
@@ -74,6 +74,6 @@ resource "kubernetes_namespace" "nginx-system" {
       app = "nginx-ingress-controller"
       env = var.env
     }
-
+    name = "nginx-system"
   }
 }

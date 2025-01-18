@@ -14,15 +14,18 @@ terraform apply --auto-approve
 
 terraform output
 
-#cp ./module-testing/patches/cilium-cni-patch.yaml patch.yaml
-
 talosctl patch mc -n 10.3.3.60 -p @./module-testing/patches/cilium-cni-patch.yaml --talosconfig=./configs/talosconfig
 
 talosctl patch mc -n 10.3.3.60 -p @./patches/patch.yaml --talosconfig=./configs/talosconfig
-#talosctl bootstrap -n 10.3.3.60 --endpoints 10.3.3.60 --talosconfig=./outputs/talosconfig
-#talosctl patch mc -n 10.3.3.60 -p @patch.yaml --talosconfig=./outputs/talosconfig
-#adjust depending on number of nodes
-#
+
+talosctl patch mc -n 10.3.3.60 -p @./patches/metrics.yaml
+talosctl patch mc -n 10.3.3.61 -p @./patches/metrics.yaml
+talosctl patch mc -n 10.3.3.62 -p @./patches/metrics.yaml
+
 kubectl label node fr3d-worker-0 fr3d-worker-1 node-role.kubernetes.io/worker=true --kubeconfig=./configs/kubeconfig
+
+kubectl delete daemonset -n kube-system kube-flannel
+kubectl delete daemonset -n kube-system kube-proxy
+kubectl delete cm kube-flannel-cfg -n kube-system
 
 git clone git@github.com:alexrf45/home-ops-flux.git ~/projects/home-ops-flux

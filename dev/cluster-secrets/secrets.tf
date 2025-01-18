@@ -12,7 +12,6 @@ resource "kubernetes_secret" "pihole_password" {
     name      = "pihole-password"
     namespace = "pihole-system"
   }
-
   data = {
     username = var.username
     password = random_string.pihole-password.result
