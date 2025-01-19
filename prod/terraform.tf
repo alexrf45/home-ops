@@ -20,6 +20,18 @@ terraform {
       source  = "hashicorp/helm"
       version = "2.17.0"
     }
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.0"
+    }
+    random = {
+      source  = "hashicorp/random"
+      version = "3.6.3"
+    }
+  }
+  backend "s3" {
+
   }
 }
+
 

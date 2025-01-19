@@ -1,0 +1,9 @@
+---
+apiVersion: image.toolkit.fluxcd.io/v1beta2
+kind: ImageRepository
+metadata:
+  name: homelab-blog
+  namespace: flux-system
+spec:
+  image: fonalex45/homelab
+  interval: 5m0s

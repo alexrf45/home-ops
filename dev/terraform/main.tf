@@ -1,13 +1,14 @@
 module "dev" {
-  source       = "github.com/alexrf45/lab//talos-pve-flux?ref=v1.0.0"
+  source       = "github.com/alexrf45/lab//talos-pve-flux?ref=dev"
   github_owner = var.github_owner
   github_pat   = var.github_pat
   github_repository = {
     name        = "home-ops-flux"
     description = "Flux git repo for cluster"
-    visibility  = "private"
+    visibility  = "public"
   }
-  pve_nodes = ["anubis", "cairo"]
+  flux_extras = ["image-automation-controller", "image-reflector-controller"]
+  pve_nodes   = ["cairo", "anubis"]
   cluster = {
     name          = "fr3d"
     endpoint      = "10.3.3.60"
@@ -21,11 +22,12 @@ module "dev" {
       "10.3.3.60" = {
         install_disk  = "/dev/vda"
         install_image = "${module.dev.schematic_id}"
-        datastore_id  = "data"
+        datastore_id  = "local-lvm"
+        storage_id    = "data"
         node          = "cairo"
         memory        = 8092
         size          = 50
-        storage       = 150
+        storage       = 100
       },
       # "10.3.3.63" = {
       #   install_disk  = "/dev/vda"
@@ -50,20 +52,22 @@ module "dev" {
       "10.3.3.61" = {
         install_disk  = "/dev/vda"
         install_image = "${module.dev.schematic_id}"
-        datastore_id  = "data"
+        datastore_id  = "local-lvm"
+        storage_id    = "data"
         node          = "anubis"
         memory        = 8092
         size          = 50
-        storage       = 150
+        storage       = 100
       },
       "10.3.3.62" = {
         install_disk  = "/dev/vda"
         install_image = "${module.dev.schematic_id}"
-        datastore_id  = "data"
+        datastore_id  = "local-lvm"
+        storage_id    = "data"
         node          = "anubis"
         memory        = 8092
         size          = 50
-        storage       = 150
+        storage       = 100
       }
     }
   }
