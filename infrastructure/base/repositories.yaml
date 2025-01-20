@@ -1,24 +1,4 @@
----
-apiVersion: source.toolkit.fluxcd.io/v1
-kind: HelmRepository
-metadata:
-  name: argo-cd
-  namespace: flux-system
-spec:
-  interval: 1m0s
-  url: https://argoproj.github.io/argo-helm
 
----
-apiVersion: source.toolkit.fluxcd.io/v1
-kind: HelmRepository
-metadata:
-  name: cert-manager
-  namespace: flux-system
-spec:
-  interval: 1m0s
-  url: https://charts.jetstack.io
-
----
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
 metadata:
@@ -38,17 +18,7 @@ spec:
   interval: 1m0s
   url: https://charts.external-secrets.io
 
----
-apiVersion: source.toolkit.fluxcd.io/v1
-kind: HelmRepository
-metadata:
-  name: monitoring
-  namespace: flux-system
-spec:
-  interval: 1m0s
-  url: https://prometheus-community.github.io/helm-charts
-
----
+--
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
 metadata:
@@ -77,3 +47,12 @@ metadata:
 spec:
   interval: 1m0s
   url: https://mojo2600.github.io/pihole-kubernetes/
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
+metadata:
+  name: cilium
+  namespace: flux-system
+spec:
+  interval: 1m0s
+  url: https://helm.cilium.io/

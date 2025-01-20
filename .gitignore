@@ -38,7 +38,7 @@ terraform.rc
 remote-state/remote.tfbackend
 **/dev/outputs/*
 **/prod/outputs/*
-patch.yaml
+#patch.yaml
 remote.tfbackend
 .env
 .envrc

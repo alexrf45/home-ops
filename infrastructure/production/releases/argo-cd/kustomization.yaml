@@ -2,8 +2,8 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: podinfo
 resources:
-  - ../base/homelab-blog
+  - ../../../base/argo-cd.yaml
 patches:
-  - path: homelab-staging.yaml
+  - path: argo-cd.yaml
     target:
       kind: HelmRelease

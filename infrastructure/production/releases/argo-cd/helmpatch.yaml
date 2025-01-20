@@ -1,0 +1,109 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: argo-cd
+  namespace: flux-system
+spec:
+  chart:
+    spec:
+      chart: argo-cd
+      reconcileStrategy: ChartVersion
+      sourceRef:
+        kind: HelmRepository
+        name: argo-cd
+        namespace: flux-system
+      version: 7.6.8
+  interval: 1m0s
+  releaseName: argo-cd
+  targetNamespace: argo-cd
+  values:
+    applicationSet:
+      metrics:
+        enabled: true
+        serviceMonitor:
+          enabled: true
+      name: applicationset-controller
+      replicas: 1
+    configs:
+        statusbadge.enabled: true
+    controller:
+      metrics:
+        enabled: true
+        serviceMonitor:
+          enabled: true
+          interval: 15s
+      replicas: 1
+      revisionHistoryLimit: 5
+      additionalLabels:
+        app: argo-cd
+        env: staging
+      domain: staging.internal.argo.fr3d.dev
+      logging:
+        format: text
+        level: error
+    nameOverride: argo-cd
+    notifications:
+      argocdUrl: ""
+      cm:
+        create: true
+      enabled: true
+      metrics:
+        enabled: true
+        serviceMonitor:
+          enabled: true
+      name: notifications-controller
+      notifiers:
+        service.slack: |
+          token: $slack-token
+      secret:
+        create: false
+        items: {}
+        name: argocd-notifications-secret
+    redis:
+      enabled: true
+      image:
+        imagePullPolicy: ""
+        repository: public.ecr.aws/docker/library/redis
+        tag: 7.2.4-alpine
+      metrics:
+        enabled: true
+        serviceMonitor:
+          enabled: true
+          namespace: monitoring
+      name: redis
+      servicePort: 6379
+    redis-ha:
+      auth: true
+      enabled: true
+      haproxy:
+        enabled: true
+        hardAntiAffinity: true
+        labels:
+          app.kubernetes.io/name: argocd-redis-ha-haproxy
+        metrics:
+          enabled: true
+      hardAntiAffinity: true
+      image:
+        repository: public.ecr.aws/docker/library/redis
+        tag: 7.2.4-alpine
+      persistentVolume:
+        enabled: true
+    repoServer:
+      metrics:
+        enabled: true
+        serviceMonitor:
+          enabled: true
+      name: repo-server
+      replicas: 1
+    server:
+      ingress:
+        hostname: staging.internal.argo.fr3d.dev
+        path: /
+        pathType: Prefix
+        tls: true
+      metrics:
+        enabled: true
+        serviceMonitor:
+          enabled: true
+      replicas: 2
