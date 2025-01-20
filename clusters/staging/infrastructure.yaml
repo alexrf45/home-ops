@@ -2,7 +2,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: staging-infra-controllers
+  name: infra-controllers
   namespace: flux-system
 spec:
   interval: 10m
@@ -12,6 +12,23 @@ spec:
     kind: GitRepository
     name: flux-system
   path: ./infrastructure/staging/releases
+  prune: true
+  wait: true
+
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: infra-helm-charts
+  namespace: flux-system
+spec:
+  interval: 10m
+  retryInterval: 1m
+  timeout: 5m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  path: ./infrastructure/base
   prune: true
   wait: true
 ---

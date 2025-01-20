@@ -1,0 +1,29 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: homelab-blog
+  namespace: flux-system
+spec:
+  chart:
+    spec:
+      version: 1.0.0
+  targetNamespace: homelab
+  values:
+    image:
+      pullPolicy: IfNotPresent
+      repository: fonalex45/homelab
+      tag: v2.6.0
+    ingress:
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt-production
+      hosts:
+      - host: prod.internal.homelab.fr3d.dev
+        paths:
+        - path: /
+          pathType: ImplementationSpecific
+      tls:
+      - hosts:
+        - prod.internal.homelab.fr3d.dev
+        secretName: prod-homelab-tls
+    replicaCount: 1
