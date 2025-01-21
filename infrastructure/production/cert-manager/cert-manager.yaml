@@ -3,7 +3,7 @@ apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: cert-manager
-  namespace: flux-system
+  namespace: cert-manager
 spec:
   chart:
     spec:
@@ -12,13 +12,13 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: cert-manager
-        namespace: flux-system
+        namespace: cert-manager
       version: 1.15.3
   interval: 1m0s
   releaseName: cert-manager
-  targetNamespace: kube-system
+  targetNamespace: cert-manager
   values:
-    clusterResourceNamespace: kube-system
+    clusterResourceNamespace: cert-manager
     crds:
       enabled: true
       keep: true
@@ -27,7 +27,7 @@ spec:
     enableCertificateOwnerRef: true
     global:
       leaderElection:
-        namespace: kube-system
+        namespace: cert-manager
       logLevel: 3
       rbac:
         aggregateClusterRoles: true
@@ -36,7 +36,7 @@ spec:
       pullPolicy: IfNotPresent
       repository: quay.io/jetstack/cert-manager-controller
     maxConcurrentChallenges: 60
-    namespace: kube-system
+    namespace: cert-manager
     replicaCount: 1
     webhook:
       replicaCount: 1

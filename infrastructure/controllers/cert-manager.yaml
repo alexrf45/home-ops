@@ -30,7 +30,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: cert-manager
-        namespace: flux-system
+        namespace: cert-manager
       version: 1.15.3
   interval: 1m0s
   releaseName: cert-manager

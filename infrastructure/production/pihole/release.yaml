@@ -3,7 +3,7 @@ apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: pihole
-  namespace: flux-system
+  namespace: pihole-system
 spec:
   chart:
     spec:
@@ -12,51 +12,35 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: pihole
-        namespace: flux-system
+        namespace: pihole-system
       version: 2.27.0
   interval: 1m0s
   releaseName: pihole
   targetNamespace: pihole-system
   values:
-    DNS1: 1.1.1.1
-    DNS2: 8.8.8.8
-    admin:
-      enabled: true
-      existingSecret: pihole-password
-      passwordKey: password
     ingress:
       annotations:
-        cert-manager.io/cluster-issuer: letsencrypt-staging
+        cert-manager.io/cluster-issuer: letsencrypt-production
       enabled: true
       hosts:
-      - internal.pihole.fr3d.dev
-      ingressClassName: nginx-internal
-      path: /
-      pathType: Prefix
+      - prod.internal.pihole.fr3d.dev
       tls:
       - hosts:
-        - internal.pihole.fr3d.dev
+        - prod.internal.pihole.fr3d.dev
         secretName: pihole-tls
     persistentVolumeClaim:
       accessModes:
       - ReadWriteOnce
-      enabled: false
+      enabled: true
       size: 2048Mi
-    serviceDhcp:
-      enabled: false
-    serviceWeb:
-      type: ClusterIP
-      externalTrafficPolicy: Cluster
     serviceDns:
-      externalTrafficPolicy: Cluster
-      mixedService: true
       annotations:
-        lbipam.cilium.io/ips: 10.3.3.81
+        lbipam.cilium.io/ips: 10.3.3.41
         io.cilium/lb-ipam-sharing-key: pihole
       type: LoadBalancer
     podDnsConfig:
       enabled: true
       policy: "None"
       namservers:
-        - 10.3.3.81
+        - 10.3.3.41
         - 8.8.8.8
