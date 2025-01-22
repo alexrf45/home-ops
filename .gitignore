@@ -42,4 +42,4 @@ remote-state/remote.tfbackend
 remote.tfbackend
 .env
 .envrc
-**configs/
+**config/
