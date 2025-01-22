@@ -1,0 +1,17 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: cert-manager
+  labels:
+    pod-security.kubernetes.io/enforce = "privileged"
+    app = "cert-manager"
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: nginx-system
+  labels:
+    pod-security.kubernetes.io/enforce = "privileged"
+    app = "nginx-ingress"
+---
