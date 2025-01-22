@@ -15,7 +15,7 @@ spec:
         namespace: flux-system
   interval: 1m0s
   releaseName: external-secrets
-  targetNamespace: kube-system
+  targetNamespace: external-secrets
   values:
     certController:
       create: true

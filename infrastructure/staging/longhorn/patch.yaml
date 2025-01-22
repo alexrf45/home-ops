@@ -25,6 +25,7 @@ spec:
       snapshotterReplicaCount: 2
     defaultSettings:
       deletingConfirmationFlag: false
+      guaranteedInstanceManagerCpu: 5
       snapshotMaxCount: 3
     image:
       csi:

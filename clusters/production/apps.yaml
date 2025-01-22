@@ -6,7 +6,7 @@ metadata:
 spec:
   interval: 10m0s
   dependsOn:
-    - name: infra-helm-charts
+    - name: infra-production
   sourceRef:
     kind: GitRepository
     name: flux-system

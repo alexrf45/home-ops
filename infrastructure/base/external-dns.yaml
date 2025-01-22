@@ -1,19 +1,9 @@
 ---
-apiVersion: source.toolkit.fluxcd.io/v1
-kind: HelmRepository
-metadata:
-  name: external-dns
-  namespace: pihole-system
-spec:
-  interval: 1m0s
-  url: https://charts.bitnami.com/bitnami
-
----
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: external-dns
-  namespace: pihole-system
+  namespace: flux-system
 spec:
   chart:
     spec:
@@ -22,7 +12,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: external-dns
-        namespace: pihole-system
+        namespace: flux-system
       version: 8.0.1
   interval: 1m0s
   releaseName: external-dns
