@@ -1,8 +1,0 @@
-apiVersion: source.toolkit.fluxcd.io/v1
-kind: HelmRepository
-metadata:
-  name: homelab-blog
-  namespace: homelab
-spec:
-  interval: 1m0s
-  url: https://alexrf45.github.io/lab-helmcharts/homelab/

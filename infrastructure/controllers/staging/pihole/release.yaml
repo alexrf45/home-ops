@@ -1,0 +1,31 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: pihole
+spec:
+  chart:
+    spec:
+      version: "2.27.0"
+  values:
+    ingress:
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt-staging
+      enabled: true
+      hosts:
+      - staging.pihole.fr3d.dev
+      ingressClassName: nginx-internal
+      path: /
+      pathType: Prefix
+      tls:
+      - hosts:
+        - staging.pihole.fr3d.dev
+        secretName: pihole-tls
+    persistentVolumeClaim:
+      accessModes:
+      - ReadWriteOnce
+      enabled: true
+      size: 2048Mi
+      mixedService: true
+    podDnsConfig:
+      enabled: true
+      policy: "None"

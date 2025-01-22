@@ -43,3 +43,5 @@ remote.tfbackend
 .env
 .envrc
 **config/
+talosconfig
+kubeconfig
