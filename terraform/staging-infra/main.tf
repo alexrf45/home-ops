@@ -1,14 +1,10 @@
 module "dev" {
-  source       = "github.com/alexrf45/lab//talos-pve-flux?ref=v1.2.0"
-  github_owner = var.github_owner
-  github_pat   = var.github_pat
-  github_repository = {
-    name        = "home-ops-flux"
-    description = "Flux git repo for cluster"
-    visibility  = "public"
-  }
-  flux_extras = ["image-automation-controller", "image-reflector-controller"]
-  pve_nodes   = ["cairo", "anubis"]
+  source            = "github.com/alexrf45/lab//talos-pve-flux?ref=rc-1"
+  github_owner      = var.github_owner
+  github_pat        = var.github_pat
+  github_repository = var.github_repository
+  flux_extras       = ["image-automation-controller", "image-reflector-controller"]
+  pve_nodes         = ["cairo", "bastet", "osiris"]
   cluster = {
     name          = "fr3d"
     endpoint      = "10.3.3.60"
@@ -54,7 +50,7 @@ module "dev" {
         install_image = "${module.dev.schematic_id}"
         datastore_id  = "local-lvm"
         storage_id    = "data"
-        node          = "anubis"
+        node          = "bastet"
         memory        = 8092
         size          = 50
         storage       = 100
@@ -64,7 +60,7 @@ module "dev" {
         install_image = "${module.dev.schematic_id}"
         datastore_id  = "local-lvm"
         storage_id    = "data"
-        node          = "anubis"
+        node          = "osiris"
         memory        = 8092
         size          = 50
         storage       = 100

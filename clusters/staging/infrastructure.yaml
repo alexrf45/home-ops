@@ -8,6 +8,8 @@ spec:
   interval: 10m
   retryInterval: 1m
   timeout: 5m
+  depends_On:
+    - name: infra-controllers
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -44,6 +46,8 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
+  depends_On:
+    - name: infra-controllers
   path: ./infrastructure/staging
   prune: true
   wait: true
@@ -60,6 +64,8 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
+  depends_On:
+    name: infra-controllers
   path: ./infrastructure/base
   prune: true
   wait: true

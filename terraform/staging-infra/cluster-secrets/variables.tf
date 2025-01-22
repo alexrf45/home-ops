@@ -11,4 +11,11 @@ variable "username" {
 
 variable "token" {
   description = "clouflare token"
+  sensitive   = true
+}
+
+variable "age_private_key" {
+  description = "private key used by flux to decrypt app secrets present in flux"
+  type        = string
+  sensitive   = true
 }
