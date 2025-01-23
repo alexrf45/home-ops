@@ -45,3 +45,6 @@ remote.tfbackend
 **config/
 talosconfig
 kubeconfig
+cilium.yaml
+cilium.tf
+outputs

@@ -6,7 +6,7 @@ provider "talos" {
 }
 
 provider "kubernetes" {
-  config_path = "${path.cwd}/outputs/kubeconfig"
+  config_path = "${path.root}/outputs/kubeconfig"
 }
 
 provider "proxmox" {
@@ -20,7 +20,7 @@ provider "proxmox" {
 }
 provider "flux" {
   kubernetes = {
-    config_path = "${path.cwd}/outputs/kubeconfig"
+    config_path = "${path.root}/outputs/kubeconfig"
   }
   git = {
     url = "https://github.com/${var.github_owner}/${var.github_repository}.git"
