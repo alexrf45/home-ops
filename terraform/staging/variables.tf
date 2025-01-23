@@ -19,3 +19,7 @@ variable "github_repository" {
   description = "Information about new GitHub repository for FluxCD"
   type        = string
 }
+variable "token" {
+  description = "clouflare token"
+  sensitive   = true
+}

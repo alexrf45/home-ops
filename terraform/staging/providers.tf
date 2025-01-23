@@ -6,7 +6,7 @@ provider "talos" {
 }
 
 provider "kubernetes" {
-  config_path = "./configs/kubeconfig"
+  config_path = "${path.cwd}/outputs/kubeconfig"
 }
 
 provider "proxmox" {
@@ -20,10 +20,10 @@ provider "proxmox" {
 }
 provider "flux" {
   kubernetes = {
-    config_path = "./configs/kubeconfig"
+    config_path = "${path.cwd}/outputs/kubeconfig"
   }
   git = {
-    url = "https://github.com/${var.github_owner}/${var.github_repository.name}.git"
+    url = "https://github.com/${var.github_owner}/${var.github_repository}.git"
     http = {
       username = "fr3d" # This can be any string when using a personal access token
       password = var.github_pat
@@ -36,8 +36,3 @@ provider "github" {
   token = var.github_pat
 }
 
-provider "helm" {
-  kubernetes {
-    config_path = "./configs/kubeconfig"
-  }
-}

@@ -1,9 +1,9 @@
 output "password" {
-  value     = random_string.pihole-password.result
+  value     = module.secrets.password
   sensitive = true
 }
 
 output "aws_secret" {
-  value     = aws_iam_access_key.external-secrets.secret
+  value     = module.secrets.aws_secret
   sensitive = true
 }

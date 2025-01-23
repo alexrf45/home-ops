@@ -1,6 +1,8 @@
-provider "aws" {}
+provider "aws" {
+
+}
 
 provider "kubernetes" {
-  config_path = "../terraform/configs/kubeconfig"
+  config_path = "../outputs/kubeconfig"
 }
 

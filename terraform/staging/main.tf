@@ -6,7 +6,8 @@ module "dev" {
   flux_extras       = ["image-automation-controller", "image-reflector-controller"]
   pve_nodes         = ["cairo", "bastet", "osiris"]
   cluster = {
-    name          = "fr3d"
+    name          = "staging"
+    env           = "staging"
     endpoint      = "10.3.3.60"
     gateway       = "10.3.3.1"
     talos_version = "v1.9.1"
@@ -16,14 +17,15 @@ module "dev" {
   node_data = {
     controlplanes = {
       "10.3.3.60" = {
-        install_disk  = "/dev/vda"
-        install_image = "${module.dev.schematic_id}"
-        datastore_id  = "local-lvm"
-        storage_id    = "data"
-        node          = "cairo"
-        memory        = 8092
-        size          = 50
-        storage       = 100
+        install_disk     = "/dev/vda"
+        install_image    = "${module.dev.schematic_id}"
+        allow_scheduling = true
+        datastore_id     = "local-lvm"
+        storage_id       = "data"
+        node             = "cairo"
+        memory           = 8092
+        size             = 50
+        storage          = 100
       },
       # "10.3.3.63" = {
       #   install_disk  = "/dev/vda"
@@ -46,25 +48,29 @@ module "dev" {
     }
     workers = {
       "10.3.3.61" = {
-        install_disk  = "/dev/vda"
-        install_image = "${module.dev.schematic_id}"
-        datastore_id  = "local-lvm"
-        storage_id    = "data"
-        node          = "bastet"
-        memory        = 8092
-        size          = 50
-        storage       = 100
+        install_disk     = "/dev/vda"
+        install_image    = "${module.dev.schematic_id}"
+        allow_scheduling = true
+        datastore_id     = "local-lvm"
+        storage_id       = "data"
+        node             = "bastet"
+        memory           = 8092
+        size             = 50
+        storage          = 100
       },
       "10.3.3.62" = {
-        install_disk  = "/dev/vda"
-        install_image = "${module.dev.schematic_id}"
-        datastore_id  = "local-lvm"
-        storage_id    = "data"
-        node          = "osiris"
-        memory        = 8092
-        size          = 50
-        storage       = 100
+        install_disk     = "/dev/vda"
+        install_image    = "${module.dev.schematic_id}"
+        allow_scheduling = true
+        datastore_id     = "local-lvm"
+        storage_id       = "data"
+        node             = "osiris"
+        memory           = 8092
+        size             = 50
+        storage          = 100
       }
     }
   }
 }
+
+
