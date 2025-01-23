@@ -6,12 +6,12 @@ metadata:
   name: flux-system
   namespace: flux-system
 spec:
-  interval: 2m0s
+  interval: 1m0s
   ref:
-    branch: main
+    branch: dev
   secretRef:
     name: flux-system
-  url: https://github.com/alexrf45/home-ops-flux.git
+  url: ssh://git@github.com/alexrf45/home-ops.git
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
@@ -20,7 +20,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m0s
-  path: ./clusters/fr3d
+  path: ./clusters/staging
   prune: true
   sourceRef:
     kind: GitRepository
