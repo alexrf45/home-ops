@@ -27,5 +27,5 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
-  path: ./infrastructrue/configs/staging
+  path: ./infrastructure/configs/staging
   prune: true
