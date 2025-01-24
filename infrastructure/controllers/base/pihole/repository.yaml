@@ -5,7 +5,7 @@ metadata:
   name: pihole
   namespace: flux-system
 spec:
-  interval: 1hr
+  interval: 1h
   url: https://mojo2600.github.io/pihole-kubernetes/
  
 ---
