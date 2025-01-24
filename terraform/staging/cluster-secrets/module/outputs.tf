@@ -2,8 +2,7 @@ output "password" {
   value     = random_string.pihole-password.result
   sensitive = true
 }
-
-output "aws_secret" {
-  value     = aws_iam_access_key.external-secrets.secret
+output "password-grafana" {
+  value     = random_string.grafana-password.result
   sensitive = true
 }

@@ -3,7 +3,7 @@ output "password" {
   sensitive = true
 }
 
-output "aws_secret" {
-  value     = module.secrets.aws_secret
+output "password-grafana" {
+  value     = module.secrets.password-grafana
   sensitive = true
 }
