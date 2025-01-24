@@ -20,14 +20,6 @@ resource "kubernetes_secret" "pihole_password" {
   type = "Opaque"
 }
 
-data "aws_iam_user" "this" {
-  user_name = "external-secrets"
-}
-
-resource "aws_iam_access_key" "external-secrets" {
-  user = data.aws_iam_user.this.user_name
-}
-
 
 # Secret for AWS SM access keys
 resource "kubernetes_secret" "awssm_secret" {
@@ -37,8 +29,8 @@ resource "kubernetes_secret" "awssm_secret" {
   }
 
   data = {
-    "access-key"        = base64encode(aws_iam_access_key.external-secrets.id)
-    "secret-access-key" = base64encode(aws_iam_access_key.external-secrets.secret)
+    "access-key"        = base64encode(var.access-key-id)
+    "secret-access-key" = base64encode(var.secret-access-key)
   }
 
   type = "Opaque"

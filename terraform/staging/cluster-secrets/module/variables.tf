@@ -14,3 +14,13 @@ variable "token" {
   description = "clouflare token"
   sensitive   = true
 }
+
+variable "access-key-id" {
+  description = "aws access key id"
+  type        = string
+}
+
+variable "secret-access-key" {
+  description = "secret access key"
+  type        = string
+}
