@@ -1,0 +1,186 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: cilium
+  namespace: flux-system
+spec:
+  chart:
+    spec:
+      chart: cilium
+      reconcileStrategy: ChartVersion
+      sourceRef:
+        kind: HelmRepository
+        name: cilium
+        namespace: flux-system
+      version: 1.17.0-rc.2
+  interval: 1m0s
+  releaseName: cilium
+  targetNamespace: kube-system
+  values:
+    agentNotReadyTaintKey: node.cilium.io/agent-not-ready
+    annotateK8sNode: true
+    dashboards:
+      enabled: true
+      label: cilium-agent
+      prometheus:
+        serviceMonitor:
+          enabled: true
+          interval: 5s
+    enableIPv6Masquerade: false
+    enableInternalTrafficPolicy: true
+    enableLBIPAM: true
+    encryption:
+      enabled: true
+      nodeEncryption: true
+      type: wireguard
+      wireguard:
+        persistentKeepalive: 0s
+    envoyConfig:
+      enabled: true
+      retryInterval: 15s
+      secretsNamespace:
+        create: true
+        name: cilium-secrets
+    externalIPs:
+      enabled: true
+    extraArgs: []
+    extraConfig: {}
+    extraEnv: []
+    gatewayAPI:
+      enabled: true
+      externalTrafficPolicy: Cluster
+      gatewayClass:
+        create: auto
+    hubble:
+      enabled: true
+      export:
+        fileMaxBackups: 5
+        fileMaxSizeMb: 500
+      metrics:
+        dashboards:
+          enabled: true
+          label: net-board
+        dynamic:
+          enabled: true
+        enabled: null
+        port: 9965
+        serviceMonitor:
+          enabled: true
+          interval: 5s
+        tls:
+          enabled: false
+          server:
+            existingSecret: ""
+            mtls:
+              enabled: true
+              useSecret: true
+      tls:
+        auto:
+          enabled: true
+          method: certmanager
+        enabled: true
+        prometheus:
+          enabled: true
+          port: 9966
+          serviceMonitor:
+            enabled: true
+            interval: 10s
+      ui:
+        baseUrl: /
+        enabled: true
+        ingress:
+          annotations:
+            cert-manager.io/cluster-issuer: letsencrypt-staging
+          className: cilium
+          enabled: true
+          hosts:
+          - staging.hubble.fr3d.dev
+          tls:
+          - hosts:
+            - staging.hubble.fr3d.dev
+            secretName: hubble-ui-tls
+        replicas: 2
+        server:
+          ipv6:
+            enabled: false
+        standalone: null
+    image:
+      digest: sha256:a0d21e7191f7635c05f5aeb977c19369adafe50365eca65cfe364615a6cb8fc6
+      override: null
+      pullPolicy: IfNotPresent
+      repository: quay.io/cilium/cilium
+      tag: v1.17.0-rc.2
+      useDigest: true
+    ingressController:
+      default: true
+      enabled: true
+      enforceHttps: true
+      ingressLBAnnotationPrefixes:
+      - lbipam.cilium.io
+      - nodeipam.cilium.io
+      - service.beta.kubernetes.io
+      - service.kubernetes.io
+      - fr3d.dev
+      loadbalancerMode: dedicated
+      service:
+        annotations:
+          cert-manager.io/cluster-issuer: letsencrypt-staging
+        externalTrafficPolicy: Cluster
+        labels: {}
+        loadBalancerIP: 10.3.3.81
+        name: cilium-ingress
+        type: LoadBalancer
+    ipam:
+      ciliumNodeUpdateRate: 15s
+      mode: cluster-pool
+      multiPoolPreAllocation: ""
+      operator:
+        clusterPoolIPv4MaskSize: 24
+        clusterPoolIPv4PodCIDRList:
+        - 10.3.3.0/24
+        externalAPILimitBurstSize: null
+        externalAPILimitQPS: null
+    k8sClientRateLimit:
+      burst: null
+      operator:
+        burst: null
+        qps: null
+      qps: null
+    k8sNetworkPolicy:
+      enabled: true
+    k8sServiceLookupNamespace: ""
+    kubeProxyReplacement: "false"
+    l2announcements:
+      enabled: true
+    l2podAnnouncements:
+      enabled: true
+      interface: eth0
+    operator:
+      dashboards:
+        enabled: true
+        label: cilium_operator_dashboard
+      enabled: true
+      prometheus:
+        enabled: true
+        metricsService: true
+        port: 9963
+        serviceMonitor:
+          enabled: true
+          interval: 5s
+      replicas: 2
+    policyEnforcementMode: default
+    pprof:
+      address: localhost
+      enabled: false
+      port: 6060
+    preflight:
+      enabled: true
+    prometheus:
+      enabled: true
+      metricsService: true
+      port: 9962
+      serviceMonitor:
+        enabled: true
+        interval: 10s
+        trustCRDsExist: false
