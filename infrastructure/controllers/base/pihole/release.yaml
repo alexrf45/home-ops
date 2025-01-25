@@ -50,7 +50,7 @@ spec:
       type: ClusterIP
       externalTrafficPolicy: Cluster
     serviceDns:
-      externalTrafficPolicy: Local
+      externalTrafficPolicy: Cluster
       mixedService: false
       annotations:
         lbipam.cilium.io/ips: "10.3.3.82"
