@@ -14,10 +14,12 @@ spec:
         name: pihole
         namespace: flux-system
       version: 2.27.0
-  interval: 1m0s
+  interval: 10m
   releaseName: pihole
   targetNamespace: pihole-system
   values:
+    extraEnvVars:
+      TZ: "America/New_York"
     DNS1: 1.1.1.1
     DNS2: 8.8.8.8
     admin:
@@ -48,8 +50,8 @@ spec:
       type: ClusterIP
       externalTrafficPolicy: Cluster
     serviceDns:
-      externalTrafficPolicy: Cluster
-      mixedService: true
+      externalTrafficPolicy: Local
+      mixedService: false
       annotations:
         lbipam.cilium.io/ips: "10.3.3.82"
         lbipam.cilium.io/sharing-key: pihole
