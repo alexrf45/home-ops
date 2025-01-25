@@ -34,7 +34,7 @@ spec:
       - pihole.fr3d.dev
       ingressClassName: nginx-internal
       path: /
-      pathType: ImplementationSpecific 
+      pathType: Prefix
       tls:
       - hosts:
         - pihole.fr3d.dev
