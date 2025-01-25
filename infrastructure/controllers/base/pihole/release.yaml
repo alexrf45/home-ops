@@ -51,12 +51,12 @@ spec:
       externalTrafficPolicy: Cluster
       mixedService: true
       annotations:
-        lbipam.cilium.io/ips: 10.3.3.81
+        lbipam.cilium.io/ips: 10.3.3.82
         io.cilium/lb-ipam-sharing-key: pihole
       type: LoadBalancer
     podDnsConfig:
       enabled: true
       policy: "None"
       namservers:
-        - 10.3.3.81
+        - 10.3.3.82
         - 8.8.8.8
