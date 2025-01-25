@@ -51,7 +51,7 @@ resource "kubernetes_secret" "grafana" {
     namespace = "monitoring"
   }
   data = {
-    username = base64encode(var.username)
-    password = base64encode(random_string.grafana-password.result)
+    admin-user     = base64encode(var.username)
+    admin-password = base64encode(random_string.grafana-password.result)
   }
 }
