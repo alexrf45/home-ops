@@ -46,9 +46,9 @@ spec:
       enabled: false
     serviceWeb:
       type: ClusterIP
-      externalTrafficPolicy: Local
+      externalTrafficPolicy: Cluster
     serviceDns:
-      externalTrafficPolicy: Local
+      externalTrafficPolicy: Cluster
       mixedService: true
       annotations:
         #lbipam.cilium.io/ips: 10.3.3.82
