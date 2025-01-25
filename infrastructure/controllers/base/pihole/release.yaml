@@ -52,9 +52,16 @@ spec:
     serviceDns:
       externalTrafficPolicy: Cluster
       mixedService: true
+      LoadBalancerIP: 10.3.3.82
       annotations:
         #lbipam.cilium.io/lb-ipam-sharing-key: pihole
       type: LoadBalancer
+    doh:
+      enabled: true
+      pullPolicy: Always
+      envVars: {
+        DOH_UPSTREAM: "https://1.1.1.1/dns-query"
+      }
     podDnsConfig:
       enabled: true
       policy: "None"
