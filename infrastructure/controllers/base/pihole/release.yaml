@@ -54,7 +54,7 @@ spec:
       mixedService: true
       annotations:
         lbipam.cilium.io/sharing-key: pihole
-        io.cilium.service-publishing-scope: external
+        cilium.io/service-publishing-scope: external
       type: LoadBalancer
     podDnsConfig:
       enabled: true
