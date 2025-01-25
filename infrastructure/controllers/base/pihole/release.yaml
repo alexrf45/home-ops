@@ -52,7 +52,7 @@ spec:
       mixedService: true
       annotations:
         lbipam.cilium.io/ips: "10.3.3.82"
-        io.cilium/lb-ipam-sharing-key: pihole
+        cilium.io/lb-ipam-sharing-key: pihole
       type: LoadBalancer
     podDnsConfig:
       enabled: true
