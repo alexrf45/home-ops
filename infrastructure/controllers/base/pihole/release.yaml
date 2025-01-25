@@ -45,7 +45,7 @@ spec:
       enabled: false
       size: 2048Mi
     serviceDhcp:
-      enabled: false
+      enabled: true
     serviceWeb:
       type: ClusterIP
       externalTrafficPolicy: Cluster
@@ -54,14 +54,13 @@ spec:
       mixedService: true
       annotations:
         lbipam.cilium.io/sharing-key: pihole
-        cilium.io/service-publishing-scope: external
       type: LoadBalancer
     podDnsConfig:
       enabled: true
       policy: "None"
       namservers:
         - 10.3.3.82
-        - 8.8.8.8
+        - 1.1.1.1
     adlists:
       # everything but the kitchen sink
       - https://big.oisd.nl
