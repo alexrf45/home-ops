@@ -49,7 +49,7 @@ spec:
       externalTrafficPolicy: Cluster
     serviceDns:
       externalTrafficPolicy: Cluster
-      mixedService: true
+      mixedService: false
       annotations:
         lbipam.cilium.io/ips: 10.3.3.82
         io.cilium/lb-ipam-sharing-key: pihole
