@@ -14,7 +14,12 @@ spec:
         name: cilium
         namespace: flux-system
       version: 1.17.0-rc.2
-  interval: 1m0s
+  interval: 30m
+  maxHistory: 3
+  install:
+    crds: CreateReplace
+    remediation:
+      retries: 4
   releaseName: cilium
   targetNamespace: kube-system
   values:
@@ -57,22 +62,16 @@ spec:
         fileMaxBackups: 5
         fileMaxSizeMb: 500
       metrics:
-        dashboards:
-          enabled: true
-        dynamic:
-          enabled: true
-        enabled: null
-        port: 9965
-        serviceMonitor:
-          enabled: true
-          interval: 5s
-        tls:
-          enabled: false
-          server:
-            existingSecret: ""
-            mtls:
-              enabled: true
-              useSecret: true
+        enabled:
+          - dns:query;ignoreAAAA
+          - drop
+          - tcp
+          - flow
+          - port-distribution
+          - icmp
+          - http
+      dashboards:
+        enabled: true
       tls:
         auto:
           enabled: true
@@ -85,7 +84,6 @@ spec:
             enabled: true
             interval: 10s
       ui:
-        baseUrl: /
         enabled: true
         ingress:
           annotations:
@@ -154,18 +152,7 @@ spec:
       enabled: true
       interface: eth0
     operator:
-      dashboards:
-        enabled: true
-        label: grafana_dashboard
-      enabled: true
-      prometheus:
-        enabled: true
-        metricsService: true
-        port: 9963
-        serviceMonitor:
-          enabled: true
-          interval: 5s
-      replicas: 2
+      rollOutPods: true
     policyEnforcementMode: default
     preflight:
       enabled: true
