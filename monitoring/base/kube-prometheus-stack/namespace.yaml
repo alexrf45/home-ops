@@ -4,6 +4,6 @@ kind: Namespace
 metadata:
   name: monitoring
   labels:
-    pod-security.kubernetes.io/enforce = "privileged"
-    app = "kube-prometheus-stack"
+  pod-security.kubernetes.io/enforce: "privileged"
+  app: "kube-prometheus-stack"
 ---
