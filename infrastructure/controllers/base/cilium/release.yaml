@@ -25,12 +25,6 @@ spec:
   values:
     agentNotReadyTaintKey: node.cilium.io/agent-not-ready
     annotateK8sNode: true
-    dashboards:
-      enabled: true
-      prometheus:
-        serviceMonitor:
-          enabled: true
-          interval: 5s
     enableIPv6Masquerade: false
     enableInternalTrafficPolicy: true
     enableLBIPAM: true
@@ -48,19 +42,16 @@ spec:
         name: cilium-secrets
     externalIPs:
       enabled: true
-    extraArgs: []
-    extraConfig: {}
-    extraEnv: []
     gatewayAPI:
-      enabled: true
+      enabled: false
       externalTrafficPolicy: Cluster
       gatewayClass:
-        create: auto
+        create: false
     hubble:
       enabled: true
       export:
         fileMaxBackups: 5
-        fileMaxSizeMb: 500
+        fileMaxSizeMb: 100
       metrics:
         enabled:
           - dns:query;ignoreAAAA
@@ -72,6 +63,8 @@ spec:
           - http
       dashboards:
         enabled: true
+        annotations:
+          granfana_folder: Cilium
       tls:
         auto:
           enabled: true
