@@ -14,7 +14,12 @@ spec:
         name: external-dns
         namespace: flux-system
       version: 8.0.1
-  interval: 1m0s
+  interval: 30m
+  maxHistory: 3
+  install:
+    crds: CreateReplace
+    remediation:
+      retries: 4
   releaseName: external-dns
   targetNamespace: pihole-system
   values:
