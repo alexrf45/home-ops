@@ -14,6 +14,8 @@ spec:
         namespace: flux-system
       version: 1.15.3
   interval: 1m0s
+  retryInterval: 1m0s
+  prune: true
   releaseName: cert-manager
   targetNamespace: cert-manager
   values:
