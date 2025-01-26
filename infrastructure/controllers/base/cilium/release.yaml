@@ -102,7 +102,6 @@ spec:
         server:
           ipv6:
             enabled: false
-        standalone: null
     image:
       digest: sha256:a0d21e7191f7635c05f5aeb977c19369adafe50365eca65cfe364615a6cb8fc6
       override: null
