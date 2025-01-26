@@ -22,8 +22,7 @@ spec:
     annotateK8sNode: true
     dashboards:
       enabled: true
-      label:
-        name: cilium-agent
+      label: "cilium-agent"
       prometheus:
         serviceMonitor:
           enabled: true
@@ -61,8 +60,7 @@ spec:
       metrics:
         dashboards:
           enabled: true
-          label:
-            name: net-board
+          label: "net-board"
         dynamic:
           enabled: true
         enabled: null
@@ -161,8 +159,7 @@ spec:
     operator:
       dashboards:
         enabled: true
-        label:
-          name: cilium_operator_dashboard
+        label: "cilium_operator_dashboard"
       enabled: true
       prometheus:
         enabled: true
