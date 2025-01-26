@@ -46,7 +46,7 @@ spec:
       enabled: false
       externalTrafficPolicy: Cluster
       gatewayClass:
-        create: false
+        create: "false"
     hubble:
       enabled: true
       export:
