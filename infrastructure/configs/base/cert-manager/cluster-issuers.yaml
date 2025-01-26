@@ -43,5 +43,6 @@ spec:
         selector:
           dnsZones:
             - "fr3d.dev"
+            - "cilium.io"
 ---
 

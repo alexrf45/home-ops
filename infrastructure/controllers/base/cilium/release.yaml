@@ -76,7 +76,7 @@ spec:
           certManagerIssuerRef:
             group: cert-manager.io
             kind: ClusterIssuer
-            name: ca-issuer
+            name: letsencrypt-staging
         prometheus:
           enabled: true
           port: 9966
