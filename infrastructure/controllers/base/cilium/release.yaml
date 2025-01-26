@@ -72,6 +72,10 @@ spec:
         auto:
           enabled: true
           method: certmanager
+          certManagerIssuerRef:
+            group: cert-manager.io
+            kind: ClusterIssuer
+            name: letsencrypt-staging
         enabled: true
         prometheus:
           enabled: true
