@@ -157,6 +157,7 @@ spec:
     operator:
       dashboards:
         enabled: true
+        label: grafana_dashboard
       enabled: true
       prometheus:
         enabled: true
@@ -167,10 +168,6 @@ spec:
           interval: 5s
       replicas: 2
     policyEnforcementMode: default
-    pprof:
-      address: localhost
-      enabled: false
-      port: 6060
     preflight:
       enabled: true
     prometheus:

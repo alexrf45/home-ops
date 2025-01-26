@@ -10,7 +10,7 @@ spec:
       reconcileStrategy: ChartVersion
       sourceRef:
         kind: HelmRepository
-        name: argo-cd
+        name: argo
         namespace: flux-system
       version: 7.6.8
   install:
