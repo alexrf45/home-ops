@@ -52,6 +52,9 @@ spec:
       export:
         fileMaxBackups: 5
         fileMaxSizeMb: 100
+      relay:
+        enabled: true
+        rollOutPods: true
       metrics:
         enabled:
           - dns:query;ignoreAAAA
