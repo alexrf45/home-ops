@@ -214,7 +214,7 @@ spec:
           path: /
           pathType: Prefix
         hostname: internal.argo.fr3d.dev
-        ingressClassName: nginx-internal
+        ingressClassName: cilium
         path: /
         pathType: Prefix
         tls: true
