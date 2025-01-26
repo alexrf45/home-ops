@@ -69,14 +69,14 @@ spec:
         annotations:
           granfana_folder: Cilium
       tls:
+        enabled: true
         auto:
           enabled: true
           method: certmanager
           certManagerIssuerRef:
             group: cert-manager.io
             kind: ClusterIssuer
-            name: letsencrypt-staging
-        enabled: true
+            name: ca-issuer
         prometheus:
           enabled: true
           port: 9966
