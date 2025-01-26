@@ -43,7 +43,6 @@ spec:
     grafana:
       admin:
         existingSecret: "grafana-secret"
-      adminPassword: prom-operator
       defaultDashboardsEditable: true
       defaultDashboardsEnabled: true
       defaultDashboardsTimezone: America/New_York
@@ -55,7 +54,7 @@ spec:
         enabled: true
         hosts:
         - internal.grafana.fr3d.dev
-        ingressClassName: nginx-internal
+        ingressClassName: cilium
         path: /
         tls:
         - hosts:

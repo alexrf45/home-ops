@@ -13,7 +13,7 @@ spec:
       enabled: true
       hosts:
       - staging.pihole.fr3d.dev
-      ingressClassName: nginx-internal
+      ingressClassName: cilium
       path: /
       pathType: Prefix
       tls:
