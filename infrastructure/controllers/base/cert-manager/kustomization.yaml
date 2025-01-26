@@ -4,3 +4,4 @@ resources:
   - repository.yaml
   - release.yaml
   - secrets.yaml
+  - namespace.yaml
