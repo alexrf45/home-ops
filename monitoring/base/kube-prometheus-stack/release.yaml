@@ -14,7 +14,12 @@ spec:
         name: monitoring
         namespace: flux-system
       version: 68.2.1
-  interval: 1m0s
+  interval: 30m
+  maxHistory: 3
+  install:
+    crds: CreateReplace
+    remediation:
+      retries: 4
   releaseName: kube-prometheus-stack
   targetNamespace: monitoring
   values:
