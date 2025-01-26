@@ -88,6 +88,8 @@ spec:
         ingress:
           annotations:
             cert-manager.io/cluster-issuer: letsencrypt-staging
+            ingress.cilium.io/force-https: "enabled"
+            ingress.cilium.io/service-type: "LoadBalancer"
           className: cilium
           enabled: true
           hosts:
