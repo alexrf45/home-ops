@@ -4,7 +4,6 @@ metadata:
   name: "dev-pool"
 spec:
   blocks:
-  - cidr: "10.3.3.0/24"
   - start: "10.3.3.70"
     stop: "10.3.3.150"
 
