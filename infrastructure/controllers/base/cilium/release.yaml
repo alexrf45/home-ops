@@ -23,8 +23,6 @@ spec:
   releaseName: cilium
   targetNamespace: kube-system
   values:
-    agentNotReadyTaintKey: node.cilium.io/agent-not-ready
-    annotateK8sNode: true
     enableIPv6Masquerade: false
     enableInternalTrafficPolicy: true
     enableLBIPAM: true
@@ -102,23 +100,9 @@ spec:
         server:
           ipv6:
             enabled: false
-    image:
-      digest: sha256:a0d21e7191f7635c05f5aeb977c19369adafe50365eca65cfe364615a6cb8fc6
-      override: null
-      pullPolicy: IfNotPresent
-      repository: quay.io/cilium/cilium
-      tag: v1.17.0-rc.2
-      useDigest: true
     ingressController:
       default: true
       enabled: true
-      enforceHttps: true
-      ingressLBAnnotationPrefixes:
-      - lbipam.cilium.io
-      - nodeipam.cilium.io
-      - service.beta.kubernetes.io
-      - service.kubernetes.io
-      - fr3d.dev
       loadbalancerMode: dedicated
       service:
         annotations:
