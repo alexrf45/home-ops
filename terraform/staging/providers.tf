@@ -5,10 +5,6 @@ provider "aws" {
 provider "talos" {
 }
 
-provider "kubernetes" {
-  config_path = "${path.root}/outputs/kubeconfig"
-}
-
 provider "proxmox" {
   endpoint = "https://${var.pve_endpoint}:8006"
   username = "root@pam"
@@ -18,21 +14,5 @@ provider "proxmox" {
     agent = false
   }
 }
-provider "flux" {
-  kubernetes = {
-    config_path = "${path.root}/outputs/kubeconfig"
-  }
-  git = {
-    url = "https://github.com/${var.github_owner}/${var.github_repository}.git"
-    http = {
-      username = "fr3d" # This can be any string when using a personal access token
-      password = var.github_pat
-    }
-  }
-}
 
-provider "github" {
-  owner = var.github_owner
-  token = var.github_pat
-}
 

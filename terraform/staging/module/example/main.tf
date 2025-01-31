@@ -1,5 +1,5 @@
 module "dev-test" {
-  source    = "./module"
+  source    = "github.com/alexrf45/lab//talos-pve?ref=rc-2"
   pve_nodes = ["cairo", "anubis"]
 
   cluster = {

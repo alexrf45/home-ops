@@ -19,13 +19,14 @@ output "kube_config" {
   value     = module.dev-test.kube_config
   sensitive = true
 }
-output "machine_config" {
-  value     = module.dev-test.machine_config
+
+output "controlplane_config" {
+  value     = module.dev-test.controlplane_config
+  sensitive = true
+}
+#
+output "worker_config" {
+  value     = module.dev-test.worker_config
   sensitive = true
 }
 
-
-output "pve_token" {
-  value     = module.dev-test.pve_token
-  sensitive = true
-}

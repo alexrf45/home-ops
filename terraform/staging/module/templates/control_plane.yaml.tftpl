@@ -1,0 +1,83 @@
+cluster:
+    allowSchedulingOnControlPlanes: ${allow_scheduling}
+    network:
+        cni:
+            name: none
+        podSubnets:
+            - 10.42.0.0/16
+        serviceSubnets:
+            - 10.43.0.0/16
+    proxy:
+      disabled: true
+    extraManifests:
+      - https://raw.githubusercontent.com/alexrf45/lab/refs/heads/rc-2/talos-pve-flux/manifests/install.yaml
+      - https://raw.githubusercontent.com/alex1989hu/kubelet-serving-cert-approver/main/deploy/standalone-install.yaml
+      - https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+      - https://raw.githubusercontent.com/kubernetes-sigs/gateway-api/v1.1.0/config/crd/standard/gateway.networking.k8s.io_gatewayclasses.yaml
+      - https://raw.githubusercontent.com/kubernetes-sigs/gateway-api/v1.1.0/config/crd/experimental/gateway.networking.k8s.io_gateways.yaml
+      - https://raw.githubusercontent.com/kubernetes-sigs/gateway-api/v1.1.0/config/crd/standard/gateway.networking.k8s.io_httproutes.yaml
+      - https://raw.githubusercontent.com/kubernetes-sigs/gateway-api/v1.1.0/config/crd/standard/gateway.networking.k8s.io_referencegrants.yaml
+      - https://raw.githubusercontent.com/kubernetes-sigs/gateway-api/v1.1.0/config/crd/standard/gateway.networking.k8s.io_grpcroutes.yaml
+      - https://raw.githubusercontent.com/kubernetes-sigs/gateway-api/v1.1.0/config/crd/experimental/gateway.networking.k8s.io_tlsroutes.yaml
+      - https://github.com/cert-manager/cert-manager/releases/download/v1.16.3/cert-manager.yaml
+    inlineManifests:
+    - name: proxmox-csi-plugin-namespace
+      contents: |-
+        apiVersion: v1
+        kind: Namespace
+        metadata:
+          name: csi-proxmox
+          labels:
+            pod-security.kubernetes.io/enforce: "privileged"
+            app: "csi-proxmox"
+    - name: namespace-external-secrets
+      contents: |-
+        apiVersion: v1
+        kind: Namespace
+        metadata:
+          name: external-secrets
+    - name: namespace-flux
+      contents: |-
+        apiVersion: v1
+        kind: Namespace
+        metadata:
+          name: flux-system
+    - name: proxmox-cloud-controller-manager
+      contents: |-
+        apiVersion: v1
+        kind: Secret
+        type: Opaque
+        metadata:
+          name: proxmox-cloud-controller-manager
+          namespace: kube-system
+        stringData:
+          config.yaml: |
+            clusters:
+              - url: https://${endpoint}:8006/api2/json
+                insecure: true
+                token_id: '${pve_token_id}'
+                token_secret: '${pve_token}'
+                region: "${cluster_name}"
+    - name: proxmox-csi-plugin
+      contents: |-
+        apiVersion: v1
+        kind: Secret
+        type: Opaque
+        metadata:
+          name: proxmox-csi-plugin
+          namespace: csi-proxmox
+        stringData:
+          config.yaml: |
+            clusters:
+              - url: https://${endpoint}:8006/api2/json
+                insecure: true
+                token_id: '${pve_token_id}'
+                token_secret: '${pve_token}'
+                region: "${cluster_name}"
+
+    externalCloudProvider:
+        enabled: true
+        manifests:
+            - https://raw.githubusercontent.com/sergelogvinov/proxmox-cloud-controller-manager/main/docs/deploy/cloud-controller-manager.yml
+            - https://raw.githubusercontent.com/sergelogvinov/proxmox-csi-plugin/main/docs/deploy/proxmox-csi-plugin.yml
+
