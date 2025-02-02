@@ -1,0 +1,9 @@
+apiVersion: "cilium.io/v2alpha1"
+kind: CiliumLoadBalancerIPPool
+metadata:
+  name: "dev-pool"
+spec:
+  blocks:
+  - start: "10.3.3.70"
+    stop: "10.3.3.150"
+

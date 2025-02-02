@@ -35,3 +35,14 @@ override.tf.json
 # Ignore CLI configuration files
 .terraformrc
 terraform.rc
+remote-state/remote.tfbackend
+**/dev/outputs/*
+**/prod/outputs/*
+#patch.yaml
+remote.tfbackend
+.env
+.envrc
+**config/
+talosconfig
+kubeconfig
+#outputs

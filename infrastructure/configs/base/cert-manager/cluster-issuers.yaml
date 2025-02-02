@@ -1,0 +1,48 @@
+---
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-production
+  namespace: cert-manager
+spec:
+  acme:
+    server: https://acme-v02.api.letsencrypt.org/directory
+    email: k3s@f0nzy.com
+    privateKeySecretRef:
+      name: letsencrypt-production
+    solvers:
+      - dns01:
+          cloudflare:
+            email: cloudflare@f0nzy.com
+            apiTokenSecretRef:
+              name: "cloudflare-token-secret"
+              key: cloudflare-token
+        selector:
+          dnsZones:
+            - "fr3d.dev"
+
+---
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-staging
+  namespace: cert-manager
+spec:
+  acme:
+    server: https://acme-staging-v02.api.letsencrypt.org/directory
+    email: k3s@f0nzy.com
+    privateKeySecretRef:
+      name: letsencrypt-staging
+    solvers:
+      - dns01:
+          cloudflare:
+            email: cloudflare@f0nzy.com
+            apiTokenSecretRef:
+              name: "cloudflare-token-secret"
+              key: cloudflare-token
+        selector:
+          dnsZones:
+            - "fr3d.dev"
+            - "cilium.io"
+---
+

@@ -1,2 +1,27 @@
 # home-ops
-Hopefully this will be my official public repo for my home and development lab
+
+![GitHub repo size](https://img.shields.io/github/repo-size/alexrf45/home-ops) ![GitHub Release](https://img.shields.io/github/v/release/alexrf45/home-ops) [![Static Badge](https://img.shields.io/badge/blog-homelab.fr3d.dev-blue?style=plastic&link=https%3A%2F%2Fhomelab.fr3d.dev)](https://homelab.fr3d.dev)
+
+![Static Badge](https://img.shields.io/badge/talos-v1.9.1-orange?style=plastic&logo=Talos&logoColor=%23FF7300) ![Static Badge](https://img.shields.io/badge/k8s-v1.32.0-blue?style=plastic&logo=Kubernetes&logoColor=%23326CE5&logoSize=auto) ![Static Badge](https://img.shields.io/badge/flux-v2.4.0-blue?style=plastic&logo=flux&logoSize=auto&link=https%3A%2F%2Fhomelab.fr3d.dev) ![Static Badge](https://img.shields.io/badge/terraform-v1.10.2-purple?style=plastic&logo=terraform&color=%237B42BC) ![Static Badge](https://img.shields.io/badge/proxmox-v8.3.3-orange?style=plastic&logo=proxmox&logoSize=auto&link=https%3A%2F%2Fhomelab.fr3d.dev)
+
+This repository automates the deployment of Kubernetes & Talos Linux on Proxmox with Terraform & Flux
+
+## Services
+
+- [ ] Argo-CD
+- [ ] Cert-Manager
+- [ ] Cillium
+- [ ] Cloudflare
+- [ ] External-Secrets
+- [ ] External-DNS
+- [ ] Grafana
+- [ ] Home Lab Blog
+- [ ] Pi-Hole
+- [ ] Prometheus
+- [ ] Proxmox-CSI
+- [ ] More to come!
+
+## Updates
+
+**2025-02-02** The terraform code is subject to change as I find
+new ways to optimize the talos linux bootstrap process

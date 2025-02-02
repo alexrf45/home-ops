@@ -1,0 +1,98 @@
+ipam:
+  mode: kubernetes
+
+enableIPv6Masquerade: false
+
+enableInternalTrafficPolicy: true
+
+encryption:
+      enabled: true
+      nodeEncryption: true
+      type: wireguard
+      wireguard:
+        persistentKeepalive: 0s
+
+kubeProxyReplacement: true
+
+securityContext:
+  capabilities:
+    ciliumAgent:
+      - CHOWN
+      - KILL
+      - NET_ADMIN
+      - NET_RAW
+      - IPC_LOCK
+      - SYS_ADMIN
+      - SYS_RESOURCE
+      - DAC_OVERRIDE
+      - FOWNER
+      - SETGID
+      - SETUID
+    cleanCiliumState:
+      - NET_ADMIN
+      - SYS_ADMIN
+      - SYS_RESOURCE
+
+cgroup:
+  autoMount:
+    enabled: false
+  hostRoot: /sys/fs/cgroup
+
+k8sServiceHost: localhost
+k8sServicePort: 7445
+
+hubble:
+  relay:
+    enabled: true
+  metrics:
+        enabled:
+          - dns:query;ignoreAAAA
+          - drop
+          - tcp
+          - flow
+          - port-distribution
+          - icmp
+          - http
+  dashboards:
+        enabled: true
+        annotations:
+          granfana_folder: Cilium
+  ui:
+    enabled: true
+    ingress:
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt-staging
+        ingress.cilium.io/force-https: "enabled"
+        ingress.cilium.io/service-type: "LoadBalancer"
+      className: cilium
+      enabled: true
+      hosts:
+      - staging.hubble.fr3d.dev
+      tls:
+      - hosts:
+        - staging.hubble.fr3d.dev
+        secretName: hubble-ui-tls
+        replicas: 2
+        server:
+          ipv6:
+            enabled: false
+ingressController:
+  default: true
+  enabled: true
+  loadbalancerMode: dedicated
+  service:
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-staging
+    externalTrafficPolicy: Cluster
+    loadBalancerIP: 10.3.3.81
+    name: cilium-ingress
+    type: LoadBalancer
+
+l2announcements:
+  enabled: true
+
+# Calculated based on 30 services
+# https://docs.cilium.io/en/latest/network/l2-announcements/#sizing-client-rate-limit
+
+k8sClientRateLimit:
+  qps: 15

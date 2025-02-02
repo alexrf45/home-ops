@@ -1,0 +1,152 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: cilium
+  namespace: flux-system
+spec:
+  chart:
+    spec:
+      chart: cilium
+      reconcileStrategy: ChartVersion
+      sourceRef:
+        kind: HelmRepository
+        name: cilium
+        namespace: flux-system
+      version: 1.17.0-rc.2
+  interval: 30m
+  maxHistory: 3
+  install:
+    crds: CreateReplace
+    remediation:
+      retries: 4
+  releaseName: cilium
+  targetNamespace: kube-system
+  values:
+    enableIPv6Masquerade: false
+    enableInternalTrafficPolicy: true
+    enableLBIPAM: true
+    encryption:
+      enabled: true
+      nodeEncryption: true
+      type: wireguard
+      wireguard:
+        persistentKeepalive: 0s
+    envoyConfig:
+      enabled: true
+      retryInterval: 15s
+      secretsNamespace:
+        create: true
+        name: cilium-secrets
+    externalIPs:
+      enabled: true
+    gatewayAPI:
+      enabled: false
+      externalTrafficPolicy: Cluster
+      gatewayClass:
+        create: "false"
+    hubble:
+      enabled: true
+      export:
+        fileMaxBackups: 5
+        fileMaxSizeMb: 100
+      relay:
+        enabled: true
+        rollOutPods: true
+      metrics:
+        enabled:
+          - dns:query;ignoreAAAA
+          - drop
+          - tcp
+          - flow
+          - port-distribution
+          - icmp
+          - http
+      dashboards:
+        enabled: true
+        annotations:
+          granfana_folder: Cilium
+      tls:
+        enabled: true
+        auto:
+          enabled: true
+          method: certmanager
+          certManagerIssuerRef:
+            group: cert-manager.io
+            kind: ClusterIssuer
+            name: letsencrypt-staging
+        prometheus:
+          enabled: true
+          port: 9966
+          serviceMonitor:
+            enabled: true
+            interval: 10s
+      ui:
+        enabled: true
+        ingress:
+          annotations:
+            cert-manager.io/cluster-issuer: letsencrypt-staging
+            ingress.cilium.io/force-https: "enabled"
+            ingress.cilium.io/service-type: "LoadBalancer"
+          className: cilium
+          enabled: true
+          hosts:
+          - staging.hubble.fr3d.dev
+          tls:
+          - hosts:
+            - staging.hubble.fr3d.dev
+            secretName: hubble-ui-tls
+        replicas: 2
+        server:
+          ipv6:
+            enabled: false
+    ingressController:
+      default: true
+      enabled: true
+      loadbalancerMode: dedicated
+      service:
+        annotations:
+          cert-manager.io/cluster-issuer: letsencrypt-staging
+        externalTrafficPolicy: Cluster
+        labels: {}
+        loadBalancerIP: 10.3.3.81
+        name: cilium-ingress
+        type: LoadBalancer
+    ipam:
+      ciliumNodeUpdateRate: 15s
+      mode: cluster-pool
+      multiPoolPreAllocation: ""
+      operator:
+        clusterPoolIPv4MaskSize: 24
+        clusterPoolIPv4PodCIDRList:
+        - 10.3.3.0/24
+        externalAPILimitBurstSize: null
+        externalAPILimitQPS: null
+    k8sClientRateLimit:
+      burst: null
+      operator:
+        burst: null
+        qps: null
+      qps: null
+    k8sNetworkPolicy:
+      enabled: true
+    k8sServiceLookupNamespace: ""
+    kubeProxyReplacement: "false"
+    l2announcements:
+      enabled: true
+    l2podAnnouncements:
+      enabled: true
+      interface: eth0
+    operator:
+      rollOutPods: true
+    policyEnforcementMode: default
+    preflight:
+      enabled: true
+    prometheus:
+      enabled: true
+      metricsService: true
+      port: 9962
+      serviceMonitor:
+        enabled: true
+        interval: 10s
+        trustCRDsExist: false
