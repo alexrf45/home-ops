@@ -1,6 +1,6 @@
 # home-ops
 
-![./docs/images/homelab.jpg]
+![GitHub repo size](https://img.shields.io/github/repo-size/alexrf45/home-ops)
 
 ## Updates
 
