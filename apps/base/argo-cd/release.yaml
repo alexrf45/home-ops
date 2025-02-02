@@ -166,7 +166,7 @@ spec:
         repository: public.ecr.aws/docker/library/redis
         tag: 7.2.4-alpine
       persistentVolume:
-        enabled: true
+        enabled: false
       redis:
         masterGroupName: argo-cd
     redisSecretInit:
