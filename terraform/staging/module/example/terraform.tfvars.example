@@ -1,8 +1,0 @@
-password     = "1234"
-github_owner = "alexrf45"
-github_pat   = "github_pat_xxxxxxxxxxxxx"
-github_repository = {
-  name        = "example-flux-repo"
-  description = "Flux git repo"
-  visibility  = "private"
-}

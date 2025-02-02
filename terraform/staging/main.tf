@@ -1,10 +1,11 @@
 module "dev-test" {
-  source    = "./module"
-  pve_nodes = ["cairo", "anubis"]
+  source = "github.com/alexrf45/lab//talos-pve?ref=rc-21"
 
+  pve_nodes             = ["cairo", "anubis"]
+  cert-manager-manifest = "https://github.com/cert-manager/cert-manager/releases/download/v1.16.3/cert-manager.yaml"
   cluster = {
-    name          = "dev"
-    env           = "dev"
+    name          = "staging"
+    env           = "staging"
     endpoint      = "10.3.3.60"
     pve_endpoint  = "10.3.3.9"
     gateway       = "10.3.3.1"
@@ -38,7 +39,7 @@ module "dev-test" {
       install_disk     = "/dev/vda"
       machine_type     = "controlplane"
       allow_scheduling = true
-      node             = "cairo"
+      node             = "anubis"
       vm_id            = 7001
       datastore_id     = "data"
       ip               = "10.3.3.61"
