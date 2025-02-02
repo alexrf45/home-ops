@@ -1,5 +1,5 @@
 module "dev-test" {
-  source = "github.com/alexrf45/lab//talos-pve?ref=v1.3.0"
+  source = "github.com/alexrf45/lab//talos-pve?ref=v1.3.2"
 
   pve_nodes             = ["cairo", "anubis"]
   cert-manager-manifest = "https://github.com/cert-manager/cert-manager/releases/download/v1.16.3/cert-manager.yaml"
