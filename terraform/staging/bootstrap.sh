@@ -21,6 +21,7 @@ cat ~/.local/flux-staging.agekey | kubectl create secret generic sops-age \
   --from-file=flux-staging.agekey=/dev/stdin
 
 flux bootstrap git \
+  --cluster-domain=cluster.local \
   --url=ssh://git@github.com/alexrf45/home-ops.git \
   --path=clusters/staging \
   --private-key-file=/home/fr3d/.ssh/fr3d \
