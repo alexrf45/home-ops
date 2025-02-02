@@ -6,6 +6,8 @@
 
 ![Static Badge](https://img.shields.io/badge/talos-v1.9.1-orange?style=plastic&logo=Talos&logoColor=%23FF7300)
 
+![Static Badge](https://img.shields.io/badge/k8s-v1.32.0-blue?style=plastic&logo=Kubernetes&logoColor=%23326CE5&logoSize=auto)
+
 ## Updates
 
 **2025-02-02** The terraform code is subject to change as I find
