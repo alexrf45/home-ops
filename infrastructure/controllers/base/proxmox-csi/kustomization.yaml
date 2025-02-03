@@ -5,6 +5,7 @@ resources:
   #- repository.yaml
   - storage.yaml
   #- namespace.yaml
-  - secrets.yaml
   - cloud-controller-manager.yaml
   - proxmox-csi-plugin.yaml
+  - proxmox-csi-plugin-secrets.yaml
+  - proxmox-cloud-controller-secrets.yaml
