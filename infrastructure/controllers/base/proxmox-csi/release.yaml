@@ -10,7 +10,7 @@ spec:
       chart: proxmox-csi-plugin
       reconcileStrategy: ChartVersion
       sourceRef:
-        kind: HelmRepository
+        kind: OCIRepository
         name: proxmox-csi-plugin
         namespace: flux-system
       version: 0.3.4
