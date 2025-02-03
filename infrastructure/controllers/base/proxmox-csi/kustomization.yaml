@@ -3,7 +3,6 @@ kind: Kustomization
 resources:
   #- release.yaml
   #- repository.yaml
-  - storage.yaml
   #- namespace.yaml
   - cloud-controller-manager.yaml
   - proxmox-csi-plugin.yaml
