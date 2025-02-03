@@ -8,4 +8,4 @@ spec:
   interval: 1m0s
   url: oci://ghcr.io/sergelogvinov/charts/proxmox-csi-plugin
   ref:
-    tag: latest
+    semver: ">= 0.3.4"

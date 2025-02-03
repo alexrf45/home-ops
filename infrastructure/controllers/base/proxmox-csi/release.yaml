@@ -5,22 +5,11 @@ metadata:
   name: proxmox-csi
   namespace: flux-system
 spec:
-  chart:
-    spec:
-      chart: proxmox-csi-plugin
-      reconcileStrategy: ChartVersion
-      sourceRef:
-        kind: OCIRepository
-        name: proxmox-csi-plugin
-        namespace: flux-system
-      version: 0.3.4
+  chartRef:
+    kind: OCIRepository
+    name: proxmox-csi-plugin
+    namespace: flux-system
   interval: 1m0s
-  maxHistory: 3
-  install:
-    crds: CreateReplace
-    remediation:
-      retries: 4
-  releaseName: proxmox-csi-plugin
   targetNamespace: proxmox-csi
   values:
     config:
