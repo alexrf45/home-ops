@@ -1,7 +1,7 @@
 module "dev-test" {
-  source = "github.com/alexrf45/lab//talos-pve?ref=v1.3.2"
+  source = "github.com/alexrf45/lab//talos-pve?ref=patch"
 
-  pve_nodes             = ["cairo", "anubis"]
+  pve_nodes             = ["cairo", "anubis", "osiris"]
   cert-manager-manifest = "https://github.com/cert-manager/cert-manager/releases/download/v1.16.3/cert-manager.yaml"
   cluster = {
     name          = "staging"
@@ -51,7 +51,7 @@ module "dev-test" {
     v3 = {
       install_disk = "/dev/vda"
       machine_type = "worker"
-      node         = "cairo"
+      node         = "osiris"
       vm_id        = 7002
       datastore_id = "data"
       ip           = "10.3.3.62"

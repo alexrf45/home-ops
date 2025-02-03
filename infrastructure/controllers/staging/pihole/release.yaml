@@ -23,7 +23,7 @@ spec:
     persistentVolumeClaim:
       accessModes:
       - ReadWriteOnce
-      enabled: true
+      enabled: false
       size: 2048Mi
       mixedService: true
     podDnsConfig:
