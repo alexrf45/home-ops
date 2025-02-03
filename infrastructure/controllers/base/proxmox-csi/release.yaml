@@ -10,7 +10,7 @@ spec:
     name: proxmox-csi-plugin
     namespace: flux-system
   interval: 1m0s
-  targetNamespace: proxmox-csi
+  targetNamespace: csi-proxmox
   values:
     config:
       clusters: []
