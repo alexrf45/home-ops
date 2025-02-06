@@ -13,7 +13,7 @@ spec:
         kind: HelmRepository
         name: monitoring
         namespace: flux-system
-      version: 68.2.1
+      version: 68.4.5
   interval: 30m
   maxHistory: 3
   install:
@@ -23,35 +23,30 @@ spec:
   releaseName: kube-prometheus-stack
   targetNamespace: monitoring
   values:
-    alertmanager:
-      apiVersion: v2
-      enabled: false
-      ingress:
-        enabled: false
-        portName: http-web
-        replicas: 1
-        retention: 240h
-        routePrefix: /
-        storage:
-          volumeClaimTemplate:
-            spec:
-              accessModes:
-              - ReadWriteOnce
-              resources:
-                requests:
-                  storage: 10Gi
-              storageClassName: proxmox-data
     crds:
-      appNamespacesTarget: .*
       enabled: true
-      keepFiringFor: ""
+      upgradeJob:
+        enabled: true
+        nodeSelector:
+          type: node
+      serviceAccount:
+        create: true
+        name: ""
+        automountServiceAccountToken: false
+    alertmanager:
+      enabled: true
+      serviceMonitor:
+        selfMonitor: true
+        nodeSelector:
+          type: node
     grafana:
+      enabled: true
+      namespaceOverride: "monitoring"
       admin:
         existingSecret: "grafana-secret"
       defaultDashboardsEditable: true
       defaultDashboardsEnabled: true
       defaultDashboardsTimezone: America/New_York
-      enabled: true
       ingress:
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-staging
@@ -65,61 +60,63 @@ spec:
         - hosts:
           - internal.grafana.fr3d.dev
           secretName: grafana-general-tls
-      namespaceOverride: monitoring
       persistence:
         accessModes:
         - ReadWriteOnce
         enabled: false
         finalizers:
         - kubernetes.io/pvc-protection
-        size: 10Gi
+        size: 20Gi
         storageClassName: proxmox-data
         type: sts
-      rbac: null
       serviceMonitor:
         enabled: true
         path: /metrics
-    namespaceOverride: monitoring
+    nodeExporter:
+      enabled: true
+      operatingSystems:
+        linux:
+          enabled: true
+        aix:
+          enabled: false
+        darwin:
+          enabled: false
     prometheus:
       enabled: true
+      thanosService:
+        enabled: true
       prometheusSpec:
         logFormat: logfmt
         logLevel: info
+        nodeSelector:
+        type: node
         persistentVolumeClaimRetentionPolicy:
           whenDeleted: Delete
           whenScaled: Retain
-        podMonitorNamespaceSelector: {}
-        podMonitorSelector: {}
-        podMonitorSelectorNilUsesHelmValues: true
-        probeNamespaceSelector: {}
-        probeSelector: {}
-        probeSelectorNilUsesHelmValues: true
-        retention: 5d
-        retentionSize: 2GB
+        retention: 7d
+        retentionSize: 5GB
         routePrefix: /
-        ruleNamespaceSelector: {}
-        ruleSelectorNilUsesHelmValues: true
-        scrapeConfigNamespaceSelector: {}
-        scrapeConfigSelector: {}
-        scrapeConfigSelectorNilUsesHelmValues: true
-        serviceMonitorNamespaceSelector: {}
         serviceMonitorSelector: {}
         serviceMonitorSelectorNilUsesHelmValues: false
         storageSpec:
           volumeClaimTemplate:
             spec:
-              accessModes:
+            storageClassName: proxmox-data
+            accessModes:
               - ReadWriteOnce
-              resources:
-                requests:
-                  storage: 10Gi
-              storageClassName: proxmox-data
-        walCompression: true
+            resources:
+              requests:
+                storage: 10Gi
       serviceMonitor:
         selfMonitor: true
     prometheusOperator:
       enabled: true
+      nodeSelector:
+        type: node
+      revisionHistoryLimit: 5
       tls:
+        enabled: true
+        tlsMinVersion: VersionTLS13
         certManager:
           admissionCert:
             duration: ""
@@ -129,6 +126,4 @@ spec:
             name: issuer
           rootCert:
             duration: ""
-        enabled: true
         internalPort: 10250
-        tlsMinVersion: VersionTLS13
