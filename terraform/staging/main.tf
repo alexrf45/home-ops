@@ -6,7 +6,7 @@ module "dev-test" {
   cluster = {
     name          = "staging"
     env           = "staging"
-    endpoint      = "10.3.3.60"
+    endpoint      = "10.3.3.40"
     pve_endpoint  = "10.3.3.9"
     gateway       = "10.3.3.1"
     talos_version = "v1.9.1"
@@ -26,38 +26,38 @@ module "dev-test" {
       install_disk     = "/dev/vda"
       machine_type     = "controlplane"
       node             = "cairo"
-      vm_id            = 7000
-      datastore_id     = "data"
-      allow_scheduling = false
-      ip               = "10.3.3.60"
+      vm_id            = 1000
+      datastore_id     = "local-lvm"
+      allow_scheduling = true
+      ip               = "10.3.3.40"
       cores            = 2
       memory           = 8092
-      size             = 50
+      size             = 25
 
     },
     v2 = {
       install_disk     = "/dev/vda"
-      machine_type     = "controlplane"
+      machine_type     = "worker"
       allow_scheduling = true
       node             = "anubis"
-      vm_id            = 7001
-      datastore_id     = "data"
-      ip               = "10.3.3.61"
+      vm_id            = 1001
+      datastore_id     = "local-lvm"
+      ip               = "10.3.3.41"
       cores            = 2
       memory           = 8092
-      size             = 50
+      size             = 25
 
     },
     v3 = {
       install_disk = "/dev/vda"
       machine_type = "worker"
       node         = "osiris"
-      vm_id        = 7002
-      datastore_id = "data"
-      ip           = "10.3.3.62"
+      vm_id        = 1002
+      datastore_id = "local-lvm"
+      ip           = "10.3.3.43"
       cores        = 2
       memory       = 8092
-      size         = 50
+      size         = 25
 
     },
   }
