@@ -40,7 +40,7 @@ spec:
               resources:
                 requests:
                   storage: 10Gi
-              storageClassName: longhorn
+              storageClassName: proxmox-data
     crds:
       appNamespacesTarget: .*
       enabled: true
@@ -73,7 +73,7 @@ spec:
         finalizers:
         - kubernetes.io/pvc-protection
         size: 10Gi
-        storageClassName: longhorn
+        storageClassName: proxmox-data
         type: sts
       rbac: null
       serviceMonitor:
@@ -113,7 +113,7 @@ spec:
               resources:
                 requests:
                   storage: 10Gi
-              storageClassName: longhorn
+              storageClassName: proxmox-data
         walCompression: true
       serviceMonitor:
         selfMonitor: true
