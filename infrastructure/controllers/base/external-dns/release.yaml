@@ -30,7 +30,7 @@ spec:
           key: password
           name: pihole-password
     ingressClassFilters:
-    - nginx-internal
+    - cilium
     pihole:
       server: http://pihole-web.pihole-system.svc.cluster.local
     policy: upsert-only

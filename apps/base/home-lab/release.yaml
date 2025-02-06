@@ -27,13 +27,13 @@ spec:
         cert-manager.io/cluster-issuer: letsencrypt-staging
         nginx.ingress.kubernetes.io/proxy-buffer-size: 16k
         nginx.ingress.kubernetes.io/proxy-buffers-number: "4"
-      className: nginx-internal
+      className: cilium
       enabled: true
       hosts:
       - host: dev.internal.homelab.fr3d.dev
         paths:
         - path: /
-          pathType: ImplementationSpecific
+          pathType: Prefix
       tls:
       - hosts:
         - dev.internal.homelab.fr3d.dev

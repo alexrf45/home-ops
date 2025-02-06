@@ -45,4 +45,6 @@ remote.tfbackend
 **config/
 talosconfig
 kubeconfig
-#outputs
+#outputs 
+pve-secret.sh
+pve-secret.txt

@@ -23,9 +23,3 @@ output "machine_config" {
   value     = module.dev-test.machine_config
   sensitive = true
 }
-
-
-output "pve_token" {
-  value     = module.dev-test.pve_token
-  sensitive = true
-}

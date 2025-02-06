@@ -94,7 +94,7 @@ spec:
           enabled: true
           interval: 15s
       name: app-controller
-      replicas: 2
+      replicas: 1
       revisionHistoryLimit: 10
       serviceAccount:
         automountServiceAccountToken: true
@@ -115,7 +115,6 @@ spec:
       additionalLabels:
         app: argo-cd
         env: home
-      affinity: null
       domain: internal.argo.fr3d.dev
       logging:
         format: text
@@ -153,9 +152,9 @@ spec:
       servicePort: 6379
     redis-ha:
       auth: true
-      enabled: true
+      enabled: false
       haproxy:
-        enabled: true
+        enabled: false
         hardAntiAffinity: true
         labels:
           app.kubernetes.io/name: argocd-redis-ha-haproxy
@@ -166,7 +165,7 @@ spec:
         repository: public.ecr.aws/docker/library/redis
         tag: 7.2.4-alpine
       persistentVolume:
-        enabled: true
+        enabled: false
       redis:
         masterGroupName: argo-cd
     redisSecretInit:
@@ -183,7 +182,7 @@ spec:
         serviceMonitor:
           enabled: true
       name: repo-server
-      replicas: 2
+      replicas: 1
       service:
         annotations: {}
         labels: {}
@@ -223,7 +222,7 @@ spec:
         serviceMonitor:
           enabled: true
       name: argo-cd-server
-      replicas: 2
+      replicas: 1
       service:
         extensionList:
         - env:
