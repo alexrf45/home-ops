@@ -1,7 +1,5 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - cloud-controller-manager.yaml
-  - proxmox-csi-plugin.yaml
   - proxmox-csi-plugin-secrets.yaml
   - proxmox-cloud-controller-secrets.yaml
