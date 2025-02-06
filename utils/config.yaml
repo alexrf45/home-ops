@@ -1,6 +1,7 @@
 clusters:
-  - url: https://10.3.3.9:8006/api2/json
-    insecure: true
-    token_id: "kubernetes-csi@pve!csi"
-    token_secret: "secret" #replace with pve_token output
-    region: cairo
+    - url: https://10.3.3.9:8006/api2/json
+      insecure: true
+      token_id: "kubernetes-csi@pve!csi"
+      #replace with pve_token output
+      token_secret: ""
+      region: cairo
