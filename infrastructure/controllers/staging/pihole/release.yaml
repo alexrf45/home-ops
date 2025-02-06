@@ -21,11 +21,12 @@ spec:
         - staging.pihole.fr3d.dev
         secretName: pihole-tls
     persistentVolumeClaim:
-      accessModes:
-      - ReadWriteOnce
       enabled: true
+      storageClass: proxmox-data
+      accessModes:
+        - ReadWriteOnce
       size: 2048Mi
-      mixedService: true
+    mixedService: true
     podDnsConfig:
       enabled: true
       policy: "None"
