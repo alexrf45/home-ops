@@ -63,7 +63,7 @@ spec:
       persistence:
         accessModes:
         - ReadWriteOnce
-        enabled: false
+        enabled: true
         finalizers:
         - kubernetes.io/pvc-protection
         size: 20Gi
