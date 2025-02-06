@@ -47,3 +47,4 @@ talosconfig
 kubeconfig
 #outputs 
 pve-secret.sh
+pve-secret.txt
