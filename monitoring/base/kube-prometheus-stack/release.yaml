@@ -13,8 +13,8 @@ spec:
         kind: HelmRepository
         name: monitoring
         namespace: flux-system
-      version: 68.4.5
-  interval: 30m
+       version: 69.2.0
+  interval: 3m
   maxHistory: 3
   install:
     crds: CreateReplace
@@ -27,12 +27,10 @@ spec:
       enabled: true
       upgradeJob:
         enabled: true
+        forceConflicts: true
         nodeSelector:
           type: node
-      serviceAccount:
-        create: true
-        name: ""
-        automountServiceAccountToken: false
+    cleanPrometheusOperatorObjectNames: true
     alertmanager:
       enabled: true
       serviceMonitor:
@@ -88,27 +86,42 @@ spec:
       prometheusSpec:
         logFormat: logfmt
         logLevel: info
-        nodeSelector:
-        type: node
+        replicas: 2
         persistentVolumeClaimRetentionPolicy:
           whenDeleted: Delete
           whenScaled: Retain
         retention: 7d
         retentionSize: 5GB
         routePrefix: /
-        serviceMonitorSelector: {}
-        serviceMonitorSelectorNilUsesHelmValues: false
         storageSpec:
           volumeClaimTemplate:
             spec:
-            storageClassName: proxmox-data
-            accessModes:
-              - ReadWriteOnce
-            resources:
-              requests:
-                storage: 10Gi
-      serviceMonitor:
-        selfMonitor: true
+              storageClassName: proxmox-data
+              resources:
+                requests:
+                  storage: 10Gi
+    prometheus-node-exporter:
+       fullnameOverride: node-exporter
+       prometheus:
+        monitor:
+          enabled: true
+          relabelings:
+            - action: replace
+              regex: (.*)
+              replacement: $1
+              sourceLabels: ["__meta_kubernetes_pod_node_name"]
+              targetLabel: kubernetes_node
+    additionalPrometheusRulesMap:
+      dockerhub-rules:
+        groups:
+          - name: dockerhub
+            rules:
+              - alert: DockerhubRateLimitRisk
+                annotations:
+                  summary: Kubernetes cluster Dockerhub rate limit risk
+                expr: count(time() - container_last_seen{image=~"(docker.io).*",container!=""} < 30) > 100
+                labels:
+                  severity: critical
     prometheusOperator:
       enabled: true
       nodeSelector:
