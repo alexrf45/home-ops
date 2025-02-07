@@ -97,12 +97,11 @@ spec:
         storageSpec:
           volumeClaimTemplate:
             spec:
-            storageClassName: proxmox-data
-            accessModes:
-              - ReadWriteOnce
-            resources:
-              requests:
-                storage: 10Gi
+              storageClassName: proxmox-data
+              accessModes: ReadWriteOnce
+              resources:
+                requests:
+                  storage: 10Gi
       serviceMonitor:
         selfMonitor: true
     prometheusOperator:
