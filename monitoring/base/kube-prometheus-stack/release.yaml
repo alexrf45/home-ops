@@ -83,13 +83,9 @@ spec:
           enabled: false
     prometheus:
       enabled: true
-      thanosService:
-        enabled: true
       prometheusSpec:
         logFormat: logfmt
         logLevel: info
-        nodeSelector:
-        type: node
         persistentVolumeClaimRetentionPolicy:
           whenDeleted: Delete
           whenScaled: Retain
