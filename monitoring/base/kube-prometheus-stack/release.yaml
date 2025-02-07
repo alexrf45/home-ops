@@ -123,7 +123,7 @@ spec:
           enabled: true
           issuerRef:
             kind: ClusterIssuer
-            name: issuer
+            name: letsencrypt-staging
           rootCert:
             duration: ""
         internalPort: 10250
