@@ -27,6 +27,7 @@ spec:
       enabled: true
       upgradeJob:
         enabled: true
+        forceConflicts: true
         nodeSelector:
           type: node
     cleanPrometheusOperatorObjectNames: true
