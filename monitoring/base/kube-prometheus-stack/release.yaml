@@ -28,11 +28,8 @@ spec:
       upgradeJob:
         enabled: true
         nodeSelector:
-          type: node
-      serviceAccount:
-        create: true
-        name: ""
-        automountServiceAccountToken: false
+          type: node 
+    cleanPrometheusOperatorObjectNames: true
     alertmanager:
       enabled: true
       serviceMonitor:
@@ -93,7 +90,6 @@ spec:
         retention: 7d
         retentionSize: 5GB
         routePrefix: /
-        serviceMonitorSelectorNilUsesHelmValues: false
         storageSpec:
           volumeClaimTemplate:
             spec:
@@ -101,8 +97,6 @@ spec:
               resources:
                 requests:
                   storage: 10Gi
-      serviceMonitor:
-        selfMonitor: true
     prometheusOperator:
       enabled: true
       nodeSelector:
