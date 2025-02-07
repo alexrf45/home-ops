@@ -85,7 +85,7 @@ spec:
       enabled: true
       prometheusSpec:
         logFormat: logfmt
-        logLevel: info 
+        logLevel: info
         replicas: 2
         persistentVolumeClaimRetentionPolicy:
           whenDeleted: Delete
@@ -93,13 +93,11 @@ spec:
         retention: 7d
         retentionSize: 5GB
         routePrefix: /
-        serviceMonitorSelector: {}
         serviceMonitorSelectorNilUsesHelmValues: false
         storageSpec:
           volumeClaimTemplate:
             spec:
               storageClassName: proxmox-data
-              accessModes: ["ReadWriteOnce"]
               resources:
                 requests:
                   storage: 10Gi
