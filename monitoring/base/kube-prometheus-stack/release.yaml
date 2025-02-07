@@ -13,7 +13,7 @@ spec:
         kind: HelmRepository
         name: monitoring
         namespace: flux-system
-      version: 68.4.5
+      version: 69.2.0
   interval: 30m
   maxHistory: 3
   install:
