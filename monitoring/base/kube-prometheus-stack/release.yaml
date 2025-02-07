@@ -98,7 +98,7 @@ spec:
           volumeClaimTemplate:
             spec:
               storageClassName: proxmox-data
-              accessModes: ReadWriteOnce
+              accessModes: "ReadWriteOnce"
               resources:
                 requests:
                   storage: 10Gi
