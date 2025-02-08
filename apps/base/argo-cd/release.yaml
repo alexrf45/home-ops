@@ -62,7 +62,6 @@ spec:
         enabled: true
         rules:
           enabled: true
-          namespace: monitoring
         serviceMonitor:
           enabled: true
           interval: 15s
@@ -80,7 +79,6 @@ spec:
       logging:
         format: text
         level: error
-    nameOverride: argo-cd
     notifications:
       enabled: true
       metrics:
