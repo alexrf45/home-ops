@@ -60,8 +60,6 @@ spec:
       replicas: 2
       metrics:
         enabled: true
-        rules:
-          enabled: true
         serviceMonitor:
           enabled: true
           interval: 15s
