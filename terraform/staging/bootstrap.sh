@@ -16,6 +16,10 @@ cp ./outputs/kubeconfig ~/.kube/config
 
 kubectl label node staging-node-2 node-role.kubernetes.io/worker=true
 
+k label node staging-node-2 type=node
+
+k label node staging-node-1 type=node
+
 cat ~/.local/flux-staging.agekey | kubectl create secret generic sops-age \
   --namespace=flux-system \
   --from-file=flux-staging.agekey=/dev/stdin
