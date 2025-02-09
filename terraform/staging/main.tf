@@ -1,13 +1,13 @@
 module "dev-test" {
   source = "github.com/alexrf45/lab//talos-pve?ref=patch"
 
-  pve_nodes             = ["cairo", "anubis", "osiris"]
+  pve_nodes             = ["home-0", "home-1"]
   cert-manager-manifest = "https://github.com/cert-manager/cert-manager/releases/download/v1.16.3/cert-manager.yaml"
   cluster = {
     name          = "staging"
     env           = "staging"
     endpoint      = "10.3.3.40"
-    pve_endpoint  = "10.3.3.9"
+    pve_endpoint  = "10.3.3.2"
     gateway       = "10.3.3.1"
     talos_version = "v1.9.1"
     extensions = [
@@ -25,7 +25,7 @@ module "dev-test" {
     v1 = {
       install_disk     = "/dev/vda"
       machine_type     = "controlplane"
-      node             = "cairo"
+      node             = "home-0"
       vm_id            = 1000
       datastore_id     = "local-lvm"
       allow_scheduling = true
@@ -36,22 +36,21 @@ module "dev-test" {
 
     },
     v2 = {
-      install_disk     = "/dev/vda"
-      machine_type     = "worker"
-      allow_scheduling = true
-      node             = "anubis"
-      vm_id            = 1001
-      datastore_id     = "local-lvm"
-      ip               = "10.3.3.41"
-      cores            = 2
-      memory           = 8092
-      size             = 25
+      install_disk = "/dev/vda"
+      machine_type = "worker"
+      node         = "home-1"
+      vm_id        = 1001
+      datastore_id = "local-lvm"
+      ip           = "10.3.3.41"
+      cores        = 2
+      memory       = 8092
+      size         = 25
 
     },
     v3 = {
       install_disk = "/dev/vda"
       machine_type = "worker"
-      node         = "osiris"
+      node         = "home-1"
       vm_id        = 1002
       datastore_id = "local-lvm"
       ip           = "10.3.3.43"
