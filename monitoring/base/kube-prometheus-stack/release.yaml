@@ -30,15 +30,51 @@ spec:
         forceConflicts: true
         nodeSelector:
           type: node
+    defaultRules:
+      create: true
+      rules:
+        alertmanager: true
+        etcd: false
+        configReloaders: true
+        general: true
+        k8sContainerCpuUsageSecondsTotal: true
+        k8sContainerMemoryCache: true
+        k8sContainerMemoryRss: true
+        k8sContainerMemorySwap: true
+        k8sContainerResource: true
+        k8sContainerMemoryWorkingSetBytes: true
+        k8sPodOwner: true
+        kubeApiserverAvailability: false
+        kubeApiserverBurnrate: false
+        kubeApiserverHistogram: false
+        kubeApiserverSlos: true
+        kubeControllerManager: true
+        kubelet: true
+        kubeProxy: true
+        kubePrometheusGeneral: true
+        kubePrometheusNodeRecording: false
+        kubernetesApps: true
+        kubernetesResources: true
+        kubernetesStorage: true
+        kubernetesSystem: true
+        kubeSchedulerAlerting: false
+        kubeSchedulerRecording: false
+        kubeStateMetrics: true
+        network: true
+        node: true
+        nodeExporterAlerting: false
+        nodeExporterRecording: false
+        prometheus: true
+        prometheusOperator: true
+        windows: true
     cleanPrometheusOperatorObjectNames: true
     alertmanager:
       enabled: true
-      serviceMonitor:
-        selfMonitor: true
-        nodeSelector:
-          type: node
+    kubernetesServiceMonitors:
+      enabled: true
     grafana:
       enabled: true
+      prune: true
       namespaceOverride: "monitoring"
       admin:
         existingSecret: "grafana-secret"
@@ -48,7 +84,6 @@ spec:
       ingress:
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-staging
-          nginx.ingress.kubernetes.io/proxy-body-size: 20000m
         enabled: true
         hosts:
         - internal.grafana.fr3d.dev
@@ -67,9 +102,6 @@ spec:
         size: 20Gi
         storageClassName: proxmox-data
         type: sts
-      serviceMonitor:
-        enabled: true
-        path: /metrics
     nodeExporter:
       enabled: false
       operatingSystems:
