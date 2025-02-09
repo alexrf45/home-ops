@@ -71,7 +71,7 @@ spec:
         enabled: true
         path: /metrics
     nodeExporter:
-      enabled: true
+      enabled: false
       operatingSystems:
         linux:
           enabled: true
@@ -101,10 +101,11 @@ spec:
                 requests:
                   storage: 10Gi
     prometheus-node-exporter:
+       enabled: false
        fullnameOverride: node-exporter
        prometheus:
         monitor:
-          enabled: true
+          enabled: false
           relabelings:
             - action: replace
               regex: (.*)
