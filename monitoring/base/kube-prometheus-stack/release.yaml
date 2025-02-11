@@ -104,17 +104,10 @@ spec:
         type: sts
     nodeExporter:
       enabled: false
-      operatingSystems:
-        linux:
-          enabled: true
-        aix:
-          enabled: false
-        darwin:
-          enabled: false
     prometheus:
       enabled: true
       thanosService:
-        enabled: true
+        enabled: false
       prometheusSpec:
         logFormat: logfmt
         logLevel: info
@@ -169,7 +162,8 @@ spec:
           enabled: true
           issuerRef:
             kind: ClusterIssuer
-            name: issuer
+            name: letsencrypt-staging
           rootCert:
             duration: ""
         internalPort: 10250
+
