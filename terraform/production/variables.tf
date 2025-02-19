@@ -1,21 +1,30 @@
+variable "pve_endpoint" {
+  description = "endpoint of pve cluster lead"
+  type        = string
+}
+
+
 variable "password" {
   description = "pve node password"
   type        = string
   sensitive   = true
 }
 
-variable "github_pat" {
-  description = "github PAT used to auth to git"
+variable "node_network" {
+  description = "The IP network of the cluster nodes"
   type        = string
-  sensitive   = true
+  default     = "10.3.3.0/24"
 }
 
-variable "github_owner" {
-  description = "github repo owner"
-  type        = string
+
+variable "load_balancer_start" {
+  description = "The hostnum of the first load balancer host"
+  type        = number
+  default     = 70
 }
 
-variable "github_repository" {
-  description = "Information about new GitHub repository for FluxCD"
-  type        = string
+variable "load_balancer_stop" {
+  description = "The hostnum of the last load balancer host"
+  type        = number
+  default     = 150
 }

@@ -2,7 +2,7 @@
 
 terraform destroy
 
-sudo rm -r ~/projects/home-ops-flux/
+#sudo rm -r ~/projects/home-ops-flux/
 
 rm ~/.kube/config
 
