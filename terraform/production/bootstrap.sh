@@ -13,13 +13,7 @@ cp ./outputs/talosconfig ~/.talos/prod-config
 cp ./outputs/kubeconfig ~/.kube/prod-config
 
 #terraform output
-
-# kubectl label node prod-node-2 node-role.kubernetes.io/worker=true
-#
-# kubectl label node prod-node-1 type=node
-# kubectl label node prod-node-2 type=node
-kubectl label node prod-node-3 type=node
-# kubectl label node prod-node-4 type=node
+kubectl label node prod-node-3 prod-node-4 prod-node-5 prod-node-6 node-role.kubernetes.io/worker=true
 
 cat ~/.local/flux-production.agekey | kubectl create secret generic sops-age \
   --namespace=flux-system \

@@ -1,0 +1,165 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: monitoring
+  namespace: flux-system
+spec:
+  chart:
+    spec:
+      chart: kube-prometheus-stack
+      reconcileStrategy: ChartVersion
+      sourceRef:
+        kind: HelmRepository
+        name: monitoring
+        namespace: flux-system
+      version: 69.2.0
+  interval: 3m
+  maxHistory: 3
+  install:
+    crds: CreateReplace
+    remediation:
+      retries: 6
+  releaseName: kube-prometheus-stack
+  targetNamespace: monitoring
+  values:
+    crds:
+      enabled: true
+      upgradeJob:
+        enabled: true
+        forceConflicts: true
+    defaultRules:
+      create: true
+      rules:
+        alertmanager: true
+        etcd: false
+        configReloaders: true
+        general: true
+        k8sContainerCpuUsageSecondsTotal: true
+        k8sContainerMemoryCache: true
+        k8sContainerMemoryRss: true
+        k8sContainerMemorySwap: true
+        k8sContainerResource: true
+        k8sContainerMemoryWorkingSetBytes: true
+        k8sPodOwner: true
+        kubeApiserverAvailability: false
+        kubeApiserverBurnrate: false
+        kubeApiserverHistogram: false
+        kubeApiserverSlos: true
+        kubeControllerManager: true
+        kubelet: true
+        kubeProxy: true
+        kubePrometheusGeneral: true
+        kubePrometheusNodeRecording: false
+        kubernetesApps: true
+        kubernetesResources: true
+        kubernetesStorage: true
+        kubernetesSystem: true
+        kubeSchedulerAlerting: false
+        kubeSchedulerRecording: false
+        kubeStateMetrics: true
+        network: true
+        node: true
+        nodeExporterAlerting: false
+        nodeExporterRecording: false
+        prometheus: true
+        prometheusOperator: true
+        windows: true
+    cleanPrometheusOperatorObjectNames: true
+    alertmanager:
+      enabled: true
+    kubernetesServiceMonitors:
+      enabled: true
+    grafana:
+      enabled: true
+      prune: true
+      namespaceOverride: "monitoring"
+      admin:
+        existingSecret: "grafana-secret"
+      defaultDashboardsEditable: true
+      defaultDashboardsEnabled: true
+      defaultDashboardsTimezone: America/New_York
+      ingress:
+        annotations:
+          cert-manager.io/cluster-issuer: letsencrypt-production
+        enabled: true
+        hosts:
+        - prod.internal.grafana.fr3d.dev
+        ingressClassName: cilium
+        path: /
+        tls:
+        - hosts:
+          - prod.internal.grafana.fr3d.dev
+          secretName: grafana-general-tls
+      persistence:
+        accessModes:
+        - ReadWriteOnce
+        enabled: true
+        finalizers:
+        - kubernetes.io/pvc-protection
+        size: 50Gi
+        storageClassName: proxmox-data
+        type: sts
+    nodeExporter:
+      enabled: false
+    prometheus:
+      enabled: true
+      thanosService:
+        enabled: false
+      prometheusSpec:
+        logFormat: logfmt
+        logLevel: info
+        replicas: 2
+        persistentVolumeClaimRetentionPolicy:
+          whenDeleted: Delete
+          whenScaled: Retain
+        retention: 7d
+        retentionSize: 20GB
+        routePrefix: /
+        storageSpec:
+          volumeClaimTemplate:
+            spec:
+              storageClassName: proxmox-data
+              resources:
+                requests:
+                  storage: 40Gi
+    prometheus-node-exporter:
+       enabled: true
+       fullnameOverride: node-exporter
+       prometheus:
+        monitor:
+          enabled: true
+          relabelings:
+            - action: replace
+              regex: (.*)
+              replacement: $1
+              sourceLabels: ["__meta_kubernetes_pod_node_name"]
+              targetLabel: kubernetes_node
+    additionalPrometheusRulesMap:
+      dockerhub-rules:
+        groups:
+          - name: dockerhub
+            rules:
+              - alert: DockerhubRateLimitRisk
+                annotations:
+                  summary: Kubernetes cluster Dockerhub rate limit risk
+                expr: count(time() - container_last_seen{image=~"(docker.io).*",container!=""} < 30) > 100
+                labels:
+                  severity: critical
+    prometheusOperator:
+      enabled: true
+      revisionHistoryLimit: 5
+      tls:
+        enabled: true
+        tlsMinVersion: VersionTLS13
+        certManager:
+          admissionCert:
+            duration: ""
+          enabled: true
+          issuerRef:
+            kind: ClusterIssuer
+            name: letsencrypt-production
+          rootCert:
+            duration: ""
+        internalPort: 10250
+
