@@ -114,7 +114,7 @@ spec:
           whenDeleted: Delete
           whenScaled: Retain
         retention: 7d
-        retentionSize: 20GB
+        retentionSize: 10GB
         routePrefix: /
         storageSpec:
           volumeClaimTemplate:
