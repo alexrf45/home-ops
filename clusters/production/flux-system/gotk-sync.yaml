@@ -8,7 +8,7 @@ metadata:
 spec:
   interval: 1m0s
   ref:
-    branch: staging
+    branch: main
   secretRef:
     name: flux-system
   url: ssh://git@github.com/alexrf45/home-ops.git
@@ -20,7 +20,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m0s
-  path: ./clusters/staging
+  path: ./clusters/production
   prune: true
   sourceRef:
     kind: GitRepository
