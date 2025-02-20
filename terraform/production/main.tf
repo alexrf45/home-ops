@@ -28,7 +28,7 @@ module "dev-test" {
       node             = "home-2"
       vm_id            = 2000
       datastore_id     = "local-lvm"
-      allow_scheduling = true
+      allow_scheduling = false
       ip               = "10.3.3.50"
       cores            = 2
       memory           = 8092
@@ -36,27 +36,29 @@ module "dev-test" {
 
     },
     v2 = {
-      install_disk = "/dev/vda"
-      machine_type = "controlplane"
-      node         = "home-3"
-      vm_id        = 2001
-      datastore_id = "local-lvm"
-      ip           = "10.3.3.51"
-      cores        = 2
-      memory       = 8092
-      size         = 25
+      install_disk     = "/dev/vda"
+      machine_type     = "controlplane"
+      node             = "home-3"
+      vm_id            = 2001
+      datastore_id     = "local-lvm"
+      ip               = "10.3.3.51"
+      allow_scheduling = false
+      cores            = 2
+      memory           = 8092
+      size             = 25
 
     },
     v3 = {
-      install_disk = "/dev/vda"
-      machine_type = "controlplane"
-      node         = "home-4"
-      vm_id        = 2002
-      datastore_id = "local-lvm"
-      ip           = "10.3.3.52"
-      cores        = 2
-      memory       = 8092
-      size         = 25
+      install_disk     = "/dev/vda"
+      machine_type     = "controlplane"
+      node             = "home-4"
+      allow_scheduling = false
+      vm_id            = 2002
+      datastore_id     = "local-lvm"
+      ip               = "10.3.3.52"
+      cores            = 2
+      memory           = 8092
+      size             = 25
 
     },
     v4 = {
