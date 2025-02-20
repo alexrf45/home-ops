@@ -2,8 +2,8 @@
 
 terraform destroy
 
-#sudo rm -r ~/projects/home-ops-flux/
+rm ~/.kube/new_config
 
-rm ~/.kube/config
+rm ~/.talos/prod_config
 
-rm ~/.talos/config
+mv ~/.kube/config_bk ~/.kube/config

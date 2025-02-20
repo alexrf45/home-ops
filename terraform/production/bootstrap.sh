@@ -12,7 +12,7 @@ cp ./outputs/talosconfig ~/.talos/prod-config
 
 cp ./outputs/kubeconfig ~/.kube/new_config
 
-cp ~/.kube/config ~/.kube/config_bk && KUBECONFIG=~/.kube/config:~/.kube/new_config kubectl config view --flatten >~/.kube/config_tmp && mv /tmp/config ~/.kube/config
+cp ~/.kube/config ~/.kube/config_bk && KUBECONFIG=~/.kube/config:~/.kube/new_config kubectl config view --flatten >~/.kube/config_tmp && mv ~/.kube/config_tmp ~/.kube/config
 
 kubectx admin@prod
 
