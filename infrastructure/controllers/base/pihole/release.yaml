@@ -70,7 +70,7 @@ spec:
     podDnsConfig:
       enabled: true
       policy: "None"
-      namservers:
+      nameservers:
         - 10.3.3.70
         - 1.1.1.1
     adlists:

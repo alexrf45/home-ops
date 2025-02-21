@@ -26,7 +26,6 @@ spec:
       accessModes:
         - ReadWriteOnce
       size: 2048Mi
-    mixedService: true
     serviceDns:
       externalTrafficPolicy: Cluster
       mixedService: true
@@ -37,3 +36,6 @@ spec:
     podDnsConfig:
       enabled: true
       policy: "None"
+      nameservers:
+        - 10.3.3.100
+        - 1.1.1.1
