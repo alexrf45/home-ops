@@ -27,6 +27,13 @@ spec:
         - ReadWriteOnce
       size: 2048Mi
     mixedService: true
+    serviceDns:
+      externalTrafficPolicy: Cluster
+      mixedService: true
+      LoadBalancerIP: 10.3.3.100
+      annotations:
+        #lbipam.cilium.io/lb-ipam-sharing-key: pihole
+      type: LoadBalancer
     podDnsConfig:
       enabled: true
       policy: "None"
