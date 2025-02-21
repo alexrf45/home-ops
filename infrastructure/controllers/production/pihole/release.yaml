@@ -21,7 +21,7 @@ spec:
         - production.pihole.fr3d.dev
         secretName: pihole-tls
     persistentVolumeClaim:
-      enabled: true
+      enabled: false
       storageClass: proxmox-data
       accessModes:
         - ReadWriteOnce
