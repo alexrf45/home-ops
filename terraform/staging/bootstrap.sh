@@ -12,13 +12,9 @@ cp ./outputs/talosconfig ~/.talos/config
 
 cp ./outputs/kubeconfig ~/.kube/config
 
-#terraform output
-
 kubectl label node staging-node-2 node-role.kubernetes.io/worker=true
 
-k label node staging-node-2 type=node
-
-k label node staging-node-1 type=node
+#k label node staging-node-1 staging-node-2 type=node
 
 cat ~/.local/flux-staging.agekey | kubectl create secret generic sops-age \
   --namespace=flux-system \
