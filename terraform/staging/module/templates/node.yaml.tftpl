@@ -1,4 +1,10 @@
 machine:
+  files:
+    - path: /etc/cri/conf.d/20-customization.part
+      op: create
+      content: |
+        [plugins."io.containerd.cri.v1.images"]
+          discard_unpacked_layers = false
   time:
     servers:
       - /dev/ptp0
@@ -8,6 +14,8 @@ machine:
     nodeIP:
       validSubnets:
         - 10.3.3.0/24
+    clusterDNS:
+      - 10.43.0.10
     extraMounts:
       - destination: /var/data
         type: bind
@@ -20,16 +28,14 @@ machine:
     - device: /dev/vdb
       partitions:
         - mountpoint: /var/data
-    clusterDNS:
-        - 10.43.0.10
   install:
     disk: ${install_disk}
     image: ${install_image}
     extraKernelArgs:
-        - console=ttyS1
-        - panic=10
-        - cpufreq.default_governor=performance
-        - intel_idle.max_cstate=0
+      - console=ttyS1
+      - panic=10
+      - cpufreq.default_governor=performance
+      - intel_idle.max_cstate=0
   network:
     hostname: ${hostname}
     nameservers:
