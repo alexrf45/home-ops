@@ -1,0 +1,53 @@
+machine:
+  features:
+    kubernetesTalosAPIAccess:
+      enabled: true
+      allowedRoles:
+        - os:reader
+      allowedKubernetesNamespaces:
+        - kube-system
+cluster:
+  apiServer:
+      auditPolicy:
+          apiVersion: audit.k8s.io/v1
+          kind: Policy
+          rules:
+              - level: Metadata
+  allowSchedulingOnControlPlanes: ${allow_scheduling}
+  network:
+      cni:
+          name: none
+      podSubnets:
+          - 10.42.0.0/16
+      serviceSubnets:
+          - 10.43.0.0/16
+  proxy:
+    disabled: true
+  extraManifests:
+    - https://raw.githubusercontent.com/alex1989hu/kubelet-serving-cert-approver/main/deploy/standalone-install.yaml
+    - https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+    - https://raw.githubusercontent.com/metallb/metallb/v0.14.9/config/manifests/metallb-native.yaml
+    - ${cert-manager-manifest}
+  inlineManifests:
+    - name: proxmox-csi-plugin-namespace
+      contents: |-
+        apiVersion: v1
+        kind: Namespace
+        metadata:
+          name: csi-proxmox
+          labels:
+            pod-security.kubernetes.io/enforce: "privileged"
+            app: "csi-proxmox"
+    - name: namespace-flux
+      contents: |-
+        apiVersion: v1
+        kind: Namespace
+        metadata:
+          name: flux-system
+ 
+  externalCloudProvider:
+      enabled: true
+      manifests:
+        - https://raw.githubusercontent.com/sergelogvinov/proxmox-csi-plugin/main/docs/deploy/proxmox-csi-plugin.yml
+        - https://raw.githubusercontent.com/sergelogvinov/proxmox-cloud-controller-manager/main/docs/deploy/cloud-controller-manager.yml
+
