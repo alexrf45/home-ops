@@ -48,8 +48,16 @@ cluster:
         apiVersion: v1
         kind: Namespace
         metadata:
-          name: flux-system
+          name: metallb
           labels:
             pod-security.kubernetes.io/enforce: "privileged"
             app: "metallb"
-
+    - name: namespace_storage
+          contents: |-
+            apiVersion: v1
+            kind: Namespace
+            metadata:
+              name: storage
+              labels:
+                pod-security.kubernetes.io/enforce: "privileged"
+                app: "storage"
