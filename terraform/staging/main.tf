@@ -1,7 +1,7 @@
 module "dev-test" {
   source = "./module"
 
-  pve_nodes             = ["home-0", "home-1"]
+  pve_nodes             = ["home-0", "home-1", "home-2"]
   cert-manager-manifest = "https://github.com/cert-manager/cert-manager/releases/download/v1.16.3/cert-manager.yaml"
   cluster = {
     name          = "staging"
@@ -15,7 +15,9 @@ module "dev-test" {
       "glibc",
       "iscsi-tools",
       "util-linux-tools",
-      "qemu-guest-agent"
+      "qemu-guest-agent",
+      "i915",
+      "v4l-uvc-drivers"
     ]
     platform      = "nocloud"
     iso_datastore = "local"
@@ -29,7 +31,7 @@ module "dev-test" {
       vm_id            = 1000
       datastore_id     = "local-lvm"
       allow_scheduling = true
-      ip               = "10.3.3.40"
+      ip               = "10.3.3.80"
       cores            = 2
       memory           = 8092
       size             = 25
@@ -41,7 +43,7 @@ module "dev-test" {
       node         = "home-1"
       vm_id        = 1001
       datastore_id = "local-lvm"
-      ip           = "10.3.3.41"
+      ip           = "10.3.3.81"
       cores        = 2
       memory       = 8092
       size         = 25
@@ -50,10 +52,10 @@ module "dev-test" {
     v3 = {
       install_disk = "/dev/vda"
       machine_type = "worker"
-      node         = "home-1"
+      node         = "home-2"
       vm_id        = 1002
       datastore_id = "local-lvm"
-      ip           = "10.3.3.43"
+      ip           = "10.3.3.82"
       cores        = 2
       memory       = 8092
       size         = 25

@@ -8,11 +8,20 @@ machine:
     nodeIP:
       validSubnets:
         - 10.3.3.0/24
+    extraMounts:
+      - destination: /var/data
+        type: bind
+        source: /var/data
+        options:
+          - rbind
+          - rshared
+          - rw
+  disks:
+    - device: /dev/vdb
+      partitions:
+        - mountpoint: /var/data
     clusterDNS:
         - 10.43.0.10
-  nodeLabels:
-      topology.kubernetes.io/region: ${cluster_name}
-      topology.kubernetes.io/zone: ${node_name}
   install:
     disk: ${install_disk}
     image: ${install_image}
