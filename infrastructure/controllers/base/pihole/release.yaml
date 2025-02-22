@@ -15,7 +15,7 @@ spec:
         namespace: flux-system
       version: 2.27.0
   interval: 30m
-  maxHistory: 3
+  maxHistory: 4
   install:
     crds: CreateReplace
     remediation:
@@ -48,7 +48,7 @@ spec:
       accessModes:
       - ReadWriteOnce
       enabled: false
-      size: 2048Mi
+      size: 4096Mi
     serviceDhcp:
       enabled: true
     serviceWeb:
@@ -57,7 +57,7 @@ spec:
     serviceDns:
       externalTrafficPolicy: Cluster
       mixedService: true
-      LoadBalancerIP: 10.3.3.70
+      LoadBalancerIP: 10.3.3.20
       annotations:
         #lbipam.cilium.io/lb-ipam-sharing-key: pihole
       type: LoadBalancer
@@ -71,7 +71,7 @@ spec:
       enabled: true
       policy: "None"
       nameservers:
-        - 10.3.3.70
+        - 10.3.3.20
         - 1.1.1.1
     adlists:
       # everything but the kitchen sink

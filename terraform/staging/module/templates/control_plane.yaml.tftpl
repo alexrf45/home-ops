@@ -1,11 +1,10 @@
 machine:
-  features:
-    kubernetesTalosAPIAccess:
-      enabled: true
-      allowedRoles:
-        - os:reader
-      allowedKubernetesNamespaces:
-        - kube-system
+  files:
+    - path: /etc/cri/conf.d/20-customization.part
+      op: create
+      content: |
+        [plugins."io.containerd.cri.v1.images"]
+          discard_unpacked_layers = false
 cluster:
   apiServer:
       auditPolicy:
@@ -29,25 +28,28 @@ cluster:
     - https://raw.githubusercontent.com/metallb/metallb/v0.14.9/config/manifests/metallb-native.yaml
     - ${cert-manager-manifest}
   inlineManifests:
-    - name: proxmox-csi-plugin-namespace
+    - name: namespace_spegel
       contents: |-
         apiVersion: v1
         kind: Namespace
         metadata:
-          name: csi-proxmox
+          name: spegel
           labels:
             pod-security.kubernetes.io/enforce: "privileged"
-            app: "csi-proxmox"
-    - name: namespace-flux
+            app: "spegel"
+    - name: namespace_flux
       contents: |-
         apiVersion: v1
         kind: Namespace
         metadata:
           name: flux-system
- 
-  externalCloudProvider:
-      enabled: true
-      manifests:
-        - https://raw.githubusercontent.com/sergelogvinov/proxmox-csi-plugin/main/docs/deploy/proxmox-csi-plugin.yml
-        - https://raw.githubusercontent.com/sergelogvinov/proxmox-cloud-controller-manager/main/docs/deploy/cloud-controller-manager.yml
+    - name: namespace_metallb
+      contents: |-
+        apiVersion: v1
+        kind: Namespace
+        metadata:
+          name: flux-system
+          labels:
+            pod-security.kubernetes.io/enforce: "privileged"
+            app: "metallb"
 
