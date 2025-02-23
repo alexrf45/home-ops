@@ -22,7 +22,7 @@ spec:
         secretName: pihole-tls
     persistentVolumeClaim:
       enabled: true
-      storageClass: proxmox-data
+      storageClass: local-path
       accessModes:
         - ReadWriteOnce
       size: 2048Mi
