@@ -12,7 +12,7 @@ cp ./outputs/talosconfig ~/.talos/config
 
 cp ./outputs/kubeconfig ~/.kube/config
 
-kubectl label node staging-node-2 node-role.kubernetes.io/worker=true
+kubectl label node staging-node-1 staging-node-2 node-role.kubernetes.io/worker=true
 
 #k label node staging-node-1 staging-node-2 type=node
 

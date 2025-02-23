@@ -1,13 +1,13 @@
 machine:
+  features:
+    imageCache:
+      localEnabled: true
   files:
     - path: /etc/cri/conf.d/20-customization.part
       op: create
       content: |
         [plugins."io.containerd.cri.v1.images"]
           discard_unpacked_layers = false
-  nodeLabels:
-    node.kubernetes.io/exclude-from-external-load-balancers: ""
-    $patch: delete
   time:
     servers:
       - /dev/ptp0
