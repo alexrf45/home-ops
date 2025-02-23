@@ -92,7 +92,6 @@ spec:
           hostPath:
             path: *path
             type: DirectoryOrCreate
-      nodeSelector: *nodeSelector
     driver:
       config:
         driver: local-hostpath
