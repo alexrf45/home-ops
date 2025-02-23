@@ -12,30 +12,29 @@ spec:
         cert-manager.io/cluster-issuer: letsencrypt-production
       enabled: true
       hosts:
-      - production.pihole.fr3d.dev
+      - production.internal.pihole.fr3d.dev
       ingressClassName: cilium
       path: /
       pathType: Prefix
       tls:
       - hosts:
-        - production.pihole.fr3d.dev
+        - production.internal.pihole.fr3d.dev
         secretName: pihole-tls
     persistentVolumeClaim:
       enabled: false
-      storageClass: proxmox-data
+      storageClass: local-path
       accessModes:
         - ReadWriteOnce
-      size: 2048Mi
+      size: 4096Mi
     serviceDns:
       externalTrafficPolicy: Cluster
       mixedService: true
-      LoadBalancerIP: 10.3.3.100
+      LoadBalancerIP: 10.3.3.121
       annotations:
-        #lbipam.cilium.io/lb-ipam-sharing-key: pihole
       type: LoadBalancer
     podDnsConfig:
       enabled: true
       policy: "None"
       nameservers:
-        - 10.3.3.100
+        - 8.8.8.8
         - 1.1.1.1

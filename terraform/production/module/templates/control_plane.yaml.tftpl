@@ -1,0 +1,27 @@
+cluster:
+  apiServer:
+    auditPolicy:
+      apiVersion: audit.k8s.io/v1
+      kind: Policy
+      rules:
+        - level: Metadata
+  allowSchedulingOnControlPlanes: ${allow_scheduling}
+  network:
+    cni:
+      name: none
+    podSubnets:
+      - 10.42.0.0/16
+    serviceSubnets:
+      - 10.43.0.0/16
+  proxy:
+    disabled: true
+  extraManifests:
+    - https://raw.githubusercontent.com/alex1989hu/kubelet-serving-cert-approver/main/deploy/standalone-install.yaml
+    - https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+  inlineManifests:
+    - name: namespace-flux
+      contents: |-
+        apiVersion: v1
+        kind: Namespace
+        metadata:
+          name: flux-system

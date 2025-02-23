@@ -97,8 +97,8 @@ spec:
         enabled: true
         finalizers:
         - kubernetes.io/pvc-protection
-        size: 50Gi
-        storageClassName: proxmox-data
+        size: 5Gi
+        storageClassName: local-path
         type: sts
     nodeExporter:
       enabled: false
@@ -114,15 +114,15 @@ spec:
           whenDeleted: Delete
           whenScaled: Retain
         retention: 7d
-        retentionSize: 10GB
+        retentionSize: 5GB
         routePrefix: /
         storageSpec:
           volumeClaimTemplate:
             spec:
-              storageClassName: proxmox-data
+              storageClassName: local-path
               resources:
                 requests:
-                  storage: 40Gi
+                  storage: 5Gi
     prometheus-node-exporter:
        enabled: true
        fullnameOverride: node-exporter
