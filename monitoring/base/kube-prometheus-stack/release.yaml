@@ -28,8 +28,6 @@ spec:
       upgradeJob:
         enabled: true
         forceConflicts: true
-        nodeSelector:
-          type: node
     defaultRules:
       create: true
       rules:
@@ -150,8 +148,6 @@ spec:
                   severity: critical
     prometheusOperator:
       enabled: true
-      nodeSelector:
-        type: node
       revisionHistoryLimit: 5
       tls:
         enabled: true
