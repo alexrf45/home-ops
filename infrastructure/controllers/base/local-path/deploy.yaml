@@ -43,7 +43,7 @@ spec:
   targetNamespace: storage
   values:
     csiDriver:
-      name: org.democratic-csi.local-hostpath
+      name: local-path.cluster.local
       storageCapacity: true
       attachRequired: false
       fsGroupPolicy: File
@@ -54,11 +54,11 @@ spec:
         reclaimPolicy: Delete
         volumeBindingMode: WaitForFirstConsumer
         allowVolumeExpansion: true
-    volumeSnapshotClasses:
-      - name: local-hostpath
-        deletionPolicy: Delete
-        parameters:
-          cluster: k8s
+    # volumeSnapshotClasses:
+    #   - name: local-hostpath
+    #     deletionPolicy: Delete
+    #     parameters:
+    #       cluster: k8s
     controller:
       enabled: true
       strategy: node
@@ -73,11 +73,11 @@ spec:
           - --enable-capacity=true
           - --capacity-ownerref-level=1
       externalResizer:
-        enabled: true
+        enabled: false
       externalAttacher:
         enabled: false
       externalSnapshotter:
-        enabled: true
+        enabled: false
         extraArgs:
           - --leader-election=false
           - --node-deployment=true
