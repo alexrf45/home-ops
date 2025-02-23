@@ -8,7 +8,7 @@ module "dev-test" {
     endpoint      = "10.3.3.80"
     pve_endpoint  = "10.3.3.2"
     gateway       = "10.3.3.1"
-    talos_version = "v1.9.1"
+    talos_version = "v1.9.2"
     extensions = [
       "intel-ucode",
       "glibc",

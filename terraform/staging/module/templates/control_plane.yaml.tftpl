@@ -8,11 +8,11 @@ cluster:
   allowSchedulingOnControlPlanes: ${allow_scheduling}
   network:
     cni:
-      name: flannel
+      name: none
     podSubnets:
-      - 10.244.0.0/16
+      - 10.42.0.0/16
     serviceSubnets:
-      - 10.96.0.0/16
+      - 10.43.0.0/16
   proxy:
     disabled: true
   extraManifests:
