@@ -56,6 +56,16 @@ resource "proxmox_virtual_environment_vm" "talos_vm" {
     discard      = "on"
     size         = each.value.size
   }
+  disk {
+    datastore_id = each.value.storage_id
+    interface    = "virtio1"
+    file_format  = "raw"
+    ssd          = true
+    iothread     = true
+    cache        = "writethrough"
+    discard      = "on"
+    size         = each.value.storage_size
+  }
 
   initialization {
     datastore_id = each.value.datastore_id

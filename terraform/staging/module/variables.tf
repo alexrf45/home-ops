@@ -29,15 +29,12 @@ variable "nodes" {
     ip               = string
     vm_id            = number
     datastore_id     = string
+    storage_id       = string
     allow_scheduling = optional(bool, true)
     cores            = number
     memory           = number
     size             = number
+    storage_size     = number
   }))
-}
-
-variable "cert-manager-manifest" {
-  description = "url of cert-manager manifest"
-  default     = "https://github.com/cert-manager/cert-manager/releases/download/v1.16.3/cert-manager.yaml"
 }
 

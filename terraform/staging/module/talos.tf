@@ -22,12 +22,11 @@ data "talos_machine_configuration" "this" {
   machine_secrets  = talos_machine_secrets.this.machine_secrets
   config_patches = each.value.machine_type == "controlplane" ? [
     templatefile("${path.module}/templates/control_plane.yaml.tftpl", {
-      hostname              = format("%s-controlplane-%s", var.cluster.name, index(keys(var.nodes), each.key))
-      allow_scheduling      = each.value.allow_scheduling
-      node_name             = each.value.node
-      cluster_name          = var.cluster.name
-      endpoint              = var.cluster.pve_endpoint
-      cert-manager-manifest = var.cert-manager-manifest
+      hostname         = format("%s-controlplane-%s", var.cluster.name, index(keys(var.nodes), each.key))
+      allow_scheduling = each.value.allow_scheduling
+      node_name        = each.value.node
+      cluster_name     = var.cluster.name
+      endpoint         = var.cluster.pve_endpoint
     }),
     templatefile("${path.module}/templates/node.yaml.tftpl", {
       install_disk  = each.value.install_disk
@@ -88,14 +87,14 @@ resource "talos_machine_bootstrap" "this" {
 
 resource "time_sleep" "wait_until_bootstrap" {
   depends_on = [
+    talos_machine_bootstrap.this,
     proxmox_virtual_environment_vm.talos_vm
   ]
-  create_duration = "3m"
+  create_duration = "2m"
 }
 
 resource "talos_cluster_kubeconfig" "this" {
   depends_on = [
-    talos_machine_bootstrap.this,
     time_sleep.wait_until_bootstrap
   ]
   node                 = [for k, v in var.nodes : v.ip if v.machine_type == "controlplane"][0]
@@ -110,7 +109,6 @@ resource "talos_cluster_kubeconfig" "this" {
 
 resource "local_sensitive_file" "kubeconfig" {
   depends_on = [
-    talos_machine_bootstrap.this,
     time_sleep.wait_until_bootstrap
   ]
   content         = talos_cluster_kubeconfig.this.kubeconfig_raw
@@ -122,7 +120,7 @@ resource "local_sensitive_file" "kubeconfig" {
 resource "local_sensitive_file" "talosconfig" {
   depends_on = [
     talos_machine_bootstrap.this,
-    time_sleep.wait_until_bootstrap
+    #time_sleep.wait_until_bootstrap
   ]
   content  = data.talos_client_configuration.this.talos_config
   filename = "${path.root}/outputs/talosconfig"
