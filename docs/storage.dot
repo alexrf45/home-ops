@@ -1,0 +1,77 @@
+digraph G {
+	rankdir=TD;
+	0->1[ style=invis ];
+	1->2[ style=invis ];
+	2->3[ style=invis ];
+	3->4[ style=invis ];
+	4->5[ style=invis ];
+	5->6[ style=invis ];
+	ds_storage_local_path_provisioner_democratic_csi_node->pod_storage_local_path_provisioner_democratic_csi_node_69dvw[ style=dashed ];
+	ds_storage_local_path_provisioner_democratic_csi_node->pod_storage_local_path_provisioner_democratic_csi_node_8wb2j[ style=dashed ];
+	ds_storage_local_path_provisioner_democratic_csi_node->pod_storage_local_path_provisioner_democratic_csi_node_l88rl[ style=dashed ];
+	ds_storage_local_path_provisioner_democratic_csi_node->pod_storage_local_path_provisioner_democratic_csi_node_lmv57[ style=dashed ];
+	ds_storage_local_path_provisioner_democratic_csi_node->pod_storage_local_path_provisioner_democratic_csi_node_vg44k[ style=dashed ];
+	subgraph cluster_storage {
+	label=<<TABLE BORDER="0"><TR><TD><IMG SRC="/home/fr3d/.local/bin/icons/ns-128.png" /></TD></TR><TR><TD>storage</TD></TR></TABLE>>;
+	labeljust=l;
+	style=dotted;
+	subgraph rank_0 {
+	rank=same;
+	style=invis;
+	0 [ height=0, margin=0, style=invis, width=0 ];
+
+}
+;
+	subgraph rank_1 {
+	rank=same;
+	style=invis;
+	1 [ height=0, margin=0, style=invis, width=0 ];
+
+}
+;
+	subgraph rank_2 {
+	rank=same;
+	style=invis;
+	2 [ height=0, margin=0, style=invis, width=0 ];
+	ds_storage_local_path_provisioner_democratic_csi_node [ label=<<TABLE BORDER="0"><TR><TD><IMG SRC="/home/fr3d/.local/bin/icons/ds-128.png" /></TD></TR><TR><TD>storage-local-path-provisioner-democratic-csi-node</TD></TR></TABLE>>, penwidth=0 ];
+
+}
+;
+	subgraph rank_3 {
+	rank=same;
+	style=invis;
+	3 [ height=0, margin=0, style=invis, width=0 ];
+	pod_storage_local_path_provisioner_democratic_csi_node_69dvw [ label=<<TABLE BORDER="0"><TR><TD><IMG SRC="/home/fr3d/.local/bin/icons/pod-128.png" /></TD></TR><TR><TD>storage-local-path-provisioner-democratic-csi-node-69dvw</TD></TR></TABLE>>, penwidth=0 ];
+	pod_storage_local_path_provisioner_democratic_csi_node_8wb2j [ label=<<TABLE BORDER="0"><TR><TD><IMG SRC="/home/fr3d/.local/bin/icons/pod-128.png" /></TD></TR><TR><TD>storage-local-path-provisioner-democratic-csi-node-8wb2j</TD></TR></TABLE>>, penwidth=0 ];
+	pod_storage_local_path_provisioner_democratic_csi_node_l88rl [ label=<<TABLE BORDER="0"><TR><TD><IMG SRC="/home/fr3d/.local/bin/icons/pod-128.png" /></TD></TR><TR><TD>storage-local-path-provisioner-democratic-csi-node-l88rl</TD></TR></TABLE>>, penwidth=0 ];
+	pod_storage_local_path_provisioner_democratic_csi_node_lmv57 [ label=<<TABLE BORDER="0"><TR><TD><IMG SRC="/home/fr3d/.local/bin/icons/pod-128.png" /></TD></TR><TR><TD>storage-local-path-provisioner-democratic-csi-node-lmv57</TD></TR></TABLE>>, penwidth=0 ];
+	pod_storage_local_path_provisioner_democratic_csi_node_vg44k [ label=<<TABLE BORDER="0"><TR><TD><IMG SRC="/home/fr3d/.local/bin/icons/pod-128.png" /></TD></TR><TR><TD>storage-local-path-provisioner-democratic-csi-node-vg44k</TD></TR></TABLE>>, penwidth=0 ];
+
+}
+;
+	subgraph rank_4 {
+	rank=same;
+	style=invis;
+	4 [ height=0, margin=0, style=invis, width=0 ];
+
+}
+;
+	subgraph rank_5 {
+	rank=same;
+	style=invis;
+	5 [ height=0, margin=0, style=invis, width=0 ];
+
+}
+;
+	subgraph rank_6 {
+	rank=same;
+	style=invis;
+	6 [ height=0, margin=0, style=invis, width=0 ];
+
+}
+;
+
+}
+;
+
+}
