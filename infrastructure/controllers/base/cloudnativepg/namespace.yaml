@@ -4,5 +4,5 @@ kind: Namespace
 metadata:
   name: db-ops
   labels:
-    app: "database operations"
+    app: "database_operations"
 ---
