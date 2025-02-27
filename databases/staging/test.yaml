@@ -11,7 +11,7 @@ metadata:
   name: demo-cluster
   namespace: test
 spec:
-  instances: 10
+  instances: 3
 
   storage:
     size: 1Gi
