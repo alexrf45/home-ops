@@ -106,6 +106,19 @@ spec:
       enabled: true
       thanosService:
         enabled: false
+      ingress:
+        enabled: true
+        pathType: Prefix
+        ingressClassName: cilium
+        annotations:
+          cert-manager.io/cluster-issuer: letsencrypt-production
+        tls:
+        - hosts:
+          - prod.internal.prometheus.fr3d.dev
+          secretName: prometheus-general-tls
+        hosts:
+        - prod.internal.prometheus.fr3d.dev
+
       prometheusSpec:
         logFormat: logfmt
         logLevel: info
