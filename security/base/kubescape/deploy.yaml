@@ -58,7 +58,7 @@ spec:
       runtimeObservability: enable
       networkPolicyService: enable
       runtimeDetection: disable
-      malwareDetection: enable
+      malwareDetection: disable
       nodeProfileService: disable
       seccompProfileService: enable
 
