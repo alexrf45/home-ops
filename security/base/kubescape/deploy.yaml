@@ -21,7 +21,7 @@ metadata:
 spec:
   chart:
     spec:
-      chart: kubescape
+      chart: kubescape/kubescape-operator
       sourceRef:
         kind: HelmRepository
         name: kubescape
