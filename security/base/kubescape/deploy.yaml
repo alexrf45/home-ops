@@ -29,6 +29,8 @@ spec:
   interval: 1h
   targetNamespace: security
   values:
+    ksNamespace: security
+    ksLabel: security
     capabilities:
       # ====== configuration scanning related capabilities ======
       #
