@@ -59,7 +59,7 @@ spec:
       # This is an experimental capability with an elevated security risk. Read the
       # matching docs before enabling.
       autoUpgrading: disable
-      prometheusExporter: true
+      prometheusExporter: enable
       # seccompGenerator: disable
 
     #extra capability - service discovery option
