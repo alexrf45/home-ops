@@ -43,6 +43,27 @@ spec:
         requests:
           cpu: 250m
           memory: 200Mi
+    kubevuln:
+       resources:
+         requests:
+           cpu: 300m
+           memory: 300Mi
+      # Consider to increase ephemeral-storage requests in order to avoid pod eviction due to huge images
+      # More details: https://hub.armosec.io/docs/limitations
+      #               https://github.com/kubescape/kubescape/issues/389
+           ephemeral-storage: 5Gi
+         limits:
+            cpu: 500m
+            memory: 200Mi
+            ephemeral-storage: 10Gi
+    nodeAgent:
+      resources:
+        requests:
+          cpu: 100m
+          memory: 200mi
+        limits:
+          cpu: 500m
+          memory: 300mi
     ksNamespace: security
     ksLabel: security
     capabilities:
