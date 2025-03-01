@@ -54,7 +54,7 @@ spec:
            ephemeral-storage: 5Gi
          limits:
             cpu: 500m
-            memory: 200Mi
+            memory: 1000Mi
             ephemeral-storage: 10Gi
     nodeAgent:
       resources:
@@ -63,7 +63,7 @@ spec:
           memory: 200mi
         limits:
           cpu: 500m
-          memory: 300mi
+          memory: 1000mi
     ksNamespace: security
     ksLabel: security
     capabilities:
