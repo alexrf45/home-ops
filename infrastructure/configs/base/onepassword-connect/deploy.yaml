@@ -25,7 +25,7 @@ spec:
       chart: onepassword-connect
       sourceRef:
         kind: HelmRepository
-        name: password
+        name: onepassword-connect
       version: "1.17.0"
   upgrade:
     cleanupOnFail: true
