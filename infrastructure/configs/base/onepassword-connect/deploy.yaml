@@ -62,7 +62,7 @@ spec:
       host: onepassword-connect
       serviceType: ClusterIP
       credentialsName: onepassword-connect-secret
-      credentialsKey: onepassword-credentials.json
+      credentialsKey: 1password-credentials.json
 
       # Determines if HTTPS Port if setup for the 1Password Connect
       # Services for 1Password Connect API and Sync
