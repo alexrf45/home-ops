@@ -68,7 +68,7 @@ spec:
       # Services for 1Password Connect API and Sync
       tls:
         # Denotes whether the Connect API is secured with TLS
-        enabled: true
+        enabled: false
         # The name of the secret containing the TLS key (tls.key) and certificate (tls.crt)
         secret: op-connect-tls
 
