@@ -82,5 +82,5 @@ spec:
       # 1Password Operator Token Configuration
       token:
         # The name of Kubernetes Secret containing the 1Password Connect API token
-        name: onepassword-connect-secret
-        key: onepassword-credentials.json
+        name: onepassword-token
+        key: token
