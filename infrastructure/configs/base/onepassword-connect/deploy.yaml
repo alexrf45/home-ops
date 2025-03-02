@@ -7,7 +7,7 @@ metadata:
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
 metadata:
-  name: 1password
+  name: onepassword-connect
   namespace: flux-system
 spec:
   interval: 1h
@@ -22,7 +22,7 @@ spec:
   interval: 30m
   chart:
     spec:
-      chart: password
+      chart: onepassword-connect
       sourceRef:
         kind: HelmRepository
         name: password
