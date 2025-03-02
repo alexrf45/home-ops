@@ -1,0 +1,97 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: onepassword
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
+metadata:
+  name: 1password
+  namespace: flux-system
+spec:
+  interval: 1h
+  url: https://1password.github.io/connect-helm-charts/
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app onepassword-connect
+  namespace: flux-system
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: password
+      sourceRef:
+        kind: HelmRepository
+        name: password
+      version: "1.17.0"
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  targetNamespace: onepassword
+  values:
+     controllers:
+      onepassword-connect:
+        pod:
+          securityContext:
+            runAsUser: 999
+            runAsGroup: 999
+        containers:
+          app:
+            env:
+              OP_BUS_PORT: "11220"
+              OP_BUS_PEERS: localhost:11221
+              OP_HTTP_PORT:  &port 8080
+              OP_SESSION:
+                valueFrom:
+                  secretKeyRef:
+                    name: onepassword-connect-secret
+                    key: onepassword-credentials.json
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /heartbeat
+                    port: *port
+                  initialDelaySeconds: 15
+                  periodSeconds: 30
+                  failureThreshold: 3
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: *port
+                  initialDelaySeconds: 15
+              startup:
+                enabled: false 
+            resources:
+              requests:
+                cpu: 5m
+                memory: 10Mi
+              limits:
+                memory: 100Mi
+          sync:
+            env:
+              - { name: OP_HTTP_PORT, value: *port }
+              - { name: OP_BUS_PORT, value: "11221" }
+              - { name: OP_BUS_PEERS, value: localhost:11220 }
+              - name: OP_SESSION
+                valueFrom:
+                  secretKeyRef:
+                    name: onepassword-connect-secret
+                    key: onepassword-credentials.json
+      service:
+      app:
+        controller: *app
+        ports:
+          http:
+            port: *port
+
