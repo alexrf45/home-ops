@@ -22,7 +22,7 @@ spec:
   interval: 30m
   chart:
     spec:
-      chart: 1password/connect
+      chart: connect
       sourceRef:
         kind: HelmRepository
         name: onepassword-connect
