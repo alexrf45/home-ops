@@ -38,12 +38,10 @@ spec:
       nameservers:
         - 8.8.8.8
         - 1.1.1.1
-    DNS1: "1.1.1.1"
-    DNS2: "8.8.8.8"
     resources:
       limits:
         cpu: 400m
-        memory: 200mi
+        memory: 200Mi
       requests:
         cpu: 400m
-        memory: 200mi
+        memory: 200Mi
