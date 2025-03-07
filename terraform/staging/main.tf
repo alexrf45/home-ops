@@ -1,14 +1,15 @@
 module "dev-test" {
   source = "./module"
 
-  pve_nodes = ["home-0", "home-1", "home-2"]
+  pve_nodes = ["home-5", "home-4"]
   cluster = {
     name          = "staging"
     env           = "staging"
     endpoint      = "10.3.3.80"
     pve_endpoint  = "10.3.3.2"
+    vip_ip        = "10.3.3.79"
     gateway       = "10.3.3.1"
-    talos_version = "v1.9.2"
+    talos_version = "v1.9.4"
     extensions = [
       "intel-ucode",
       "glibc",
@@ -25,7 +26,7 @@ module "dev-test" {
     v1 = {
       install_disk     = "/dev/vda"
       machine_type     = "controlplane"
-      node             = "home-0"
+      node             = "home-4"
       vm_id            = 1000
       datastore_id     = "local-lvm"
       storage_id       = "data"
@@ -39,11 +40,11 @@ module "dev-test" {
     },
     v2 = {
       install_disk = "/dev/vda"
-      machine_type = "worker"
-      node         = "home-1"
+      machine_type = "controlplane"
+      node         = "home-5"
       vm_id        = 1001
       datastore_id = "local-lvm"
-      storage_id   = "data"
+      storage_id   = "data1"
       ip           = "10.3.3.81"
       cores        = 2
       memory       = 8092
@@ -52,12 +53,38 @@ module "dev-test" {
     },
     v3 = {
       install_disk = "/dev/vda"
-      machine_type = "worker"
-      node         = "home-2"
+      machine_type = "controlplane"
+      node         = "home-5"
       vm_id        = 1002
       datastore_id = "local-lvm"
-      storage_id   = "data"
+      storage_id   = "data1"
       ip           = "10.3.3.82"
+      cores        = 2
+      memory       = 8092
+      size         = 25
+      storage_size = 50
+    },
+    v4 = {
+      install_disk = "/dev/vda"
+      machine_type = "worker"
+      node         = "home-4"
+      vm_id        = 1003
+      datastore_id = "local-lvm"
+      storage_id   = "data"
+      ip           = "10.3.3.83"
+      cores        = 2
+      memory       = 8092
+      size         = 25
+      storage_size = 50
+    },
+    v5 = {
+      install_disk = "/dev/vda"
+      machine_type = "worker"
+      node         = "home-4"
+      vm_id        = 1004
+      datastore_id = "local-lvm"
+      storage_id   = "data"
+      ip           = "10.3.3.84"
       cores        = 2
       memory       = 8092
       size         = 25

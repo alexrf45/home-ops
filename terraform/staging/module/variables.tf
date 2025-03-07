@@ -11,6 +11,7 @@ variable "cluster" {
     env           = string
     endpoint      = string
     pve_endpoint  = string
+    vip_ip        = string
     gateway       = string
     talos_version = string
     extensions    = list(string)

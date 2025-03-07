@@ -27,6 +27,8 @@ data "talos_machine_configuration" "this" {
       node_name        = each.value.node
       cluster_name     = var.cluster.name
       endpoint         = var.cluster.pve_endpoint
+      vip_ip           = var.cluster.vip_ip
+
     }),
     templatefile("${path.module}/templates/node.yaml.tftpl", {
       install_disk  = each.value.install_disk
