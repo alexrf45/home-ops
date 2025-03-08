@@ -54,10 +54,10 @@ data "helm_template" "cilium_template" {
           - icmp
           - http
       relay:
-        enabled: false
-        rollOutPods: false
+        enabled: true
+        rollOutPods: true
       ui:
-        enabled: false
+        enabled: true
 
     cgroup:
       autoMount:
@@ -72,7 +72,7 @@ data "helm_template" "cilium_template" {
       loadbalancerMode: shared
       service:
         annotations:
-          cert-manager.io/cluster-issuer: letsencrypt-staging
+          cert-manager.io/cluster-issuer: letsencrypt-production
         externalTrafficPolicy: Cluster
         loadBalancerIP: 10.3.3.120
         name: cilium-ingress

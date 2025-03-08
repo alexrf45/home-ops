@@ -1,6 +1,6 @@
 module "prod" {
   source    = "./module"
-  pve_nodes = ["home-3"]
+  pve_nodes = ["home-0", "home-1", "home-2", "home-3"]
   cluster = {
     name          = "prod"
     env           = "prod"
@@ -25,7 +25,7 @@ module "prod" {
     v1 = {
       install_disk     = "/dev/vda"
       machine_type     = "controlplane"
-      node             = "home-1"
+      node             = "home-0"
       vm_id            = 2000
       datastore_id     = "local-lvm"
       storage_id       = "data"
@@ -33,14 +33,14 @@ module "prod" {
       ip               = "10.3.3.60"
       cores            = 2
       memory           = 8092
-      size             = 50
+      size             = 25
       storage_size     = 50
 
     },
     v2 = {
       install_disk     = "/dev/vda"
       machine_type     = "controlplane"
-      node             = "home-2"
+      node             = "home-1"
       vm_id            = 2001
       datastore_id     = "local-lvm"
       storage_id       = "data"
@@ -49,12 +49,12 @@ module "prod" {
       cores            = 2
       memory           = 8092
       size             = 50
-      storage_size     = 100
+      storage_size     = 150
     },
     v3 = {
       install_disk     = "/dev/vda"
       machine_type     = "controlplane"
-      node             = "home-3"
+      node             = "home-2"
       vm_id            = 2002
       datastore_id     = "local-lvm"
       storage_id       = "data"
@@ -63,12 +63,12 @@ module "prod" {
       cores            = 2
       memory           = 8092
       size             = 50
-      storage_size     = 100
+      storage_size     = 150
     },
     v4 = {
       install_disk = "/dev/vda"
       machine_type = "worker"
-      node         = "home-1"
+      node         = "home-3"
       vm_id        = 2003
       datastore_id = "local-lvm"
       storage_id   = "data"
@@ -76,13 +76,13 @@ module "prod" {
       cores        = 2
       memory       = 8092
       size         = 50
-      storage_size = 100
+      storage_size = 200
 
     },
     v5 = {
       install_disk = "/dev/vda"
       machine_type = "worker"
-      node         = "home-2"
+      node         = "home-1"
       vm_id        = 2004
       datastore_id = "local-lvm"
       storage_id   = "data"
@@ -90,7 +90,7 @@ module "prod" {
       cores        = 2
       memory       = 8092
       size         = 50
-      storage_size = 100
+      storage_size = 150
     },
     v6 = {
       install_disk = "/dev/vda"
@@ -103,7 +103,7 @@ module "prod" {
       cores        = 2
       memory       = 8092
       size         = 50
-      storage_size = 100
+      storage_size = 200
     },
   }
 }
