@@ -1,3 +1,10 @@
+machine:
+  network:
+    interfaces:
+    - interface: eth0
+      dhcp: false
+      vip:
+        ip: ${vip_ip}
 cluster:
   apiServer:
     auditPolicy:

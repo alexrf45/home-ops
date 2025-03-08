@@ -5,7 +5,7 @@ data "helm_template" "cilium_template" {
 
   chart        = "cilium"
   version      = "1.17.0-rc.2"
-  kube_version = "1.32.0"
+  kube_version = "1.32.2"
 
   include_crds = true
 
@@ -54,10 +54,10 @@ data "helm_template" "cilium_template" {
           - icmp
           - http
       relay:
-        enabled: true
-        rollOutPods: true
+        enabled: false
+        rollOutPods: false
       ui:
-        enabled: true
+        enabled: false
 
     cgroup:
       autoMount:
@@ -89,8 +89,8 @@ data "helm_template" "cilium_template" {
     externalIPs:
       enabled: true
     k8sClientRateLimit:
-      qps: 15
-      burst: 20
+      qps: 29
+      burst: 40
   EOF
 
   ]

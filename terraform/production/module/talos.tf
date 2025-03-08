@@ -27,6 +27,8 @@ data "talos_machine_configuration" "this" {
       node_name        = each.value.node
       cluster_name     = var.cluster.name
       endpoint         = var.cluster.pve_endpoint
+      vip_ip           = var.cluster.vip_ip
+
     }),
     templatefile("${path.module}/templates/node.yaml.tftpl", {
       install_disk  = each.value.install_disk
@@ -83,6 +85,8 @@ resource "talos_machine_configuration_apply" "this" {
 
 }
 
+
+
 #You only need to bootstrap 1 control node, we pick the first one
 resource "talos_machine_bootstrap" "this" {
   depends_on = [
@@ -131,8 +135,8 @@ resource "local_sensitive_file" "kubeconfig" {
 
 resource "local_sensitive_file" "talosconfig" {
   depends_on = [
-    #talos_machine_bootstrap.this,
-    time_sleep.wait_until_bootstrap
+    talos_machine_bootstrap.this,
+    #time_sleep.wait_until_bootstrap
   ]
   content  = data.talos_client_configuration.this.talos_config
   filename = "${path.root}/outputs/talosconfig"
