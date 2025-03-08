@@ -5,3 +5,5 @@ resources:
   - repository.yaml
   - release.yaml
   - secrets.yaml
+  - argo-cd-slack.yaml
+  - repo.yaml
