@@ -17,15 +17,15 @@ cp ~/.kube/config ~/.kube/config_bk && KUBECONFIG=~/.kube/config:~/.kube/new_con
 #kubectx admin@prod
 
 #terraform output
-kubectl label node prod-node-3 prod-node-4 prod-node-5 prod-node-6 node-role.kubernetes.io/worker=true
+#kubectl label node prod-node-3 prod-node-4 prod-node-5 prod-node-6 node-role.kubernetes.io/worker=true
 
-cat ~/.local/flux-staging.agekey | kubectl create secret generic sops-age \
-  --namespace=flux-system \
-  --from-file=flux-staging.agekey=/dev/stdin
-#
-flux bootstrap git \
-  --cluster-domain=cluster.local \
-  --url=ssh://git@github.com/alexrf45/home-ops.git \
-  --path=clusters/production \
-  --private-key-file=/home/fr3d/.ssh/fr3d \
-  --branch main
+# cat ~/.local/flux-staging.agekey | kubectl create secret generic sops-age \
+#   --namespace=flux-system \
+#   --from-file=flux-staging.agekey=/dev/stdin
+# #
+# flux bootstrap git \
+#   --cluster-domain=cluster.local \
+#   --url=ssh://git@github.com/alexrf45/home-ops.git \
+#   --path=clusters/production \
+#   --private-key-file=/home/fr3d/.ssh/fr3d \
+#   --branch main
