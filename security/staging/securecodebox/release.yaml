@@ -39,7 +39,3 @@ spec:
       requests:
         cpu: 120m
         memory: 40Mi
-  postBuild:
-    substituteFrom:
-      - kind: Secret
-        name: securecodebox-s3-staging
