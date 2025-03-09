@@ -4,4 +4,4 @@ metadata:
   name: securecodebox-s3-staging
   namespace: security
 spec:
-  itemPath: "vaults/HomeLab/securecodebox-s3-staging"
+  itemPath: "vaults/HomeLab/items/securecodebox-s3-staging"
