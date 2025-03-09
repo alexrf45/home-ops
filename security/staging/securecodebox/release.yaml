@@ -21,7 +21,7 @@ spec:
       tag: 4.13.0
     metrics:
       serviceMonitor:
-        enabled: true
+        enabled: false
         namespace: monitoring
     minio:
       enabled: false
