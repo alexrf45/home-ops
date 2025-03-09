@@ -102,7 +102,33 @@ spec:
         #type: sts
     nodeExporter:
       enabled: true
+    kubeApiServer:
+      serviceMonitor:
+        selector:
+          k8s-app: kube-apiserver
+    kubeScheduler:
+      service:
+        selector:
+          k8s-app: kube-scheduler
+    kubeControllerManager:
+      service:
+        selector:
+          k8s-app: kube-controller-manager
+    kube-state-metrics:
+      fullnameOverride: kube-state-metrics
+      metricLabelsAllowlist:
+        - pods=[*]
+        - deployments=[*]
+        - persistentvolumeclaims=[*]
     prometheus:
+      monitor:
+         enabled: true
+         relabelings:
+           - action: replace
+             regex: (.*)
+             replacement: $1
+             sourceLabels: ["__meta_kubernetes_pod_node_name"]
+             targetLabel: kubernetes_node
       enabled: true
       thanosService:
         enabled: false
@@ -131,10 +157,6 @@ spec:
         persistentVolumeClaimRetentionPolicy:
           whenDeleted: Delete
           whenScaled: Retain
-        serviceMonitorNamespaceSelector:
-          matchLabels:
-            app.kubernetes.io/instance: onepassword-onepassword-connect
-            app.kubernetes.io/name: securecodebox-operator-metrics
         retention: 7d
         retentionSize: 1GB
         routePrefix: /
