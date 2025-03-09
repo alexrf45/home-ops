@@ -30,8 +30,6 @@ spec:
     kind: OCIRepository
     name: operator
     namespace: flux-system
-  dependsOn:
-  - name: configs
   install:
     crds: Create
   interval: 1m0s

@@ -4,6 +4,8 @@ metadata:
   name: security-staging
   namespace: flux-system
 spec:
+  dependsOn:
+    - name: configs
   interval: 15m
   retryInterval: 1m
   timeout: 5m
