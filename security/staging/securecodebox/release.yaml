@@ -28,7 +28,7 @@ spec:
     s3:
       enabled: true
       endpoint: "s3.us-east-1.amazonaws.com"
-      bucket: ${BUCKET}
+      bucket: "dev-securecodebox-backup-956f9b7c-d877-0874-a379-f4361114dfac"
       keySecret: securecodebox-s3-staging
     resources:
       limits:
