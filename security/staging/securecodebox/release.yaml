@@ -17,6 +17,8 @@ spec:
   upgrade:
     crds: CreateReplace
   values:
+    image:
+      tag: 4.13.0
     metrics:
       serviceMonitor:
         enabled: true
