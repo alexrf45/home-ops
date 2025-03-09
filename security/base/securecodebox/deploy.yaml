@@ -26,6 +26,10 @@ metadata:
   name: operator
   namespace: flux-system
 spec:
+  postBuild:
+    substituteFrom:
+      - kind: Secret
+        name: securecodebox-s3-staging
   chartRef:
     kind: OCIRepository
     name: operator
