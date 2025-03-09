@@ -16,9 +16,6 @@ spec:
   targetNamespace: security
   upgrade:
     crds: CreateReplace
-  valuesFrom:
-    - kind: Secret
-      name: securecodebox-s3-staging
   values:
     metrics:
       serviceMonitor:
