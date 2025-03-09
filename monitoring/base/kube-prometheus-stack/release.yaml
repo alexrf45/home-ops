@@ -126,6 +126,10 @@ spec:
         persistentVolumeClaimRetentionPolicy:
           whenDeleted: Delete
           whenScaled: Retain
+        serviceMonitorNamespaceSelector:
+          matchLabels:
+            app.kubernetes.io/instance: onepassword-onepassword-connect
+            app.kubernetes.io/name: securecodebox-operator-metrics
         retention: 7d
         retentionSize: 1GB
         routePrefix: /
