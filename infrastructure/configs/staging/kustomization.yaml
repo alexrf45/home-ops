@@ -4,3 +4,4 @@ resources:
   - cert-manager
   - cilium
   - onepassword-connect
+  - gitea
