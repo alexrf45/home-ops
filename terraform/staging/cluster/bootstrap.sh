@@ -10,11 +10,12 @@ terraform apply --auto-approve
 
 cp ./outputs/talosconfig ~/.talos/staging
 
+cp ./outputs/kubeconfig ~/.kube/config
+
 cp ./outputs/kubeconfig ~/.kube/new_config
 
-# kubectl label node staging-node-1 staging-node-2 node-role.kubernetes.io/worker=true
+kubectl label node staging-node-3 node-role.kubernetes.io/worker=true
 #
-# #k label node staging-node-1 staging-node-2 type=node
 
 cat ~/.local/flux-staging.agekey | kubectl create secret generic sops-age \
   --namespace=flux-system \
