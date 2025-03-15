@@ -1,10 +1,10 @@
 data "helm_template" "cilium_template" {
   name       = "cilium"
-  namespace  = "kube-system"
+  namespace  = "networking"
   repository = "https://helm.cilium.io/"
 
   chart        = "cilium"
-  version      = "1.17.0-rc.2"
+  version      = "1.17.1"
   kube_version = "1.32.0"
 
   include_crds = true
@@ -16,7 +16,7 @@ data "helm_template" "cilium_template" {
     kubeProxyReplacement: true
 
     enableIPv6Masquerade: false
-
+ 
     dnsPolicy: "ClusterFirst"
     encryption:
       enabled: true
@@ -27,6 +27,8 @@ data "helm_template" "cilium_template" {
 
     l2announcements:
       enabled: true
+    bpf:
+    preallocateMaps: true
 
     securityContext:
       capabilities:
@@ -49,6 +51,7 @@ data "helm_template" "cilium_template" {
 
     hubble:
       enabled: true
+      enableOpenMetrics: false
       metrics:
         enabled:
           - dns:query
@@ -77,14 +80,12 @@ data "helm_template" "cilium_template" {
       enabled: true
       loadbalancerMode: shared
       service:
-        annotations:
-          cert-manager.io/cluster-issuer: letsencrypt-staging
         externalTrafficPolicy: Cluster
         loadBalancerIP: 10.3.3.70
         name: cilium-ingress
         type: LoadBalancer
     gatewayAPI:
-      enabled: false
+      enabled: true
       gatewayClass:
         create: auto
     redact:

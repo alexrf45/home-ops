@@ -1,9 +1,0 @@
----
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: external-secrets
-  labels:
-    pod-security.kubernetes.io/enforce = "privileged"
-    app = "external-secrets"
----

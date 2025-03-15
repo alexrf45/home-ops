@@ -9,7 +9,7 @@ module "dev-test" {
     pve_endpoint  = "10.3.3.2"
     vip_ip        = "10.3.3.79"
     gateway       = "10.3.3.1"
-    talos_version = "v1.9.4"
+    talos_version = "v1.9.5"
     extensions = [
       "intel-ucode",
       "glibc",
@@ -26,7 +26,7 @@ module "dev-test" {
     v1 = {
       install_disk     = "/dev/vda"
       machine_type     = "controlplane"
-      node             = "home-4"
+      node             = "home-0"
       vm_id            = 1000
       datastore_id     = "local-lvm"
       storage_id       = "data"
@@ -41,10 +41,10 @@ module "dev-test" {
     v2 = {
       install_disk = "/dev/vda"
       machine_type = "controlplane"
-      node         = "home-5"
+      node         = "home-2"
       vm_id        = 1001
       datastore_id = "local-lvm"
-      storage_id   = "data1"
+      storage_id   = "data"
       ip           = "10.3.3.81"
       cores        = 2
       memory       = 8092
@@ -54,10 +54,10 @@ module "dev-test" {
     v3 = {
       install_disk = "/dev/vda"
       machine_type = "controlplane"
-      node         = "home-5"
+      node         = "home-4"
       vm_id        = 1002
       datastore_id = "local-lvm"
-      storage_id   = "data1"
+      storage_id   = "data"
       ip           = "10.3.3.82"
       cores        = 2
       memory       = 8092
@@ -67,28 +67,15 @@ module "dev-test" {
     v4 = {
       install_disk = "/dev/vda"
       machine_type = "worker"
-      node         = "home-4"
+      node         = "home-5"
       vm_id        = 1003
       datastore_id = "local-lvm"
-      storage_id   = "data"
+      storage_id   = "data0"
       ip           = "10.3.3.83"
       cores        = 2
       memory       = 8092
       size         = 25
-      storage_size = 50
-    },
-    v5 = {
-      install_disk = "/dev/vda"
-      machine_type = "worker"
-      node         = "home-4"
-      vm_id        = 1004
-      datastore_id = "local-lvm"
-      storage_id   = "data"
-      ip           = "10.3.3.84"
-      cores        = 2
-      memory       = 8092
-      size         = 25
-      storage_size = 50
+      storage_size = 150
     },
   }
 }

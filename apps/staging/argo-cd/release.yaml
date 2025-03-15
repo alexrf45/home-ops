@@ -1,0 +1,150 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: argo-cd
+  namespace: flux-system
+spec:
+  chart:
+    spec:
+      chart: argo-cd
+      reconcileStrategy: ChartVersion
+      sourceRef:
+        kind: HelmRepository
+        name: argo
+        namespace: flux-system
+      version: 7.8.2
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  interval: 10m
+  releaseName: argo
+  targetNamespace: argo-cd
+  values:
+    applicationSet:
+      replicas: 1
+      metrics:
+        enabled: true
+        serviceMonitor:
+          enabled: true
+    configs:
+      cm:
+        admin.enabled: true
+        application.instanceLabelKey: argocd.argoproj.io/instance
+        create: true
+        resource.exclusions: |
+          - apiGroups:
+            - snapshot.storage.k8s.io
+            kinds:
+            - VolumeSnapshot
+            - VolumeSnapshotContent
+            clusters:
+            - "*"
+        statusbadge.enabled: true
+      params:
+        create: true
+        applicationsetcontroller.enable.progressive.syncs: true
+        applicationsetcontroller.policy: sync
+        server.insecure: true
+        server.x.frame.options: sameorigin
+      secret:
+        createSecret: true
+        argocdServerAdminPassword: $2a$10$/n3UudnhJFwINWzql4NtZ.c6eIAgLjzwy3ui56KzgXOWVf2hgpuv.
+      ssh:
+       create: true
+    controller:
+      replicas: 1
+      metrics:
+        enabled: true
+        serviceMonitor:
+          enabled: true
+          interval: 15s
+    crds:
+      install: true
+      keep: true
+    createClusterRoles: true
+    dex:
+      enabled: true
+    global:
+      additionalLabels:
+        app: argo-cd
+        env: home
+      domain: staging.internal.argo.fr3d.dev
+      logging:
+        format: text
+        level: error
+    notifications:
+      enabled: true
+      metrics:
+        enabled: true
+        serviceMonitor:
+          enabled: true
+      notifiers:
+        service.slack: |
+          token: $slack-token
+      secret:
+        create: false
+        name: argocd-notifications-secret
+    redis:
+      enabled: true
+      exporter:
+        enabled: true
+      metrics:
+        enabled: true
+        serviceMonitor:
+          enabled: true
+          interval: 15s
+          namespace: monitoring
+    redis-ha:
+      auth: true
+      enabled: false
+      exporter:
+        enabled: true
+      haproxy:
+        enabled: false
+        hardAntiAffinity: true
+        metrics:
+          enabled: true
+      hardAntiAffinity: true
+      persistentVolume:
+        enabled: false
+    repoServer:
+      replicas: 1
+      useEphemeralHelmWorkingDir: true
+      metrics:
+        enabled: true
+        serviceMonitor:
+          enabled: true
+    server:
+      replicas: 2
+      autoscaling:
+        enabled: true
+      extensions:
+        enabled: true
+        extensionList:
+          - name: extension-metrics
+            env:
+              - name: EXTENSION_URL
+                value: https://github.com/argoproj-labs/argocd-extension-metrics/releases/download/v1.0.0/extension.tar.gz
+              - name: EXTENSION_CHECKSUM_URL
+                value: https://github.com/argoproj-labs/argocd-extension-metrics/releases/download/v1.0.0/extension_checksums.txt
+      ingress:
+        enabled: true
+        controller: generic
+        annotations:
+          cert-manager.io/cluster-issuer: letsencrypt-staging
+        hostname: staging.internal.argo.fr3d.dev
+        ingressClassName: nginx-internal
+        path: /
+        pathType: Prefix
+        tls: true
+      metrics:
+        enabled: true
+        serviceMonitor:
+          enabled: true
+    commitServer:
+      enabled: true

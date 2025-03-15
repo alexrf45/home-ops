@@ -15,7 +15,7 @@ cluster:
   allowSchedulingOnControlPlanes: ${allow_scheduling}
   network:
     cni:
-      name: none
+      name: flannel
     podSubnets:
       - 10.42.0.0/16
     serviceSubnets:
@@ -32,3 +32,13 @@ cluster:
         kind: Namespace
         metadata:
           name: flux-system
+    - name: namespace-networking
+      contents: |-
+        apiVersion: v1
+        kind: Namespace
+        metadata:
+          name: networking
+          labels:
+            pod-security.kubernetes.io/enforce: "privileged"
+            app: "networking"
+

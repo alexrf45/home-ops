@@ -21,7 +21,7 @@ spec:
     remediation:
       strategy: rollback
       retries: 3
-  interval: 10m
+  interval: 30m
   releaseName: argo
   targetNamespace: argo-cd
   values:
@@ -57,7 +57,7 @@ spec:
       ssh:
        create: true
     controller:
-      replicas: 1
+      replicas: 2
       metrics:
         enabled: true
         serviceMonitor:
@@ -105,7 +105,7 @@ spec:
       exporter:
         enabled: true
       haproxy:
-        enabled: false
+        enabled: true
         hardAntiAffinity: true
         metrics:
           enabled: true
@@ -113,7 +113,7 @@ spec:
       persistentVolume:
         enabled: false
     repoServer:
-      replicas: 1
+      replicas: 2
       useEphemeralHelmWorkingDir: true
       metrics:
         enabled: true
@@ -138,7 +138,7 @@ spec:
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-staging
         hostname: staging.internal.argo.fr3d.dev
-        ingressClassName: cilium
+        ingressClassName: nginx-internal
         path: /
         pathType: Prefix
         tls: true
