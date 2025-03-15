@@ -1,4 +1,4 @@
-data "helm_template" "cilium_template" {
+data "helm_template" "this" {
   name       = "cilium"
   namespace  = "networking"
   repository = "https://helm.cilium.io/"
@@ -50,7 +50,7 @@ data "helm_template" "cilium_template" {
           - SETUID
 
     hubble:
-      enabled: true
+      enabled: false
       enableOpenMetrics: false
       metrics:
         enabled:
@@ -62,10 +62,10 @@ data "helm_template" "cilium_template" {
           - icmp
           - http
       relay:
-        enabled: true
+        enabled: false
         rollOutPods: true
       ui:
-        enabled: true
+        enabled: false
 
     cgroup:
       autoMount:
@@ -85,7 +85,7 @@ data "helm_template" "cilium_template" {
         name: cilium-ingress
         type: LoadBalancer
     gatewayAPI:
-      enabled: true
+      enabled: false
       gatewayClass:
         create: auto
     redact:

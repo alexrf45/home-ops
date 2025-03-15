@@ -38,20 +38,20 @@ data "talos_machine_configuration" "this" {
       cluster_name  = var.cluster.name
 
     }),
-    # yamlencode({
-    #   cluster = {
-    #     inlineManifests = [
-    #
-    #       {
-    #         name = "cilium"
-    #         contents = join("---\n", [
-    #           data.helm_template.cilium_template.manifest,
-    #           "# Source cilium.tf\n${local.cilium_lb_manifest}",
-    #         ])
-    #       }
-    #     ]
-    #   }
-    # }),
+    yamlencode({
+      cluster = {
+        inlineManifests = [
+
+          {
+            name = "cilium"
+            contents = join("---\n", [
+              data.helm_template.this.manifest,
+              "# Source cilium.tf\n${local.cilium_lb_manifest}",
+            ])
+          }
+        ]
+      }
+    }),
     ] : [
     templatefile("${path.module}/templates/node.yaml.tftpl", {
       install_disk  = each.value.install_disk

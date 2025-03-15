@@ -8,9 +8,9 @@ terraform plan
 
 terraform apply --auto-approve
 
-cp ./outputs/talosconfig ~/.talos/stag-config
+cp ./outputs/talosconfig ~/.talos/staging
 
-cp ./outputs/kubeconfig ~/.kube/stag-config
+cp ./outputs/kubeconfig ~/.kube/new_config
 
 # kubectl label node staging-node-1 staging-node-2 node-role.kubernetes.io/worker=true
 #

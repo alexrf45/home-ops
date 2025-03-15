@@ -12,10 +12,18 @@ cluster:
       kind: Policy
       rules:
         - level: Metadata
+    admissionControl:
+      - name: PodSecurity
+        configuration:
+          apiVersion: pod-security.admission.config.k8s.io/v1beta1
+          kind: PodSecurityConfiguration
+          exemptions:
+            namespaces:
+              - networking
   allowSchedulingOnControlPlanes: ${allow_scheduling}
   network:
     cni:
-      name: flannel
+      name: none
     podSubnets:
       - 10.42.0.0/16
     serviceSubnets:

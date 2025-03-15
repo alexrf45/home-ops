@@ -11,9 +11,6 @@ machine:
   kubelet:
     extraArgs:
       rotate-server-certificates: true
-    nodeIP:
-      validSubnets:
-        - 10.3.3.0/24
     clusterDNS:
       - 10.43.0.10
     extraMounts:
