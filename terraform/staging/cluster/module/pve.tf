@@ -5,7 +5,7 @@ resource "proxmox_virtual_environment_download_file" "talos_image" {
   node_name               = var.pve_nodes[count.index]
   url                     = data.talos_image_factory_urls.this.urls.disk_image
   decompression_algorithm = "zst"
-  file_name               = "talos.img"
+  file_name               = "${var.cluster.env}-talos.img"
   overwrite               = false
   upload_timeout          = 120
 }

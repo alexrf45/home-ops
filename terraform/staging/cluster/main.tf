@@ -1,7 +1,7 @@
 module "dev-test" {
   source = "./module"
 
-  pve_nodes = ["home-5", "home-4"]
+  pve_nodes = ["home-5", "home-4", "home-2", "home-0"]
   cluster = {
     name          = "staging"
     env           = "staging"
