@@ -39,30 +39,32 @@ module "dev-test" {
 
     },
     v2 = {
-      install_disk = "/dev/vda"
-      machine_type = "controlplane"
-      node         = "home-2"
-      vm_id        = 1001
-      datastore_id = "local-lvm"
-      storage_id   = "data"
-      ip           = "10.3.3.81"
-      cores        = 2
-      memory       = 8092
-      size         = 25
-      storage_size = 50
+      install_disk     = "/dev/vda"
+      machine_type     = "controlplane"
+      node             = "home-2"
+      vm_id            = 1001
+      datastore_id     = "local-lvm"
+      storage_id       = "data"
+      allow_scheduling = true
+      ip               = "10.3.3.81"
+      cores            = 2
+      memory           = 8092
+      size             = 25
+      storage_size     = 50
     },
     v3 = {
-      install_disk = "/dev/vda"
-      machine_type = "controlplane"
-      node         = "home-4"
-      vm_id        = 1002
-      datastore_id = "local-lvm"
-      storage_id   = "data"
-      ip           = "10.3.3.82"
-      cores        = 2
-      memory       = 8092
-      size         = 25
-      storage_size = 50
+      install_disk     = "/dev/vda"
+      machine_type     = "controlplane"
+      node             = "home-4"
+      vm_id            = 1002
+      datastore_id     = "local-lvm"
+      storage_id       = "data"
+      allow_scheduling = true
+      ip               = "10.3.3.82"
+      cores            = 2
+      memory           = 8092
+      size             = 25
+      storage_size     = 50
     },
     v4 = {
       install_disk = "/dev/vda"
