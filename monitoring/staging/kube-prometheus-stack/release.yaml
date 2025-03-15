@@ -85,7 +85,7 @@ spec:
         enabled: true
         hosts:
         - staging.internal.grafana.fr3d.dev
-        ingressClassName: nginx-internal
+        ingressClassName: cilium
         path: /
         tls:
         - hosts:
@@ -127,7 +127,7 @@ spec:
       ingress:
         enabled: true
         pathType: Prefix
-        ingressClassName: nginx-internal
+        ingressClassName: cilium
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-staging
         tls:

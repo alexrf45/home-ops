@@ -27,8 +27,6 @@ data "helm_template" "this" {
 
     l2announcements:
       enabled: true
-    bpf:
-    preallocateMaps: true
 
     securityContext:
       capabilities:
@@ -63,7 +61,7 @@ data "helm_template" "this" {
           - http
       relay:
         enabled: false
-        rollOutPods: true
+        rollOutPods: false
       ui:
         enabled: false
 
@@ -89,7 +87,7 @@ data "helm_template" "this" {
       gatewayClass:
         create: auto
     redact:
-      enabled: true
+      enabled: false
       http:
         urlQuery: true
         userInfo: true
