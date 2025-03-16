@@ -41,7 +41,7 @@ spec:
           secretKeyRef:
             key: pihole_password
             name: pihole-password
-    sources: ["ingress", "service", "cilium"]
+    sources: ["ingress", "service"]
     registry: txt
     extraArgs:
       - --pihole-server=http://pihole-web.pihole-system.svc.cluster.local
