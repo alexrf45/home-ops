@@ -39,7 +39,7 @@ spec:
       - name: EXTERNAL_DNS_PIHOLE_PASSWORD
         valueFrom:
           secretKeyRef:
-            key: pihole-password
+            key: pihole_password
             name: pihole-password
     sources: ["ingress", "service", "cilium"]
     registry: txt
