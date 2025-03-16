@@ -64,6 +64,6 @@ spec:
         - --registry=txt
         - --policy=upsert-only
         - --provider=pihole
-        - --pihole-server=https://pihole-web.pihole-system.svc.cluster.local
+        - --pihole-server=http://pihole-web.pihole-system.svc.cluster.local
       securityContext:
         fsGroup: 65534 # For ExternalDNS to be able to read Kubernetes token files
