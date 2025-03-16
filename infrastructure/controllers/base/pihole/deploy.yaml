@@ -48,7 +48,7 @@ spec:
     admin:
       enabled: true
       existingSecret: pihole-password
-      passwordKey: password
+      passwordKey: pihole_password
     ingress:
       annotations:
         cert-manager.io/cluster-issuer: letsencrypt-staging

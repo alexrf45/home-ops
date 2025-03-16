@@ -28,19 +28,12 @@ spec:
   upgrade:
     crds: CreateReplace
   values:
-    extraEnvVars:
-    - name: EXTERNAL_DNS_PIHOLE_PASSWORD
-      valueFrom:
-        secretKeyRef:
-          key: password
-          name: pihole-password
-    ingressClassFilters:
-    - cilium
+    provider: pihole
+    sources:
+      - service
+      - ingress
+    validation:
+      enabled: true
     pihole:
       server: http://pihole-web.pihole-system.svc.cluster.local
-    policy: upsert-only
-    provider: pihole
-    serviceAccount:
-      create: true
-      name: external-dns
-    txtOwnerId: homelab
+      secretName: pihole-password
