@@ -9,6 +9,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   name: external-dns
+  namespace: pihole-system
 rules:
 - apiGroups: [""]
   resources: ["services","endpoints","pods"]
@@ -24,6 +25,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   name: external-dns-viewer
+  namespace: pihole-system
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
