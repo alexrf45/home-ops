@@ -5,20 +5,20 @@ metadata:
 spec:
   chart:
     spec:
-      version: "2.27.0"
+      version: "2.29.1"
   values:
     ingress:
       annotations:
         cert-manager.io/cluster-issuer: letsencrypt-staging
       enabled: true
       hosts:
-      - staging.pihole.fr3d.dev
+      - staging.internal.pihole.fr3d.dev
       ingressClassName: cilium
       path: /
       pathType: Prefix
       tls:
       - hosts:
-        - staging.pihole.fr3d.dev
+        - staging.internal.pihole.fr3d.dev
         secretName: pihole-tls
     persistentVolumeClaim:
       enabled: true
