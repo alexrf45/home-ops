@@ -1,38 +1,65 @@
 ---
-apiVersion: source.toolkit.fluxcd.io/v1beta2
-kind: OCIRepository
+apiVersion: v1
+kind: ServiceAccount
 metadata:
   name: external-dns
-  namespace: flux-system
-spec:
-  interval: 10m0s
-  provider: generic
-  ref:
-    tag: 8.7.7
-  url: oci://registry-1.docker.io/bitnamicharts/external-dns
 ---
-apiVersion: helm.toolkit.fluxcd.io/v2
-kind: HelmRelease
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
 metadata:
   name: external-dns
-  namespace: flux-system
+rules:
+- apiGroups: [""]
+  resources: ["services","endpoints","pods"]
+  verbs: ["get","watch","list"]
+- apiGroups: ["extensions","networking.k8s.io"]
+  resources: ["ingresses"]
+  verbs: ["get","watch","list"]
+- apiGroups: [""]
+  resources: ["nodes"]
+  verbs: ["list","watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: external-dns-viewer
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: external-dns
+subjects:
+- kind: ServiceAccount
+  name: external-dns
+  namespace: pihole-system
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: external-dns
 spec:
-  chartRef:
-    kind: OCIRepository
-    name: external-dns
-    namespace: flux-system
-  install:
-    crds: Create
-  interval: 1m0s
-  targetNamespace: pihole-system
-  upgrade:
-    crds: CreateReplace
-  values:
-    provider: pihole
-    sources:
-      - service
-      - ingress
-    pihole:
-      server: http://pihole-web.pihole-system.svc.cluster.local/
-      tlsSkipVerify: true
-      secretName: pihole-password
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: external-dns
+  template:
+    metadata:
+      labels:
+        app: external-dns
+    spec:
+      serviceAccountName: external-dns
+      containers:
+      - name: external-dns
+        image: registry.k8s.io/external-dns/external-dns:v0.16.1
+        envFrom:
+        - secretRef:
+            name: pihole-password
+        args:
+        - --source=service
+        - --source=ingress
+        - --registry=txt
+        - --policy=upsert-only
+        - --provider=pihole
+        - --pihole-server=http://pihole-web.pihole.svc.cluster.local
+      securityContext:
+        fsGroup: 65534 # For ExternalDNS to be able to read Kubernetes token files
