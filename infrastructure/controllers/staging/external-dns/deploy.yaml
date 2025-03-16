@@ -35,6 +35,6 @@ spec:
     validation:
       enabled: true
     pihole:
-      server: http://pihole-web.pihole-system.svc.cluster.local
+      server: "http://pihole-web.pihole-system.svc.cluster.local/admin/login.php"
       tlsSkipVerify: true
       secretName: pihole-password
