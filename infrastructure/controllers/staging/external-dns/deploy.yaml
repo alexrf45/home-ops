@@ -32,8 +32,6 @@ spec:
     sources:
       - service
       - ingress
-    validation:
-      enabled: true
     pihole:
       server: "http://pihole-web.pihole-system.svc.cluster.local/admin/login.php"
       tlsSkipVerify: true
