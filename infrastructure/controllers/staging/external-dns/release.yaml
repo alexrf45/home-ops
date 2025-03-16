@@ -13,29 +13,4 @@ spec:
         kind: HelmRepository
         name: external-dns
         namespace: flux-system
-      version: 8.7.7
-  interval: 30m
-  maxHistory: 3
-  install:
-    crds: CreateReplace
-    remediation:
-      retries: 4
-  releaseName: external-dns
-  targetNamespace: pihole-system
-  values:
-    extraEnvVars:
-    - name: EXTERNAL_DNS_PIHOLE_PASSWORD
-      valueFrom:
-        secretKeyRef:
-          key: password
-          name: pihole-password
-    ingressClassFilters:
-    - cilium
-    pihole:
-      server: http://pihole-web.pihole-system.svc.cluster.local
-    policy: upsert-only
-    provider: pihole
-    serviceAccount:
-      create: true
-      name: external-dns
-    txtOwnerId: homelab
+      version: "8.7.7"
