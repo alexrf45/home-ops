@@ -36,4 +36,5 @@ spec:
       enabled: true
     pihole:
       server: http://pihole-web.pihole-system.svc.cluster.local
+      tlsSkipVerify: true
       secretName: pihole-password
