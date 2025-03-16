@@ -71,7 +71,7 @@ spec:
       enabled: false
     serviceWeb:
       type: ClusterIP
-      externalTrafficPolicy: local
+      externalTrafficPolicy: Cluster
     serviceDns:
       externalTrafficPolicy: Cluster
       mixedService: true
