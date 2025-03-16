@@ -68,14 +68,14 @@ spec:
       enabled: false
       size: 4096Mi
     serviceDhcp:
-      enabled: true
+      enabled: false
     serviceWeb:
       type: ClusterIP
-      externalTrafficPolicy: Cluster
+      externalTrafficPolicy: local
     serviceDns:
       externalTrafficPolicy: Cluster
       mixedService: true
-      LoadBalancerIP: 10.3.3.20
+      LoadBalancerIP: 10.3.3.71
       annotations:
         #lbipam.cilium.io/lb-ipam-sharing-key: pihole
       type: LoadBalancer

@@ -27,6 +27,3 @@ spec:
         - ReadWriteOnce
       size: 2048Mi
     mixedService: true
-    podDnsConfig:
-      enabled: true
-      policy: "None"
