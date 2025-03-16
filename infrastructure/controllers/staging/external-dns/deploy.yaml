@@ -33,6 +33,6 @@ spec:
       - service
       - ingress
     pihole:
-      server: "http://pihole-web.pihole-system.svc.cluster.local/admin/login.php"
+      server: http://pihole-web.pihole-system.svc.cluster.local/
       tlsSkipVerify: true
       secretName: pihole-password
