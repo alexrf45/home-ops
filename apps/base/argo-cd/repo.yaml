@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: Secret
+metadata:
+    name: dev-argo
+    namespace: argo-cd
+    labels:
+        argocd.argoproj.io/secret-type: repository
+stringData:
+    type: ENC[AES256_GCM,data:vzcg,iv:LRt1mK9gAIvIbOCQrDvEPideCBQr9kwmzYIOoy93eFo=,tag:/UO61MFYsTtxp52UXmL+Mg==,type:str]
+    url: ENC[AES256_GCM,data:Z5j7gyJHIUSBPegPx9hgmdcoAVfSGzJW1XsXp9nMdf2I7ozu,iv:saIw65iFX0+OIo6kEKJLFjE21lGGFEs0GTKGRh/IzbY=,tag:KPF6wmJC4c5bCRVGQNFc9g==,type:str]
+    sshPrivateKey: ENC[AES256_GCM,data:28rqlrfAvG4z7nunlyS7G+suTvisT/u8eWPSw6UNhCKaccL89Mi/JGfC6sftHqb9EyoOFHPw13Zm+sYsdNwC8gGpXE7wEicrQvPW/48xVaWE4VeQKpjptrD1i/VvURidPj0BNAOsWI8EyLd0scj/ENE4hCJ7Wx8FI8JzhBvwNyzmk11nLji2DjbrwFJ4gbFw/9gTRoAp4qGWO2VniqVmvOxN7Mc1r7eeydZ/yxE4kWAp+iHzcxpIIIT9NREYGhxx/Ntr192jWGej0OivGckhpG1J/zwuopv6rjwYb9RHbu3L226pavKi+QXKdBFfMzRhh1qRumuUeD3ER4JsMT0O1DrkMEAwkF/H1fHSO0saE6evQOSyPVAJfQERzkoZAgi7O5GiuVQWvwduIsjeNRLd9oYmVHql2w3VTbktzSv0avAD/2c8GLw4qAz3OjUzCkB/2D6I5bmHZb0YVVBrZexo9+StISTW96yXvNnnVBLn2EK4C9CyKWeNqMwPjpLfJMN4lRiZc99j,iv:Y5aoWRjxjxQU13hZYKsmngarkltioP3zasbjOGcKHg0=,tag:n0g15gyEMRLpjISX86V3Ng==,type:str]
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age1vml3vk5uzyztj96qgz7n0a6w8ynvtmxfarkp0jdl0hvcj003895qcp6z09
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBWRGh5SE9vK3dVMGc4NkpY
+            K3hscXN1ajUwek1BUGE5Q0Y3R1d3N1dLdm04CkRQSnpnbjhTN0ZtZWZ0NjRRRkVE
+            T3ozV2JRUTN6bHZWMDhwUzF5VDNhdU0KLS0tIFVFeEx3UTVJRm5qTVRwY29YcUcz
+            bGY5VzdVYllzek9zZU00eFlmNVYvbzAKyDYTFSIJK7IpdSTV3gIKVyII4l2B6+iL
+            CsaZ1t+YzJluELTOxiAEG+DtBKh7IDau+Xwdlnft3KD3vJxs6iQ4XQ==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2025-03-17T23:05:21Z"
+    mac: ENC[AES256_GCM,data:P3yejir1NXCto/wBqFAa+F9jATrx4zvdOo/gTgpQVsXwbb0f2B57vOuKmJl4a/N0vvotFSLNbL962MohO6wHdQhGYy+8x4DASkAlmJnzAxOkCJ3BrnpQsffMVAf2FUUnQYR74vtpLJjSzEF6co+LvK+iO5JUSnpFruzkVMKo60U=,iv:H7qnZARh5ctADuTo+dXgbsB9RfWs78GVvedS1QNMqDI=,tag:Fm0jPmivuqMkwC1Kas8Fdg==,type:str]
+    pgp: []
+    encrypted_regex: ^(data|stringData)$
+    version: 3.9.4

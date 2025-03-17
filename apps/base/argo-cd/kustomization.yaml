@@ -4,3 +4,4 @@ resources:
   - deploy.yaml
   - argo-cd-slack.yaml
   - secrets.yaml
+  - repo.yaml
