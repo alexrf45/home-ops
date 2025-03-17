@@ -1,0 +1,60 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: prod
+  namespace: argo-cd
+  # Finalizer that ensures that project is not deleted until it is not referenced by any application
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  # Project description
+  description: Production Project Space
+
+  # Allow manifests to deploy from any Git repos
+  sourceRepos:
+    - 'git@github.com:alexrf45/prod-argo.git'
+    - 'https://gissilabs.github.io/charts/'
+    - 'https://charts.bitnami.com/bitnami'
+    - 'https://alexrf45.github.io/lab-helmcharts/fr3d-blog/'
+    - 'https://wiremind.github.io/wiremind-helm-charts'
+    - 'https://helm.kubeshark.co'
+    - 'https://pkgs.tailscale.com/helmcharts'
+    - 'https://headlamp-k8s.github.io/headlamp/'
+    - 'https://nextcloud.github.io/helm/'
+
+
+  clusterResourceWhitelist:
+    - group: '*'
+      kind: '*'
+  
+  namespaceResourceWhitelist:
+    - group: '*'
+      kind: '*'
+
+
+
+  # Only permit applications to deploy to the guestbook namespace in the same cluster
+  # Destination clusters can be identified by 'server', 'name', or both.
+  destinations:
+    - namespace: '*'
+      server: 'https://kubernetes.default.svc'
+      name: '*'
+    - namespace: 'vw'
+      server: 'https://10.3.3.4:6443'
+      name: '*'
+
+  # Enables namespace orphaned resource monitoring.
+  orphanedResources:
+    warn: false
+
+  roles:
+  # A role which provides read-only access to all applications in the project
+  - name: prod
+    description: production role
+    policies:
+    - p, proj:prod:prod, applications, *, prod/*, allow
+
+    jwtTokens:
+    - iat: 1535390316
+
+
