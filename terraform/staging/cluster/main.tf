@@ -1,7 +1,7 @@
 module "dev-test" {
   source = "./module"
 
-  pve_nodes = ["home-5", "home-4", "home-2", "home-0"]
+  pve_nodes = ["home-4", "home-2", "home-0"]
   cluster = {
     name          = "staging"
     env           = "staging"
@@ -69,10 +69,10 @@ module "dev-test" {
     v4 = {
       install_disk = "/dev/vda"
       machine_type = "worker"
-      node         = "home-5"
+      node         = "home-4"
       vm_id        = 1003
       datastore_id = "local-lvm"
-      storage_id   = "data0"
+      storage_id   = "data"
       ip           = "10.3.3.83"
       cores        = 2
       memory       = 8092

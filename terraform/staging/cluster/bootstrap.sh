@@ -10,8 +10,6 @@ terraform apply --auto-approve
 
 cp ./outputs/talosconfig ~/.talos/staging
 
-cp ./outputs/kubeconfig ~/.kube/config
-
 cp ./outputs/kubeconfig ~/.kube/new_config
 
 kubectl label node staging-node-3 node-role.kubernetes.io/worker=true
