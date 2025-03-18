@@ -38,8 +38,8 @@ spec:
   values:
     controllers:
       main:
-        type: statefulset
-
+        type: deployment
+        replicas: 1
         containers:
           main:
             image:
@@ -61,7 +61,6 @@ spec:
 
             env:
               DISABLE_TELEMETRY: "true"
-            
             securityContext:
               readOnlyRootFilesystem: true
               allowPrivilegeEscalation: false
@@ -73,13 +72,6 @@ spec:
                 memory: 640M
               limits:
                 memory: 640M
-
-        pod:
-          securityContext:
-            runAsUser: 1000
-            runAsGroup: 1000
-            fsGroup: 1000
-            fsGroupChangePolicy: OnRootMismatch
 
     service:
       main:
