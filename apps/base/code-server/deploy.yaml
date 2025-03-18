@@ -61,7 +61,12 @@ spec:
 
             env:
               DISABLE_TELEMETRY: "true"
-
+            
+            securityContext:
+              readOnlyRootFilesystem: true
+              allowPrivilegeEscalation: false
+              capabilities:
+                drop: ["ALL"]
             resources:
               requests:
                 cpu: 10m
