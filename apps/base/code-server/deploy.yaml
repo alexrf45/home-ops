@@ -63,7 +63,7 @@ spec:
               DISABLE_TELEMETRY: "true"
             securityContext:
               readOnlyRootFilesystem: true
-              allowPrivilegeEscalation: false
+              allowPrivilegeEscalation: true
               capabilities:
                 drop: ["ALL"]
             resources:

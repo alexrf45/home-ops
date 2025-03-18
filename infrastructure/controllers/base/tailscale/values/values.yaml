@@ -1,0 +1,40 @@
+oauth: {}
+  # clientId: ""
+  # clientSecret: ""
+
+installCRDs: true
+
+operatorConfig:
+  defaultTags:
+    - "tag:k8s"
+  image:
+    # Repository defaults to DockerHub, but images are also synced to ghcr.io/tailscale/k8s-operator.
+    repository: tailscale/k8s-operator
+    tag: ""
+    digest: ""
+    pullPolicy: Always
+  logging: "debug" # info, debug, dev
+  hostname: "tailscale-operator"
+
+
+  affinity: {}
+
+  podSecurityContext: {}
+
+  securityContext: {}
+
+# https://tailscale.com/kb/1236/kubernetes-operator#cluster-resource-customization-using-proxyclass-custom-resource
+proxyConfig:
+  image:
+    # Repository defaults to DockerHub, but images are also synced to ghcr.io/tailscale/tailscale.
+    repository: tailscale/tailscale
+    tag: ""
+    digest: ""
+  defaultTags: "tag:k8s-operator"
+  firewallMode: auto
+
+# Kubernetes API server.
+# https://tailscale.com/kb/1236/kubernetes-operator/#accessing-the-kubernetes-control-plane-using-an-api-server-proxy
+apiServerProxyConfig:
+  mode: "false" # "true", "false", "noauth"
+
