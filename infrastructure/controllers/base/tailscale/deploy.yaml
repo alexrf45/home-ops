@@ -59,7 +59,7 @@ spec:
         repository: tailscale/tailscale
         tag: ""
         digest: ""
-      defaultTags: "tag:k8s-operator"
+      defaultTags: "tag:k8s-operator,tag:k8s"
       firewallMode: auto
 
     # Kubernetes API server.
