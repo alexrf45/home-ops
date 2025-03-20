@@ -35,6 +35,7 @@ spec:
     operatorConfig:
       defaultTags:
         - "tag:k8s"
+        - "tag:k8s-operator"
       image:
        # Repository defaults to DockerHub, but images are also synced to ghcr.io/tailscale/k8s-operator.
         repository: tailscale/k8s-operator
