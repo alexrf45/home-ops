@@ -18,8 +18,8 @@ spec:
   maxHistory: 3
   chart:
     spec:
-      chart: spegel
-      version: v0.0.30
+      chart: tailscale-operator
+      version: 1.80.3
       interval: 5m
       sourceRef:
         kind: HelmRepository
