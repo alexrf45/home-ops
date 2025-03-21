@@ -65,5 +65,5 @@ spec:
     # Kubernetes API server.
     # https://tailscale.com/kb/1236/kubernetes-operator/#accessing-the-kubernetes-control-plane-using-an-api-server-proxy
     apiServerProxyConfig:
-      mode: "noauth" # "true", "false", "noauth"
+      mode: "false" # "true", "false", "noauth"
 
