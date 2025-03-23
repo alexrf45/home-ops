@@ -1,0 +1,40 @@
+machine:
+  files:
+    - path: /etc/cri/conf.d/20-customization.part
+      op: create
+      content: |
+        [plugins."io.containerd.cri.v1.images"]
+          discard_unpacked_layers = false
+  time:
+    servers:
+      - /dev/ptp0
+  kubelet:
+    extraArgs:
+      rotate-server-certificates: true
+    clusterDNS:
+      - 10.43.0.10
+    extraMounts:
+      - destination: /var/data
+        type: bind
+        source: /var/data
+        options:
+          - rbind
+          - rshared
+          - rw
+  disks:
+    - device: /dev/vdb
+      partitions:
+        - mountpoint: /var/data
+  install:
+    disk: ${install_disk}
+    image: ${install_image}
+    extraKernelArgs:
+      - console=ttyS1
+      - panic=10
+      - cpufreq.default_governor=performance
+      - intel_idle.max_cstate=0
+  network:
+    hostname: ${hostname}
+    nameservers:
+      - 1.1.1.1
+      - 8.8.8.8
