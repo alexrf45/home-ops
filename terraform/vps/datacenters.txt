@@ -1,0 +1,10 @@
+json.datacenters[0].location.name = "nbg1";
+json.datacenters[0].name = "nbg1-dc3";
+json.datacenters[1].location.name = "hel1";
+json.datacenters[1].name = "hel1-dc2";
+json.datacenters[2].location.name = "fsn1";
+json.datacenters[2].name = "fsn1-dc14";
+json.datacenters[3].location.name = "ash";
+json.datacenters[3].name = "ash-dc1";
+json.datacenters[4].location.name = "hil";
+json.datacenters[4].name = "hil-dc1";
