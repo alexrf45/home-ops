@@ -136,9 +136,9 @@ spec:
         enabled: true
         controller: generic
         annotations:
-          cert-manager.io/cluster-issuer: letsencrypt-production
-        hostname: prod.internal.argo.fr3d.dev
-        ingressClassName: cilium
+          #cert-manager.io/cluster-issuer: letsencrypt-production
+        hostname: prod.internal.argo
+        ingressClassName: tailscale
         path: /
         pathType: Prefix
         tls: true
