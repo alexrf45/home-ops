@@ -1,0 +1,29 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v2
+kind: HelmRepository
+metadata:
+  name: authentik
+  namespace: security
+spec:
+  interval: 2h
+  url: https://charts.goauthentik.io
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: authentik
+  namespace: flux-system
+spec:
+  chartRef:
+    kind: HelmRepository
+    name: authentik
+    namespace: flux-system
+  install:
+    crds: Create
+  interval: 1m0s
+  targetNamespace: security
+  upgrade:
+    crds: CreateReplace
+  values:
+
+
