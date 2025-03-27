@@ -1,12 +1,10 @@
 module "dev-test" {
   source = "./module"
 
-  pve_nodes = ["home-4", "home-2", "home-0"]
   cluster = {
     name          = "staging"
     env           = "staging"
     endpoint      = "10.3.3.80"
-    pve_endpoint  = "10.3.3.2"
     vip_ip        = "10.3.3.79"
     gateway       = "10.3.3.1"
     talos_version = "v1.9.5"
@@ -18,13 +16,13 @@ module "dev-test" {
       "qemu-guest-agent",
       "i915",
     ]
-    platform      = "nocloud"
+    platform      = "metal"
     iso_datastore = "local"
   }
 
   nodes = {
     v1 = {
-      install_disk     = "/dev/vda"
+      install_disk     = "/dev/nvme0n1"
       machine_type     = "controlplane"
       node             = "home-0"
       vm_id            = 1000
