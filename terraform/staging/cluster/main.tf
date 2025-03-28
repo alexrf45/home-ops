@@ -1,5 +1,5 @@
 module "dev-test" {
-  source = "./module"
+  source = "./module-bare-metal"
 
   cluster = {
     name          = "staging"
@@ -16,66 +16,49 @@ module "dev-test" {
       "qemu-guest-agent",
       "i915",
     ]
-    platform      = "metal"
-    iso_datastore = "local"
+    platform = "metal"
   }
 
   nodes = {
     v1 = {
       install_disk     = "/dev/nvme0n1"
+      storage_disk     = "dev/sda"
       machine_type     = "controlplane"
-      node             = "home-0"
-      vm_id            = 1000
-      datastore_id     = "local-lvm"
-      storage_id       = "data"
       allow_scheduling = true
-      ip               = "10.3.3.80"
-      cores            = 2
-      memory           = 8092
-      size             = 25
-      storage_size     = 50
+      ip               = "10.3.3.2"
 
     },
     v2 = {
-      install_disk     = "/dev/vda"
+      install_disk     = "/dev/nvme0n1"
+      storage_disk     = "dev/sda"
       machine_type     = "controlplane"
-      node             = "home-2"
-      vm_id            = 1001
-      datastore_id     = "local-lvm"
-      storage_id       = "data"
       allow_scheduling = true
-      ip               = "10.3.3.81"
-      cores            = 2
-      memory           = 8092
-      size             = 25
-      storage_size     = 50
+      ip               = "10.3.3.3"
+
     },
     v3 = {
-      install_disk     = "/dev/vda"
+      install_disk     = "/dev/nvme0n1"
+      storage_disk     = "dev/sda"
       machine_type     = "controlplane"
-      node             = "home-4"
-      vm_id            = 1002
-      datastore_id     = "local-lvm"
-      storage_id       = "data"
       allow_scheduling = true
-      ip               = "10.3.3.82"
-      cores            = 2
-      memory           = 8092
-      size             = 25
-      storage_size     = 50
+      ip               = "10.3.3.4"
+
     },
     v4 = {
-      install_disk = "/dev/vda"
+      install_disk = "/dev/nvme0n1"
+      storage_disk = "dev/sda"
       machine_type = "worker"
-      node         = "home-4"
-      vm_id        = 1003
-      datastore_id = "local-lvm"
-      storage_id   = "data"
-      ip           = "10.3.3.83"
-      cores        = 2
-      memory       = 8092
-      size         = 25
-      storage_size = 150
+      ip           = "10.3.3.5"
+
     },
+    v5 = {
+      install_disk = "/dev/nvme0n1"
+      storage_disk = "dev/sda"
+      machine_type = "worker"
+      ip           = "10.3.3.6"
+
+    },
+
+
   }
 }
