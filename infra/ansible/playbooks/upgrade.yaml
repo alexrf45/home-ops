@@ -1,0 +1,12 @@
+- hosts: server,agent
+  become: true
+  vars:
+    reboot_uptime_days: 2
+  tasks:
+
+    - name: Update & upgrade Node apt packages
+      become: true
+      apt:
+        upgrade: yes
+
+    - ansible.builtin.reboot:

@@ -1,0 +1,8 @@
+- name: shutdown proxmox nodes
+  hosts: all
+  become: true
+  gather_facts: no
+  tasks:
+    - name: shutdown
+      command: /sbin/shutdown -h +1
+

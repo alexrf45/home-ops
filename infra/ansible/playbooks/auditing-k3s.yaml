@@ -1,0 +1,12 @@
+- name: configure auditing folder location
+  become: true
+  gather_facts: true
+  hosts: all
+  tasks:
+    - name: k3s audit setup
+      shell: |
+        mkdir -p /var/lib/rancher/k3s/server/logs
+    - name: copy audit.yaml to directory
+      ansible.builtin.copy:
+        src: ../manifests/audit.yaml
+        dest: /var/lib/rancher/k3s/server/audit.yaml

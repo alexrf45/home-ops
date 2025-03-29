@@ -1,0 +1,27 @@
+---
+all:
+ children:
+  server:
+    hosts:
+      thoth:
+        ansible_host: 10.3.3.9
+        ansible_user: sean
+        ansible_ssh_private_key_file: "~/.ssh/lab"
+  agent:
+    hosts:
+      bastet:
+        ansible_host: 10.3.3.5
+        ansible_user: sean
+        ansible_ssh_private_key_file: "~/.ssh/lab"
+      anubis:
+        ansible_host: 10.3.3.3
+        ansible_user: sean
+        ansible_ssh_private_key_file: "~/.ssh/lab"
+      horus:
+        ansible_host: 10.3.3.4
+        ansible_user: sean
+        ansible_ssh_private_key_file: "~/.ssh/lab"
+      osiris:
+        ansible_host: 10.3.3.10
+        ansible_user: sean
+        ansible_ssh_private_key_file: "~/.ssh/lab"

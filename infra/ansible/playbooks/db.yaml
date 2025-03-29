@@ -1,0 +1,45 @@
+---
+- name: MySQL Install
+  become: true
+  hosts: db
+  tasks:
+    - name: Install a list of packages
+      ansible.builtin.apt:
+        pkg:
+        - mysql-server-core-8.0
+        - mysql-client
+        - mysql-server
+        - python3-mysqldb
+        - libmysqlclient-dev
+    - name: Start the MySQL service
+      shell: |
+        sudo systemctl start mysql.service && sudo systemctl enable mysql.service
+    - name: Remove the test database
+      mysql_db: name=test state=absent
+
+    - name: Create deploy user for mysql
+      mysql_user: user="deploy" host="%" password={{mysql_password}} priv="*.*:ALL,GRANT"
+
+    - name: Ensure anonymous users are not in the database
+      mysql_user: user='' host=$item state=absent
+      with_items:
+        - 127.0.0.1
+        - ::1
+        - localhost
+    - name: create database
+      mysql_db: name=k3s_data state=present login_user="deploy" login_password={{mysql_password}}
+    - name: create database
+      mysql_db: name=vw_data state=present login_user="deploy" login_password={{mysql_password}}
+    - name: Enable remote login to mysql
+      lineinfile:
+         path: /etc/mysql/mysql.conf.d/mysqld.cnf
+         regexp: '^bind-address'
+         line: 'bind-address = 0.0.0.0'
+         backup: yes
+      notify:
+         - Restart mysql
+  handlers:
+    - name: Restart mysql
+      service:
+        name: mysql
+        state: restarted
