@@ -85,7 +85,7 @@ spec:
         enabled: true
         hosts:
         - staging.internal.grafana.fr3d.dev
-        ingressClassName: cilium
+        ingressClassName: nginx-internal
         path: /
         tls:
         - hosts:
@@ -98,7 +98,7 @@ spec:
         finalizers:
         - kubernetes.io/pvc-protection
         size: 5Gi
-        storageClassName: local-path
+        storageClassName: longhorn
         #type: sts
     nodeExporter:
       enabled: true
@@ -155,7 +155,7 @@ spec:
         storageSpec:
           volumeClaimTemplate:
             spec:
-              storageClassName: local-path
+              storageClassName: longhorn
               resources:
                 requests:
                   storage: 4Gi

@@ -138,7 +138,7 @@ spec:
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-production
         hostname: production.internal.argo.fr3d.dev
-        ingressClassName: cilium
+        ingressClassName: nginx-internal
         path: /
         pathType: Prefix
         tls: true

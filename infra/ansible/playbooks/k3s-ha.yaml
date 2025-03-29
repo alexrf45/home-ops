@@ -1,13 +1,13 @@
 - name: Install k3s on primary control plane
   become: true
   gather_facts: true
-  hosts: server
+  hosts: control-plane-0
   tasks:
     - name: k3s server
       shell: |
-        curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION="v1.31.1+k3s1" INSTALL_K3S_EXEC="server" sh -s - \
+        curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION="v1.32.3+k3s1" INSTALL_K3S_EXEC="server" sh -s - \
         --cluster-init \
-        --disable=traefik,servicelb,metrics-server \
+        --disable=traefik,servicelb \
         --disable-kube-proxy \
         --flannel-backend=none \
         --disable-network-policy \
@@ -20,13 +20,13 @@
 - name: Install k3s on secondary control plane
   become: true
   gather_facts: true
-  hosts: server-1
+  hosts: control-plane-1
   tasks:
      - name: k3s server
        shell: |
-         sleep 10 && curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION="v1.31.1+k3s1" INSTALL_K3S_EXEC="server" sh -s - \
-         --server https://10.3.3.40:6443 \
-         --disable=traefik,servicelb,metrics-server \
+         sleep 5 && curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION="v1.32.3+k3s1" INSTALL_K3S_EXEC="server" sh -s - \
+         --server https://10.3.3.2:6443 \
+         --disable=traefik,servicelb \
          --disable-kube-proxy \
          --secrets-encryption \
          --kube-apiserver-arg='audit-log-path=/var/lib/rancher/k3s/server/logs/audit.log' \
@@ -44,9 +44,7 @@
   tasks:
     - name: k3 agents
       shell: |
-        sleep 20 && curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION="v1.31.1+k3s1" \
-        K3S_URL=https://10.3.3.40:6443 \
+        sleep 20 && curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION="v1.32.3+k3s1" \
+        K3S_URL=https://10.3.3.2:6443 \
         K3S_TOKEN='{{ token }}' sh -s - \
-        --node-label='worker=node'
-
-
+        --node-label "node-role.kubernetes.io/worker=true"

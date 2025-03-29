@@ -13,7 +13,7 @@ spec:
       enabled: true
       hosts:
       - staging.internal.pihole.fr3d.dev
-      ingressClassName: cilium
+      ingressClassName: nginx-internal
       path: /
       pathType: Prefix
       tls:
@@ -22,7 +22,7 @@ spec:
         secretName: pihole-tls
     persistentVolumeClaim:
       enabled: true
-      storageClass: local-path
+      storageClass: longhorn
       accessModes:
         - ReadWriteOnce
       size: 2048Mi
