@@ -7,11 +7,13 @@
       shell: |
         curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION="v1.32.3+k3s1" INSTALL_K3S_EXEC="server" sh -s - \
         --cluster-init \
-        --disable=traefik,servicelb \
+        --disable=traefik,servicelb,local-storage \
         --disable-kube-proxy \
-        --flannel-backend=none \
         --disable-network-policy \
+        --flannel-backend=none \
         --secrets-encryption \
+        --selinux \
+        --etcd-s3 \
         --kube-apiserver-arg='audit-log-path=/var/lib/rancher/k3s/server/logs/audit.log' \
         --kube-apiserver-arg='audit-policy-file=/var/lib/rancher/k3s/server/audit.yaml' \
         --token {{ token }} \
@@ -26,12 +28,14 @@
        shell: |
          sleep 5 && curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION="v1.32.3+k3s1" INSTALL_K3S_EXEC="server" sh -s - \
          --server https://10.3.3.6:6443 \
-         --disable=traefik,servicelb \
+         --disable=traefik,servicelb,local-storage \
          --disable-kube-proxy \
+         --flannel-backend=none \
          --secrets-encryption \
+         --selinux \
+         --etcd-s3 \
          --kube-apiserver-arg='audit-log-path=/var/lib/rancher/k3s/server/logs/audit.log' \
          --kube-apiserver-arg='audit-policy-file=/var/lib/rancher/k3s/server/audit.yaml' \
-         --flannel-backend=none \
          --disable-network-policy \
          --token '{{ token }}' \
          --write-kubeconfig-mode=644
@@ -44,6 +48,6 @@
   tasks:
     - name: k3 agents
       shell: |
-        sleep 20 && curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION="v1.32.3+k3s1" \
+        sleep 5 && curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION="v1.32.3+k3s1" \
         K3S_URL=https://10.3.3.6:6443 \
         K3S_TOKEN='{{ token }}' sh -s - \
