@@ -1,7 +1,7 @@
 - name: Install k3s on primary control plane
   become: true
   gather_facts: true
-  hosts: control-plane-0
+  hosts: home-4
   tasks:
     - name: k3s server
       shell: |
@@ -20,12 +20,12 @@
 - name: Install k3s on secondary control plane
   become: true
   gather_facts: true
-  hosts: control-plane-1
+  hosts: home-2
   tasks:
      - name: k3s server
        shell: |
          sleep 5 && curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION="v1.32.3+k3s1" INSTALL_K3S_EXEC="server" sh -s - \
-         --server https://10.3.3.2:6443 \
+         --server https://10.3.3.6:6443 \
          --disable=traefik,servicelb \
          --disable-kube-proxy \
          --secrets-encryption \
@@ -45,6 +45,5 @@
     - name: k3 agents
       shell: |
         sleep 20 && curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION="v1.32.3+k3s1" \
-        K3S_URL=https://10.3.3.2:6443 \
+        K3S_URL=https://10.3.3.6:6443 \
         K3S_TOKEN='{{ token }}' sh -s - \
-        --node-label "node-role.kubernetes.io/worker=true"

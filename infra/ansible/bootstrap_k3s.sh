@@ -1,19 +1,26 @@
 #!/bin/bash
 
-#decrypt_age secrets-folder.tar.gz.enc secrets-folder.tar.gz
-
-#tar -xzvf secrets-folder.tar.gz
+set -e
 
 ansible-playbook -i inventory/hosts.yaml -K playbooks/auditing-k3s.yaml
 
-ansible-playbook -i inventory/hosts.yaml -e @secrets.yaml --ask-vault-password -K playbooks/k3s.yaml
+ansible-playbook -i inventory/hosts.yaml -e @secrets.yaml --ask-vault-password -K playbooks/k3s-ha.yaml
 
-scp osiris:/etc/rancher/k3s/k3s.yaml "$HOME/.kube/config"
+scp home-4:/etc/rancher/k3s/k3s.yaml "$HOME/.kube/config"
 
-sed -ie s/127.0.0.1/10.3.3.10/g "$HOME/.kube/config"
+sed -ie s/127.0.0.1/10.3.3.6/g "$HOME/.kube/config"
 
-kubectl apply -f ./manifests/namespaces.yaml
+kubectl create namespace flux-system
 
-bash ./secrets-folder/k-secrets.sh
+cat ~/.local/flux-staging.agekey | kubectl create secret generic sops-age \
+  --namespace=flux-system \
+  --from-file=flux-staging.agekey=/dev/stdin
 
-kubectl label node home-2 home-3 home-4 node-role.kubernetes.io/worker=true
+flux bootstrap git \
+  --cluster-domain=cluster.local \
+  --url=ssh://git@github.com/alexrf45/home-ops.git \
+  --path=flux/fr3d \
+  --private-key-file=/home/fr3d/.ssh/fr3d \
+  --branch main
+
+#kubectl label node home-0 home-1 home-3 node-role.kubernetes.io/worker=true

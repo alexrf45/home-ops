@@ -8,5 +8,5 @@
         mkdir -p /var/lib/rancher/k3s/server/logs
     - name: copy audit.yaml to directory
       ansible.builtin.copy:
-        src: ../manifests/audit.yaml
+        src: ../../../utils/audit.yaml
         dest: /var/lib/rancher/k3s/server/audit.yaml

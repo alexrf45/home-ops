@@ -1,6 +1,6 @@
 ---
 - name: Undo cluster setup
-  hosts: control_plane,node
+  hosts: all
   become: true
   tasks:
     - name: Run K3s Uninstall script [server]
