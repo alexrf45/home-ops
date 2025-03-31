@@ -42,8 +42,6 @@ metadata:
   name: storage
   namespace: flux-system
 spec:
-  dependsOn:
-    - name: networking
   interval: 1h
   retryInterval: 1m
   timeout: 5m
