@@ -26,10 +26,10 @@ deploy() {
 
 flux-deploy() {
 
-  cat ~/.local/flux-staging.agekey | kubectl create secret generic sops-age \
-    --namespace=flux-system \
-    --from-file=flux-staging.agekey=/dev/stdin
-  #
+  # cat ~/.local/flux-staging.agekey | kubectl create secret generic sops-age \
+  #   --namespace=flux-system \
+  #   --from-file=flux-staging.agekey=/dev/stdin
+  # #
   flux bootstrap git \
     --cluster-domain=cluster.local \
     --url=ssh://git@github.com/alexrf45/home-ops.git \
@@ -49,3 +49,5 @@ destroy() {
 
   mv ~/.kube/config_bk ~/.kube/config
 }
+
+flux-deploy

@@ -48,7 +48,7 @@ data "helm_template" "this" {
           - SETUID
 
     hubble:
-      enabled: false
+      enabled: true
       enableOpenMetrics: false
       metrics:
         enabled:
@@ -60,8 +60,8 @@ data "helm_template" "this" {
           - icmp
           - http
       relay:
-        enabled: false
-        rollOutPods: false
+        enabled: true
+        rollOutPods: true
       ui:
         enabled: true
 
