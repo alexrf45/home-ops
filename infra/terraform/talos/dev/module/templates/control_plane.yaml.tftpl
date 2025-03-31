@@ -20,6 +20,8 @@ cluster:
           exemptions:
             namespaces:
               - networking
+              - storage
+              - security
   allowSchedulingOnControlPlanes: ${allow_scheduling}
   network:
     cni:

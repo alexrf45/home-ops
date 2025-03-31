@@ -10,7 +10,7 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
-  path: ./networking/staging
+  path: ./networking/dev
   prune: true
   decryption:
     provider: sops
@@ -29,7 +29,7 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
-  path: ./secrets/staging
+  path: ./secrets/dev
   prune: true
   decryption:
     provider: sops
@@ -43,14 +43,14 @@ metadata:
   namespace: flux-system
 spec:
   dependsOn:
-    - name: networking
+    - name: secrets
   interval: 1h
   retryInterval: 1m
   timeout: 5m
   sourceRef:
     kind: GitRepository
     name: flux-system
-  path: ./storage/staging
+  path: ./storage/dev
   prune: true
   decryption:
     provider: sops

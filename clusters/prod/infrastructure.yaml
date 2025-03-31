@@ -10,7 +10,7 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
-  path: ./networking/staging
+  path: ./networking/prod
   prune: true
   decryption:
     provider: sops
@@ -29,7 +29,7 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
-  path: ./secrets/staging
+  path: ./secrets/prod
   prune: true
   decryption:
     provider: sops
@@ -50,7 +50,7 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
-  path: ./storage/staging
+  path: ./storage/prod
   prune: true
   decryption:
     provider: sops

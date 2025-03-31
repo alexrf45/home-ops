@@ -63,7 +63,7 @@ data "helm_template" "this" {
         enabled: false
         rollOutPods: false
       ui:
-        enabled: false
+        enabled: true
 
     cgroup:
       autoMount:
@@ -79,7 +79,7 @@ data "helm_template" "this" {
       loadbalancerMode: shared
       service:
         externalTrafficPolicy: Cluster
-        loadBalancerIP: 10.3.3.120
+        loadBalancerIP: 10.3.3.50
         name: cilium-ingress
         type: LoadBalancer
     gatewayAPI:

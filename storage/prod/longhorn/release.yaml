@@ -14,7 +14,7 @@ spec:
       replicas: 2
     persistence:
       defaultClass: true
-      defaultClassReplicaCount: 2
+      defaultClassReplicaCount: 3
       defaultDataLocality: best-effort
       migratable: true
       nfsOptions: vers=4.2,noresvport,softerr,timeo=600,retrans=5

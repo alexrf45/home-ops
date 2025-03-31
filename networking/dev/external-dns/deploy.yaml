@@ -31,7 +31,7 @@ spec:
     remediation:
       retries: 4
   releaseName: external-dns
-  targetNamespace: pihole-system
+  targetNamespace: networking
   values:
     provider:
       name: pihole

@@ -13,7 +13,7 @@ spec:
       enabled: true
       hosts:
       - prod.internal.pihole.fr3d.dev
-      ingressClassName: nginx-internal
+      ingressClassName: cilium
       path: /
       pathType: Prefix
       tls:
@@ -29,7 +29,7 @@ spec:
     serviceDns:
       externalTrafficPolicy: Cluster
       mixedService: true
-      LoadBalancerIP: 10.3.3.121
+      LoadBalancerIP: 10.3.3.40
       annotations:
       type: LoadBalancer
     podDnsConfig:

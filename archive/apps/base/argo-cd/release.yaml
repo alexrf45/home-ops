@@ -73,7 +73,7 @@ spec:
       additionalLabels:
         app: argo-cd
         env: home
-      domain: staging.internal.argo.fr3d.dev
+      domain: dev.internal.argo.fr3d.dev
       logging:
         format: text
         level: error
@@ -137,7 +137,7 @@ spec:
         controller: generic
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-staging
-        hostname: staging.internal.argo.fr3d.dev
+        hostname: dev.internal.argo.fr3d.dev
         ingressClassName: cilium
         path: /
         pathType: Prefix

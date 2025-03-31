@@ -47,7 +47,7 @@ spec:
       enabled: true
       hosts:
       - pihole.fr3d.dev
-      ingressClassName: nginx-internal
+      ingressClassName: cilium
       path: /
       pathType: Prefix
       tls:
@@ -67,7 +67,7 @@ spec:
     serviceDns:
       externalTrafficPolicy: Cluster
       mixedService: true
-      LoadBalancerIP: 10.3.3.71
+      LoadBalancerIP: 10.3.3.30
       annotations:
         #lbipam.cilium.io/lb-ipam-sharing-key: pihole
       type: LoadBalancer

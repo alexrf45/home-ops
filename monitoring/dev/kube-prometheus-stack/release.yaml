@@ -84,12 +84,12 @@ spec:
           cert-manager.io/cluster-issuer: letsencrypt-staging
         enabled: true
         hosts:
-        - staging.internal.grafana.fr3d.dev
-        ingressClassName: nginx-internal
+        - dev.internal.grafana.fr3d.dev
+        ingressClassName: cilium
         path: /
         tls:
         - hosts:
-          - staging.internal.grafana.fr3d.dev
+          - dev.internal.grafana.fr3d.dev
           secretName: grafana-general-tls
       persistence:
         accessModes:
@@ -132,10 +132,10 @@ spec:
           cert-manager.io/cluster-issuer: letsencrypt-staging
         tls:
         - hosts:
-          - staging.internal.prometheus.fr3d.dev
+          - dev.internal.prometheus.fr3d.dev
           secretName: prometheus-general-tls
         hosts:
-        - staging.internal.prometheus.fr3d.dev
+        - dev.internal.prometheus.fr3d.dev
 
       prometheusSpec:
         podMonitorSelectorNilUsesHelmValues: false
