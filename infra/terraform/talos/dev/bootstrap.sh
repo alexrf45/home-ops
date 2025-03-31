@@ -15,12 +15,12 @@ deploy() {
 
   cp ./outputs/kubeconfig ~/.kube/config
 
-  cp ~/.kube/config ~/.kube/config_bk && KUBECONFIG=~/.kube/dev:~/.kube/prod kubectl config view --flatten >~/.kube/config_tmp && mv ~/.kube/config_tmp ~/.kube/config
+  #cp ~/.kube/config ~/.kube/config_bk && KUBECONFIG=~/.kube/dev:~/.kube/prod kubectl config view --flatten >~/.kube/config_tmp && mv ~/.kube/config_tmp ~/.kube/config
 
   #kubectx admin@prod
 
   #terraform output
-  #kubectl label node prod-node-3 prod-node-4 prod-node-5 prod-node-6 node-role.kubernetes.io/worker=true
+  kubectl label node dev-node-1 dev-node-2 node-role.kubernetes.io/worker=true
 
 }
 
