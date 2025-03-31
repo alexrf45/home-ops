@@ -1,5 +1,0 @@
-bucket = "remote-state-example"
-region = "us-east-1"
-dynamodb_table = "tf-locks-example"
-encrypt = true
-key = "state/dev/example.tfstate"
