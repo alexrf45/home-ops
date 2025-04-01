@@ -44,6 +44,6 @@ spec:
     sources: ["ingress", "service"]
     registry: txt
     extraArgs:
-      - --pihole-server=http://pihole-web.pihole-system.svc.cluster.local
+      - --pihole-server=http://pihole-web.networking.svc.cluster.local
       - --pihole-tls-skip-verify
     policy: upsert-only
