@@ -17,7 +17,6 @@ deploy() {
 
   kubectx admin@prod
 
-  #terraform output
   kubectl label node prod-node-3 prod-node-4 prod-node-5 prod-node-6 node-role.kubernetes.io/worker=true
 
 }
@@ -47,5 +46,7 @@ destroy() {
 
   mv ~/.kube/config_bk ~/.kube/config
 }
+
+deploy
 
 flux-deploy
