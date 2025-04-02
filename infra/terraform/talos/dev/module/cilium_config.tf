@@ -79,7 +79,7 @@ data "helm_template" "this" {
       loadbalancerMode: shared
       service:
         externalTrafficPolicy: Cluster
-        loadBalancerIP: 10.3.3.50
+        loadBalancerIP: 10.3.3.31
         name: cilium-ingress
         type: LoadBalancer
     gatewayAPI:
