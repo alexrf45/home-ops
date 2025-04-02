@@ -69,7 +69,7 @@ spec:
       mixedService: true
       LoadBalancerIP: 10.3.3.30
       annotations:
-        #lbipam.cilium.io/lb-ipam-sharing-key: pihole
+        "lbipam.cilium.io/ips": "10.3.3.30"
       type: LoadBalancer
     doh:
       enabled: true
