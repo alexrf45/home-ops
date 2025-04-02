@@ -31,6 +31,7 @@ spec:
       mixedService: true
       LoadBalancerIP: 10.3.3.40
       annotations:
+        "lbipam.cilium.io/ips": "10.3.3.40"
       type: LoadBalancer
     podDnsConfig:
       enabled: true
