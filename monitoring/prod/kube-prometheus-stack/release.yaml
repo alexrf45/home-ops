@@ -98,7 +98,7 @@ spec:
         finalizers:
         - kubernetes.io/pvc-protection
         size: 5Gi
-        storageClassName: local-path
+        storageClassName: longhorn
         type: sts
     nodeExporter:
       enabled: false
