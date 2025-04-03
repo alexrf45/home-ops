@@ -11,6 +11,7 @@ metadata:
     gethomepage.dev/group: Cluster Management
     gethomepage.dev/icon: homepage.png
     gethomepage.dev/name: Homepage
+    tailscale.com/expose: "true"
 spec:
   rules:
     - host: "homepage-dev"
@@ -23,7 +24,6 @@ spec:
                 name: homepage
                 port:
                   number: 3000
-            ingressClassName: tailscale
             tls:
               - hosts:
                   - homepage-dev
