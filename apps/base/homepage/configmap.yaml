@@ -8,33 +8,29 @@ metadata:
 data:
   kubernetes.yaml: |
     mode: cluster
-  settings.yaml: ""
-  #settings.yaml: |
-  #  providers:
-  #    longhorn:
-  #      url: https://longhorn.my.network
+  settings.yaml: |
+    statusStyle: dot
+    theme: dark
+    color: stone
+    headerStyle: boxedWidgets
   custom.css: ""
   custom.js: ""
   bookmarks.yaml: |
     - Developer:
         - Github:
             - abbr: GH
-              href: https://github.com/
+              href: https://github.com/alexrf45
   services.yaml: |
-    - My First Group:
-        - My First Service:
-            href: http://localhost/
-            description: Homepage is awesome
+    - Monitoring:
+        - Grafana (PROD):
+            href: https://prod-internal-argo.bun-dominant.ts.net
+            description: Grafana
 
-    - My Second Group:
+    - Apps:
         - My Second Service:
             href: http://localhost/
             description: Homepage is the best
 
-    - My Third Group:
-        - My Third Service:
-            href: http://localhost/
-            description: Homepage is 😎
   widgets.yaml: |
     - kubernetes:
         cluster:
@@ -54,6 +50,16 @@ data:
         cpu: true
         memory: true
         network: default
+    - resources:
+        label: storage
+        disk: /var/data
+    - datetime:
+        text_size: md
+        locale: us
+        format:
+          hour12: false
+          timeStyle: long
+          dateStyle: long
     - search:
         provider: duckduckgo
         target: _blank
