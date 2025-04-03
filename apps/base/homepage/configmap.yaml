@@ -50,9 +50,6 @@ data:
         cpu: true
         memory: true
         network: default
-    - resources:
-        label: storage
-        disk: /var/data
     - datetime:
         text_size: md
         locale: us
