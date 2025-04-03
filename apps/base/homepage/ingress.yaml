@@ -11,10 +11,10 @@ metadata:
     gethomepage.dev/group: Cluster Management
     gethomepage.dev/icon: homepage.png
     gethomepage.dev/name: Homepage
-    tailscale.com/expose: "true"
+  cert-manager.io/cluster-issuer: letsencrypt-staging
 spec:
   rules:
-    - host: "homepage-dev"
+    - host: "dev.internal.homepage.fr3d.dev"
       http:
         paths:
           - path: "/"
@@ -26,4 +26,4 @@ spec:
                   number: 3000
             tls:
               - hosts:
-                  - homepage-dev
+                  - dev.internal.homepage.fr3d.dev
