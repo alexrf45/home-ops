@@ -23,7 +23,7 @@ data:
   services.yaml: |
     - Monitoring:
         - Grafana (PROD):
-            href: https://prod-internal-argo.bun-dominant.ts.net
+            href: https://prod-internal-grafana.bun-dominant.ts.net
             description: Grafana
 
     - Apps:
