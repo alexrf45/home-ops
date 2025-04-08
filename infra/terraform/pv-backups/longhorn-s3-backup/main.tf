@@ -8,14 +8,14 @@ data "aws_caller_identity" "current" {}
 provider "aws" {}
 
 provider "kubernetes" {
-  config_path = "~/.kube/config"
+  config_path = "~/.kube/dev"
 }
 
 module "longhorn" {
   source     = "./module/"
-  env        = "prod"
-  app        = "longhorn-system"
-  username   = "lg-user"
-  path       = "/backup/"
+  env        = "dev"
+  app        = "storage"
+  username   = "dev-lg-user"
+  path       = "/backup/dev/"
   versioning = "Enabled"
 }
