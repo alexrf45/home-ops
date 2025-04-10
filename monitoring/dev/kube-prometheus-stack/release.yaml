@@ -97,7 +97,7 @@ spec:
         enabled: true
         finalizers:
         - kubernetes.io/pvc-protection
-        size: 5Gi
+        size: 1Gi
         storageClassName: longhorn
         #type: sts
     nodeExporter:
@@ -158,7 +158,7 @@ spec:
               storageClassName: longhorn
               resources:
                 requests:
-                  storage: 4Gi
+                  storage: 2Gi
     prometheus-node-exporter:
        enabled: true
        fullnameOverride: node-exporter
