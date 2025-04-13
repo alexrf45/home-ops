@@ -21,11 +21,11 @@ spec:
         - prod.internal.pihole.fr3d.dev
         secretName: pihole-tls
     persistentVolumeClaim:
-      enabled: false
-      storageClass: local-path
+      enabled: true
+      storageClass: longhorn
       accessModes:
         - ReadWriteOnce
-      size: 4096Mi
+      size: 8092Mi
     serviceDns:
       externalTrafficPolicy: Cluster
       mixedService: true
