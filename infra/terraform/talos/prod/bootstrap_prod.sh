@@ -17,7 +17,7 @@ deploy() {
 
   kubectx admin@prod
 
-  kubectl label node prod-node-3 prod-node-4 prod-node-5 prod-node-6 node-role.kubernetes.io/worker=true
+  kubectl label node prod-node-3 prod-node-4 prod-node-5 prod-node-6 prod-node-7 node-role.kubernetes.io/worker=true
 
 }
 
@@ -49,4 +49,5 @@ destroy() {
 
 deploy
 
-flux-deploy
+#flux-deploy
+#destroy
