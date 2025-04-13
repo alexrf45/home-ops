@@ -120,6 +120,8 @@ spec:
         - prod.int.prometheus.fr3d.dev
 
       prometheusSpec:
+        nodeSelector:
+          kubernetes.io/hostname: "prod-node-3"
         logFormat: logfmt
         logLevel: info
         replicas: 2
