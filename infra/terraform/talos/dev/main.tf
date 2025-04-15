@@ -1,6 +1,6 @@
 module "dev" {
   source    = "./module"
-  pve_nodes = ["home-3", "home-4"]
+  pve_nodes = ["home-3", "home-4", "home-5"]
   cluster = {
     name          = "dev"
     env           = "dev"
@@ -58,6 +58,19 @@ module "dev" {
       datastore_id = "local-lvm"
       storage_id   = "data"
       ip           = "10.3.3.102"
+      cores        = 2
+      memory       = 8092
+      size         = 25
+      storage_size = 250
+    },
+    v4 = {
+      install_disk = "/dev/vda"
+      machine_type = "worker"
+      node         = "home-5"
+      vm_id        = 103
+      datastore_id = "local-lvm"
+      storage_id   = "data"
+      ip           = "10.3.3.103"
       cores        = 2
       memory       = 8092
       size         = 25

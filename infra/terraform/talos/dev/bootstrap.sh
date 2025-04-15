@@ -17,7 +17,7 @@ deploy() {
 
   #cp ~/.kube/config ~/.kube/config_bk && KUBECONFIG=~/.kube/dev:~/.kube/prod kubectl config view --flatten >~/.kube/config_tmp && mv ~/.kube/config_tmp ~/.kube/config
 
-  kubectl label node dev-node-1 dev-node-2 node-role.kubernetes.io/worker=true
+  kubectl label node dev-node-1 dev-node-2 dev-node-3 node-role.kubernetes.io/worker=true
 
 }
 
@@ -48,5 +48,5 @@ destroy() {
   mv ~/.kube/config_bk ~/.kube/config
 }
 deploy
-flux-deploy
+#flux-deploy
 #destroy
