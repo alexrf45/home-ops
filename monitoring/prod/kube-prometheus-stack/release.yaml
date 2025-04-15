@@ -121,7 +121,7 @@ spec:
 
       prometheusSpec:
         nodeSelector:
-          kubernetes.io/hostname: "prod-node-3"
+          kubernetes.io/hostname: "prod-node-9"
         logFormat: logfmt
         logLevel: info
         replicas: 2

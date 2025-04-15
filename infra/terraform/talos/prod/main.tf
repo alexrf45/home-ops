@@ -1,6 +1,6 @@
 module "prod" {
   source    = "./module"
-  pve_nodes = ["home-0", "home-1", "home-2", "home-3", "home-4"]
+  pve_nodes = ["home-0", "home-1", "home-2", "home-3", "home-4", "home-5"]
   cluster = {
     name          = "prod"
     env           = "prod"
@@ -26,7 +26,7 @@ module "prod" {
       install_disk     = "/dev/vda"
       machine_type     = "controlplane"
       node             = "home-0"
-      vm_id            = 103
+      vm_id            = 203
       datastore_id     = "local-lvm"
       storage_id       = "data"
       allow_scheduling = false
@@ -41,7 +41,7 @@ module "prod" {
       install_disk     = "/dev/vda"
       machine_type     = "controlplane"
       node             = "home-1"
-      vm_id            = 104
+      vm_id            = 204
       datastore_id     = "local-lvm"
       storage_id       = "data"
       allow_scheduling = true
@@ -55,7 +55,7 @@ module "prod" {
       install_disk     = "/dev/vda"
       machine_type     = "controlplane"
       node             = "home-3"
-      vm_id            = 105
+      vm_id            = 205
       datastore_id     = "local-lvm"
       storage_id       = "data"
       allow_scheduling = true
@@ -68,8 +68,8 @@ module "prod" {
     v4 = {
       install_disk = "/dev/vda"
       machine_type = "worker"
-      node         = "home-2"
-      vm_id        = 106
+      node         = "home-5"
+      vm_id        = 206
       datastore_id = "local-lvm"
       storage_id   = "data"
       ip           = "10.3.3.113"
@@ -83,7 +83,7 @@ module "prod" {
       install_disk = "/dev/vda"
       machine_type = "worker"
       node         = "home-2"
-      vm_id        = 107
+      vm_id        = 207
       datastore_id = "local-lvm"
       storage_id   = "data"
       ip           = "10.3.3.114"
@@ -95,8 +95,8 @@ module "prod" {
     v6 = {
       install_disk = "/dev/vda"
       machine_type = "worker"
-      node         = "home-0"
-      vm_id        = 108
+      node         = "home-2"
+      vm_id        = 208
       datastore_id = "local-lvm"
       storage_id   = "data"
       ip           = "10.3.3.115"
@@ -109,7 +109,7 @@ module "prod" {
       install_disk = "/dev/vda"
       machine_type = "worker"
       node         = "home-1"
-      vm_id        = 109
+      vm_id        = 209
       datastore_id = "local-lvm"
       storage_id   = "data"
       ip           = "10.3.3.116"
@@ -122,7 +122,7 @@ module "prod" {
       install_disk = "/dev/vda"
       machine_type = "worker"
       node         = "home-4"
-      vm_id        = 110
+      vm_id        = 210
       datastore_id = "local-lvm"
       storage_id   = "data"
       ip           = "10.3.3.117"
@@ -130,6 +130,32 @@ module "prod" {
       memory       = 8092
       size         = 50
       storage_size = 300
+    },
+    v9 = {
+      install_disk = "/dev/vda"
+      machine_type = "worker"
+      node         = "home-5"
+      vm_id        = 211
+      datastore_id = "local-lvm"
+      storage_id   = "data"
+      ip           = "10.3.3.118"
+      cores        = 2
+      memory       = 8092
+      size         = 50
+      storage_size = 400
+    },
+    v10 = {
+      install_disk = "/dev/vda"
+      machine_type = "worker"
+      node         = "home-0"
+      vm_id        = 212
+      datastore_id = "local-lvm"
+      storage_id   = "data"
+      ip           = "10.3.3.119"
+      cores        = 2
+      memory       = 8092
+      size         = 50
+      storage_size = 400
     },
   }
 }

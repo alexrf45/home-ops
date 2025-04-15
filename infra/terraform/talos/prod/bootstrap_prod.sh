@@ -48,5 +48,5 @@ destroy() {
 }
 
 #deploy
-#flux-deploy
-destroy
+flux-deploy
+#destroy
