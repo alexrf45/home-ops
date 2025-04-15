@@ -18,7 +18,7 @@ spec:
       defaultDataLocality: best-effort
       migratable: true
       nfsOptions: vers=4.2,noresvport,softerr,timeo=600,retrans=5
-      reclaimPolicy: Delete
+      reclaimPolicy: Retain
     preUpgradeChecker:
       jobEnabled: true
       upgradeVersionCheck: true
@@ -32,4 +32,6 @@ spec:
     metrics:
       serviceMonitor:
         enabled: true
+    #defaultBackupStore:
+   #   backupTargetCredentialSecret: aws-secret
 
