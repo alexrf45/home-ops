@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: vw-db
+  labels:
+    name: database
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: vw-cluster
+  namespace: vw-db
+spec:
+  instances: 2
+
+  storage:
+    size: 5Gi

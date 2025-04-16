@@ -40,7 +40,7 @@ spec:
       server: 'https://kubernetes.default.svc'
       name: '*'
     - namespace: 'vw'
-      server: 'https://10.3.3.4:6443'
+      #server: 'https://10.3.3.110:6443'
       name: '*'
 
   # Enables namespace orphaned resource monitoring.
