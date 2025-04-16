@@ -141,7 +141,9 @@ spec:
         ingressClassName: tailscale
         path: /
         pathType: Prefix
-        tls: true
+        tls:
+        - hosts:
+          - prod-internal-argo
       metrics:
         enabled: true
         serviceMonitor:
