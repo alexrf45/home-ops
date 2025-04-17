@@ -12,7 +12,7 @@ spec:
         kind: HelmRepository
         name: argo
         namespace: flux-system
-      version: 7.8.26
+      version: 7.8.0
   install:
     remediation:
       retries: 3
