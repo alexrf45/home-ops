@@ -9,11 +9,15 @@ deploy() {
 
   terraform apply --auto-approve
 
-  cp ./outputs/talosconfig ~/.talos/dev
+  terraform output kube_config >"$HOME/.kube/dev"
 
-  cp ./outputs/kubeconfig ~/.kube/dev
+  terraform output kube_config >"$HOME/.kube/config"
 
-  cp ./outputs/kubeconfig ~/.kube/config
+  cp ./outputs/talosconfig "$HOME/.talos/dev"
+
+  #  cp ./outputs/kubeconfig "$HOME/.kube/dev"
+
+  # cp ./outputs/kubeconfig "$HOME/.kube/config"
 
   #cp ~/.kube/config ~/.kube/config_bk && KUBECONFIG=~/.kube/dev:~/.kube/prod kubectl config view --flatten >~/.kube/config_tmp && mv ~/.kube/config_tmp ~/.kube/config
 
@@ -47,6 +51,6 @@ destroy() {
 
   mv ~/.kube/config_bk ~/.kube/config
 }
-#deploy
-flux-deploy
+deploy
+#flux-deploy
 #destroy

@@ -1,4 +1,3 @@
-
 resource "talos_machine_secrets" "this" {
   talos_version = var.cluster.talos_version
 }
@@ -31,12 +30,16 @@ data "talos_machine_configuration" "this" {
 
     }),
     templatefile("${path.module}/templates/node.yaml.tftpl", {
-      install_disk  = each.value.install_disk
-      install_image = talos_image_factory_schematic.this.id
-      hostname      = format("%s-controlplane-%s", var.cluster.name, index(keys(var.nodes), each.key))
-      node_name     = each.value.node
-      cluster_name  = var.cluster.name
+      install_disk   = each.value.install_disk
+      install_image  = talos_image_factory_schematic.this.id
+      hostname       = format("%s-controlplane-%s", var.cluster.name, index(keys(var.nodes), each.key))
+      node_name      = each.value.node
+      cluster_name   = var.cluster.name
+      tailscale_auth = var.cluster.tailscale_auth
 
+    }),
+    templatefile("${path.module}/templates/patch.yaml.tftpl", {
+      tailscale_auth = var.cluster.tailscale_auth
     }),
     yamlencode({
       cluster = {
@@ -54,12 +57,16 @@ data "talos_machine_configuration" "this" {
     }),
     ] : [
     templatefile("${path.module}/templates/node.yaml.tftpl", {
-      install_disk  = each.value.install_disk
-      install_image = talos_image_factory_schematic.this.id
-      hostname      = format("%s-node-%s", var.cluster.name, index(keys(var.nodes), each.key))
-      node_name     = each.value.node
-      cluster_name  = var.cluster.name
-    })
+      install_disk   = each.value.install_disk
+      install_image  = talos_image_factory_schematic.this.id
+      hostname       = format("%s-node-%s", var.cluster.name, index(keys(var.nodes), each.key))
+      node_name      = each.value.node
+      cluster_name   = var.cluster.name
+      tailscale_auth = var.cluster.tailscale_auth
+    }),
+    templatefile("${path.module}/templates/patch.yaml.tftpl", {
+      tailscale_auth = var.cluster.tailscale_auth
+    }),
   ]
 }
 

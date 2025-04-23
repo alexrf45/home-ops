@@ -16,9 +16,11 @@ module "dev" {
       "util-linux-tools",
       "qemu-guest-agent",
       "i915",
+      "tailscale"
     ]
-    platform      = "nocloud"
-    iso_datastore = "local"
+    platform       = "nocloud"
+    iso_datastore  = "local"
+    tailscale_auth = var.auth_key
   }
 
   nodes = {
@@ -29,12 +31,12 @@ module "dev" {
       vm_id            = 100
       datastore_id     = "local-lvm"
       storage_id       = "data"
-      allow_scheduling = false
+      allow_scheduling = true
       ip               = "10.3.3.100"
       cores            = 2
       memory           = 8092
       size             = 20
-      storage_size     = 30
+      storage_size     = 200
 
     },
     v2 = {

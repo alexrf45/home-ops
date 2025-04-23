@@ -7,16 +7,17 @@ variable "pve_nodes" {
 variable "cluster" {
   description = "Cluster configuration"
   type = object({
-    name          = string
-    env           = string
-    endpoint      = string
-    pve_endpoint  = string
-    vip_ip        = string
-    gateway       = string
-    talos_version = string
-    extensions    = list(string)
-    platform      = string
-    iso_datastore = string
+    name           = string
+    env            = string
+    endpoint       = string
+    pve_endpoint   = string
+    vip_ip         = string
+    gateway        = string
+    talos_version  = string
+    extensions     = list(string)
+    platform       = string
+    iso_datastore  = string
+    tailscale_auth = string
   })
 }
 

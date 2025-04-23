@@ -5,6 +5,14 @@ machine:
       content: |
         [plugins."io.containerd.cri.v1.images"]
           discard_unpacked_layers = false
+    - path: /var/etc/tailscale/auth.env
+      op: create
+      content: |
+        TS_ACCEPT_DNS=true
+        TS_AUTH_ONCE=true
+        TS_AUTHKEY=${tailscale_auth}
+        TS_ROUTES=10.43.0.0/16
+      permissions: 0o644
   time:
     servers:
       - /dev/ptp0
@@ -14,9 +22,9 @@ machine:
     clusterDNS:
       - 10.43.0.10
     extraMounts:
-      - destination: /var/lib/longhorn
+      - destination: /var/data
         type: bind
-        source: /var/lib/longhorn
+        source: /var/data
         options:
           - rbind
           - rshared
@@ -24,7 +32,7 @@ machine:
   disks:
     - device: /dev/vdb
       partitions:
-        - mountpoint: /var/lib/longhorn
+        - mountpoint: /var/data
   install:
     disk: ${install_disk}
     image: ${install_image}
