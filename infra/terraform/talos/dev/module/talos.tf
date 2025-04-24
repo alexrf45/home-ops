@@ -21,7 +21,7 @@ data "talos_machine_configuration" "this" {
   machine_secrets  = talos_machine_secrets.this.machine_secrets
   config_patches = each.value.machine_type == "controlplane" ? [
     templatefile("${path.module}/templates/control_plane.yaml.tftpl", {
-      hostname         = format("%s-controlplane-%s", var.cluster.name, index(keys(var.nodes), each.key))
+      hostname         = format("%s-controlplane-%s", var.cluster.name, each.value.vm_id)
       allow_scheduling = each.value.allow_scheduling
       node_name        = each.value.node
       cluster_name     = var.cluster.name
@@ -30,12 +30,11 @@ data "talos_machine_configuration" "this" {
 
     }),
     templatefile("${path.module}/templates/node.yaml.tftpl", {
-      install_disk   = each.value.install_disk
-      install_image  = talos_image_factory_schematic.this.id
-      hostname       = format("%s-controlplane-%s", var.cluster.name, index(keys(var.nodes), each.key))
-      node_name      = each.value.node
-      cluster_name   = var.cluster.name
-      tailscale_auth = var.cluster.tailscale_auth
+      install_disk  = each.value.install_disk
+      install_image = talos_image_factory_schematic.controlplane.id
+      hostname      = format("%s-controlplane-%s", var.cluster.name, each.value.vm_id)
+      node_name     = each.value.node
+      cluster_name  = var.cluster.name
 
     }),
     templatefile("${path.module}/templates/patch.yaml.tftpl", {
@@ -57,15 +56,11 @@ data "talos_machine_configuration" "this" {
     }),
     ] : [
     templatefile("${path.module}/templates/node.yaml.tftpl", {
-      install_disk   = each.value.install_disk
-      install_image  = talos_image_factory_schematic.this.id
-      hostname       = format("%s-node-%s", var.cluster.name, index(keys(var.nodes), each.key))
-      node_name      = each.value.node
-      cluster_name   = var.cluster.name
-      tailscale_auth = var.cluster.tailscale_auth
-    }),
-    templatefile("${path.module}/templates/patch.yaml.tftpl", {
-      tailscale_auth = var.cluster.tailscale_auth
+      install_disk  = each.value.install_disk
+      install_image = talos_image_factory_schematic.worker.id
+      hostname      = format("%s-node-%s", var.cluster.name, each.value.vm_id)
+      node_name     = each.value.node
+      cluster_name  = var.cluster.name
     }),
   ]
 }
@@ -128,26 +123,4 @@ resource "talos_cluster_kubeconfig" "this" {
     create = "5m"
   }
 }
-
-
-resource "local_sensitive_file" "kubeconfig" {
-  depends_on = [
-    time_sleep.wait_until_bootstrap
-  ]
-  content         = talos_cluster_kubeconfig.this.kubeconfig_raw
-  filename        = "${path.root}/outputs/kubeconfig"
-  file_permission = "0600"
-}
-
-
-resource "local_sensitive_file" "talosconfig" {
-  depends_on = [
-    talos_machine_bootstrap.this,
-    #time_sleep.wait_until_bootstrap
-  ]
-  content  = data.talos_client_configuration.this.talos_config
-  filename = "${path.root}/outputs/talosconfig"
-}
-
-
 

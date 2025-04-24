@@ -51,4 +51,12 @@ cluster:
           labels:
             pod-security.kubernetes.io/enforce: "privileged"
             app: "networking"
-
+    - name: namespace-storage
+      contents: |-
+        apiVersion: v1
+        kind: Namespace
+        metadata:
+          name: storage
+          labels:
+            pod-security.kubernetes.io/enforce: "privileged"
+            app: "storage"
