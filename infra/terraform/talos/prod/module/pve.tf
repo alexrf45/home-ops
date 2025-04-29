@@ -1,14 +1,28 @@
-resource "proxmox_virtual_environment_download_file" "talos_image" {
+resource "proxmox_virtual_environment_download_file" "talos_control_plane_image" {
   count                   = length(var.pve_nodes)
   content_type            = "iso"
   datastore_id            = var.cluster.iso_datastore
   node_name               = var.pve_nodes[count.index]
-  url                     = data.talos_image_factory_urls.this.urls.disk_image
+  url                     = data.talos_image_factory_urls.controlplane.urls.disk_image
   decompression_algorithm = "zst"
-  file_name               = "${var.cluster.env}-talos.img"
+  file_name               = "${var.cluster.env}-control-plane-talos.img"
   overwrite               = false
   upload_timeout          = 120
 }
+
+resource "proxmox_virtual_environment_download_file" "talos_worker_image" {
+  count                   = length(var.pve_nodes)
+  content_type            = "iso"
+  datastore_id            = var.cluster.iso_datastore
+  node_name               = var.pve_nodes[count.index]
+  url                     = data.talos_image_factory_urls.worker.urls.disk_image
+  decompression_algorithm = "zst"
+  file_name               = "${var.cluster.env}-worker-talos.img"
+  overwrite               = false
+  upload_timeout          = 120
+}
+
+
 
 resource "proxmox_virtual_environment_vm" "talos_vm" {
   for_each = var.nodes
@@ -48,7 +62,7 @@ resource "proxmox_virtual_environment_vm" "talos_vm" {
   disk {
     datastore_id = each.value.datastore_id
     interface    = "virtio0"
-    file_id      = proxmox_virtual_environment_download_file.talos_image[0].id
+    file_id      = each.value.machine_type == "controlplane" ? proxmox_virtual_environment_download_file.talos_control_plane_image[0].id : proxmox_virtual_environment_download_file.talos_worker_image[0].id
     file_format  = "raw"
     ssd          = true
     iothread     = true

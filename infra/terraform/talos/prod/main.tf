@@ -1,161 +1,77 @@
 module "prod" {
-  source    = "./module"
-  pve_nodes = ["home-0", "home-1", "home-2", "home-3", "home-4", "home-5"]
+  source    = "./module2"
+  pve_nodes = ["home-prod"]
   cluster = {
     name          = "prod"
     env           = "prod"
-    endpoint      = "10.3.3.110"
-    pve_endpoint  = "10.3.3.2"
-    vip_ip        = "10.3.3.109"
+    endpoint      = "10.3.3.100"
+    pve_endpoint  = "10.3.3.55"
+    vip_ip        = "10.3.3.99"
     gateway       = "10.3.3.1"
     talos_version = "v1.9.5"
-    extensions = [
+    control_plane_extensions = [
       "intel-ucode",
       "glibc",
       "iscsi-tools",
       "util-linux-tools",
       "qemu-guest-agent",
       "i915",
+      "tailscale"
     ]
-    platform      = "nocloud"
-    iso_datastore = "local"
+    worker_extensions = [
+      "intel-ucode",
+      "glibc",
+      "iscsi-tools",
+      "util-linux-tools",
+      "qemu-guest-agent",
+      "i915"
+    ]
+    platform       = "nocloud"
+    iso_datastore  = "local"
+    tailscale_auth = var.auth_key
   }
 
   nodes = {
     v1 = {
-      install_disk     = "/dev/vda"
+      install_disk     = "/prod/vda"
       machine_type     = "controlplane"
-      node             = "home-0"
-      vm_id            = 203
+      node             = "home-prod"
+      vm_id            = 100
       datastore_id     = "local-lvm"
-      storage_id       = "data"
-      allow_scheduling = false
-      ip               = "10.3.3.110"
+      storage_id       = "local-lvm"
+      allow_scheduling = true
+      ip               = "10.3.3.100"
       cores            = 2
       memory           = 8092
-      size             = 25
+      size             = 20
       storage_size     = 50
 
     },
     v2 = {
-      install_disk     = "/dev/vda"
-      machine_type     = "controlplane"
-      node             = "home-1"
-      vm_id            = 204
-      datastore_id     = "local-lvm"
-      storage_id       = "data"
-      allow_scheduling = true
-      ip               = "10.3.3.111"
-      cores            = 2
-      memory           = 8092
-      size             = 50
-      storage_size     = 300
+      install_disk = "/prod/vda"
+      machine_type = "worker"
+      node         = "home-prod"
+      vm_id        = 101
+      datastore_id = "local-lvm"
+      storage_id   = "local-lvm"
+      ip           = "10.3.3.101"
+      cores        = 2
+      memory       = 8092
+      size         = 25
+      storage_size = 50
     },
     v3 = {
-      install_disk     = "/dev/vda"
-      machine_type     = "controlplane"
-      node             = "home-3"
-      vm_id            = 205
-      datastore_id     = "local-lvm"
-      storage_id       = "data"
-      allow_scheduling = true
-      ip               = "10.3.3.112"
-      cores            = 2
-      memory           = 8092
-      size             = 50
-      storage_size     = 300
-    },
-    v4 = {
-      install_disk = "/dev/vda"
+      install_disk = "/prod/vda"
       machine_type = "worker"
-      node         = "home-5"
-      vm_id        = 206
+      node         = "home-prod"
+      vm_id        = 102
       datastore_id = "local-lvm"
-      storage_id   = "data"
-      ip           = "10.3.3.113"
+      storage_id   = "local-lvm"
+      ip           = "10.3.3.102"
       cores        = 2
       memory       = 8092
-      size         = 50
-      storage_size = 200
-
-    },
-    v5 = {
-      install_disk = "/dev/vda"
-      machine_type = "worker"
-      node         = "home-2"
-      vm_id        = 207
-      datastore_id = "local-lvm"
-      storage_id   = "data"
-      ip           = "10.3.3.114"
-      cores        = 2
-      memory       = 8092
-      size         = 50
-      storage_size = 300
-    },
-    v6 = {
-      install_disk = "/dev/vda"
-      machine_type = "worker"
-      node         = "home-2"
-      vm_id        = 208
-      datastore_id = "local-lvm"
-      storage_id   = "data"
-      ip           = "10.3.3.115"
-      cores        = 2
-      memory       = 8092
-      size         = 50
-      storage_size = 300
-    },
-    v7 = {
-      install_disk = "/dev/vda"
-      machine_type = "worker"
-      node         = "home-1"
-      vm_id        = 209
-      datastore_id = "local-lvm"
-      storage_id   = "data"
-      ip           = "10.3.3.116"
-      cores        = 2
-      memory       = 8092
-      size         = 50
-      storage_size = 300
-    },
-    v8 = {
-      install_disk = "/dev/vda"
-      machine_type = "worker"
-      node         = "home-4"
-      vm_id        = 210
-      datastore_id = "local-lvm"
-      storage_id   = "data"
-      ip           = "10.3.3.117"
-      cores        = 2
-      memory       = 8092
-      size         = 50
-      storage_size = 300
-    },
-    v9 = {
-      install_disk = "/dev/vda"
-      machine_type = "worker"
-      node         = "home-5"
-      vm_id        = 211
-      datastore_id = "local-lvm"
-      storage_id   = "data"
-      ip           = "10.3.3.118"
-      cores        = 2
-      memory       = 8092
-      size         = 50
-      storage_size = 400
-    },
-    v10 = {
-      install_disk = "/dev/vda"
-      machine_type = "worker"
-      node         = "home-0"
-      vm_id        = 212
-      datastore_id = "local-lvm"
-      storage_id   = "data"
-      ip           = "10.3.3.119"
-      cores        = 2
-      memory       = 8092
-      size         = 50
-      storage_size = 400
+      size         = 25
+      storage_size = 50
     },
   }
 }

@@ -14,9 +14,9 @@ machine:
     clusterDNS:
       - 10.43.0.10
     extraMounts:
-      - destination: /var/lib/longhorn
+      - destination: /var/data
         type: bind
-        source: /var/lib/longhorn
+        source: /var/data
         options:
           - rbind
           - rshared
@@ -24,7 +24,7 @@ machine:
   disks:
     - device: /dev/vdb
       partitions:
-        - mountpoint: /var/lib/longhorn
+        - mountpoint: /var/data
   install:
     disk: ${install_disk}
     image: ${install_image}

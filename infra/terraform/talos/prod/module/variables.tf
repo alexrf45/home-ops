@@ -7,16 +7,18 @@ variable "pve_nodes" {
 variable "cluster" {
   description = "Cluster configuration"
   type = object({
-    name          = string
-    env           = string
-    endpoint      = string
-    pve_endpoint  = string
-    vip_ip        = string
-    gateway       = string
-    talos_version = string
-    extensions    = list(string)
-    platform      = string
-    iso_datastore = string
+    name                     = string
+    env                      = string
+    endpoint                 = string
+    pve_endpoint             = string
+    vip_ip                   = string
+    gateway                  = string
+    talos_version            = string
+    control_plane_extensions = list(string)
+    worker_extensions        = list(string)
+    platform                 = string
+    iso_datastore            = string
+    tailscale_auth           = string
   })
 }
 
@@ -48,11 +50,11 @@ variable "node_network" {
 variable "load_balancer_start" {
   description = "The hostnum of the first load balancer host"
   type        = number
-  default     = 60
+  default     = 50
 }
 
 variable "load_balancer_stop" {
   description = "The hostnum of the last load balancer host"
   type        = number
-  default     = 69
+  default     = 59
 }
