@@ -1,6 +1,6 @@
 module "prod" {
   source    = "./module2"
-  pve_nodes = ["home-prod"]
+  pve_nodes = ["home-0", "home-1", "home-2"]
   cluster = {
     name          = "prod"
     env           = "prod"
@@ -73,5 +73,32 @@ module "prod" {
       size         = 25
       storage_size = 50
     },
+    v4 = {
+      install_disk = "/prod/vda"
+      machine_type = "worker"
+      node         = "home-prod"
+      vm_id        = 102
+      datastore_id = "local-lvm"
+      storage_id   = "local-lvm"
+      ip           = "10.3.3.102"
+      cores        = 2
+      memory       = 8092
+      size         = 25
+      storage_size = 50
+    },
+    v5 = {
+      install_disk = "/prod/vda"
+      machine_type = "worker"
+      node         = "home-prod"
+      vm_id        = 102
+      datastore_id = "local-lvm"
+      storage_id   = "local-lvm"
+      ip           = "10.3.3.102"
+      cores        = 2
+      memory       = 8092
+      size         = 25
+      storage_size = 50
+    },
+
   }
 }
