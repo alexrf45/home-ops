@@ -24,7 +24,7 @@ in
   boot.loader.efi.canTouchEfiVariables = true;
 
   networking.hostName = "nixos-fr3d"; # Define your hostname.
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+#  networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
   networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
 
   # Set your time zone.
@@ -38,7 +38,7 @@ in
     #windowManager.i3.terminal = "alacritty";
     #windowManager.qtile.enable = true;  
     displayManager.sessionCommands = ''
-      xwallpaper --zoom ~/.config/pictures/nord.png
+      xwallpaper --zoom ~/.config/pictures/nix.png
       xset r rate 200 35 &
     '';
   };
@@ -60,7 +60,8 @@ in
     socketActivation = true;
     wireplumber.enable = true;
   };
-
+  services.tailscale.enable = true;
+  services.syncthing.enable = true;
   # Define a user account. Don't forget to set a password with ‘passwd’.
  users.users.sean = {
    isNormalUser = true;
@@ -70,9 +71,9 @@ in
    ];
  };
  
-programs.firefox.enable = true;
+programs.firefox.enable = false;
 
-virtualisation.vmware.guest.enable = true;
+#virtualisation.vmware.guest.enable = true;
 
  environment.systemPackages = with pkgs; [
    vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
@@ -110,7 +111,6 @@ virtualisation.vmware.guest.enable = true;
    tmuxp
    brave
    obsidian
-   syncthing
    lxappearance
    open-vm-tools
    zsh
@@ -118,12 +118,24 @@ virtualisation.vmware.guest.enable = true;
    gnumake
    pavucontrol
    noto-fonts-color-emoji
+   gcc
+   unzip
+   nodejs_23
  ];
  environment.variables.EDITOR = "nvim";
 
    fonts.packages = with pkgs; [
              jetbrains-mono
              fira-code
+             noto-fonts
+             noto-fonts-cjk-sans
+             noto-fonts-emoji
+             liberation_ttf
+             fira-code-symbols
+             fira-code-nerdfont
+             mplus-outline-fonts.githubRelease
+             dina-font
+             proggyfonts
 ];
 
  

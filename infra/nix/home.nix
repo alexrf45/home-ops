@@ -5,8 +5,54 @@
   home.homeDirectory = "/home/sean";
   home.stateVersion = "24.11";
   
-  programs.bash = { 
+  programs.zsh = {
+   enable = true;
+   shellAliases = {
+      ll = "ls -l";
+      update = "sudo nixos-rebuild switch";
+      c = "clear";
+      q = "exit";
+      r = ". ~/.bashrc";
+      d = "docker";
+      t = "tmux";
+      f = "flux";
+      k = "kubectl";
+      v = "nvim";
+      kgn = "kubectl get nodes";
+      kg = "kubectl get";
+      kaf = "kubectl apply -f";
+      kgd = "kubectl get deployment";
+      tf = "terraform";
+      tfo = "terraform output";
+      tfir = "terraform init -backend-config='remote.tfbackend' -upgrade";
+    };
+   history.size = 10000;
+   oh-my-zsh = {
     enable = true;
+    plugins = [ "git" "zsh-autosuggestions" ];
+    theme = "robbyrussell";
+    extraConfig = ''
+       encrypt_age() {
+         age \
+         --passphrase \
+         --output $1.enc \  
+         $2
+        }
+
+	decrypt_age() {
+	  age -d \
+	    $1 >$2
+	}
+    '';
+
+   };
+   initExtra = ''
+     source "/home/sean/.config/op/plugins.sh"
+    '';
+    
+  };
+  programs.bash = { 
+    enable = false;
     shellAliases = {
       c = "clear";
       nrs = "sudo nixos-rebuild switch";
@@ -48,16 +94,16 @@
      enable = true;
      settings = {
        font.normal = {
-         family = "JetBrains Mono";
+         family = "Fira Code";
          style = "Regular";
        };
-       font.size = 13;
+       font.size = 11;
        window.dynamic_padding = true;
        window.decorations = "None";
        cursor.style = "underline";
        selection.save_to_clipboard = true;
        terminal.shell = {
-          program = "/etc/profiles/per-user/sean/bin/bash";
+          program = "/etc/profiles/per-user/sean/bin/zsh";
        };
       };
    }; 
@@ -74,5 +120,7 @@
    docker
    fzf
    ncspot
+   lazygit
+   terraform-ls
    ];
 }
