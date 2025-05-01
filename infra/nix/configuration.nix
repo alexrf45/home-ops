@@ -105,8 +105,6 @@ programs.firefox.enable = false;
    aria2
    age
    aws-vault
-   #_1password-gui
-   #_1password-cli
    tmux
    tmuxp
    brave

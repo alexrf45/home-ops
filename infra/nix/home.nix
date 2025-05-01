@@ -12,7 +12,7 @@
       update = "sudo nixos-rebuild switch";
       c = "clear";
       q = "exit";
-      r = ". ~/.bashrc";
+      r = ". ~/.zshrc";
       d = "docker";
       t = "tmux";
       f = "flux";
@@ -29,8 +29,8 @@
    history.size = 10000;
    oh-my-zsh = {
     enable = true;
-    plugins = [ "git" "zsh-autosuggestions" ];
-    theme = "robbyrussell";
+    plugins = [ "git" ];
+    theme = "agnoster";
     extraConfig = ''
        encrypt_age() {
          age \
@@ -55,7 +55,7 @@
     enable = false;
     shellAliases = {
       c = "clear";
-      nrs = "sudo nixos-rebuild switch";
+      update = "sudo nixos-rebuild switch";
       q = "exit";
       r = ". ~/.bashrc";
       d = "docker";
@@ -122,5 +122,6 @@
    ncspot
    lazygit
    terraform-ls
+   k9s
    ];
 }
