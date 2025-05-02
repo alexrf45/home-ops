@@ -1,4 +1,4 @@
-#!/etc/profiles/per-user/sean/bin/zsh
+#!/bin/bash
 
 set -e
 
@@ -48,5 +48,5 @@ destroy() {
 }
 
 #deploy
-#flux-deploy
-destroy
+flux-deploy
+#destroy
