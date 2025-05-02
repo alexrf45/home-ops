@@ -98,7 +98,7 @@ spec:
         finalizers:
         - kubernetes.io/pvc-protection
         size: 5Gi
-        storageClassName: longhorn
+        storageClassName: local-path
         type: sts
     nodeExporter:
       enabled: false
@@ -121,7 +121,7 @@ spec:
 
       prometheusSpec:
         nodeSelector:
-          kubernetes.io/hostname: "prod-node-9"
+          kubernetes.io/hostname: "prod-node-203"
         logFormat: logfmt
         logLevel: info
         replicas: 2
@@ -134,7 +134,7 @@ spec:
         storageSpec:
           volumeClaimTemplate:
             spec:
-              storageClassName: longhorn
+              storageClassName: local-path
               resources:
                 requests:
                   storage: 5Gi
