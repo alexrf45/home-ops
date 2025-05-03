@@ -17,8 +17,8 @@ spec:
         app: pihole
         app.kubernetes.io/name: pihole
     spec:
-      nodeSelector:
-        worker: 'true'
+      # nodeSelector:
+      #   worker: 'true'
       containers:
         - image: visibilityspots/cloudflared
           imagePullPolicy: IfNotPresent
