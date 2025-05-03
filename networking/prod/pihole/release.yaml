@@ -47,3 +47,4 @@ spec:
       requests:
         cpu: 400m
         memory: 200Mi
+    privileged: "true"
