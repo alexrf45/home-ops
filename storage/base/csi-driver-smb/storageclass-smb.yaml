@@ -15,7 +15,7 @@ parameters:
   csi.storage.k8s.io/node-stage-secret-namespace: storage
 volumeBindingMode: Immediate
 allowVolumeExpansion: true
-ReclaimPolicy: Retain
+reclaimPolicy: Retain
 mountOptions:
   - dir_mode=0777
   - file_mode=0777
