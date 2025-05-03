@@ -6,7 +6,7 @@ metadata:
 provisioner: smb.csi.k8s.io
 parameters:
   # On Windows, "*.default.svc.cluster.local" could not be recognized by csi-proxy
-  source: //10.3.3.11/home-data
+  source: //10.3.3.11/Home-Data
   # if csi.storage.k8s.io/provisioner-secret is provided, will create a sub directory
   # with PV name under source
   csi.storage.k8s.io/provisioner-secret-name: smbcreds
