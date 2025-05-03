@@ -22,10 +22,11 @@ spec:
         secretName: pihole-tls
     persistentVolumeClaim:
       enabled: true
-      storageClass: local-path
+      storageClass: smb
+      existingClaim: pvc-pihole
       accessModes:
         - ReadWriteOnce
-      size: 8092Mi
+      size: 50Gi
     serviceDns:
       externalTrafficPolicy: Cluster
       mixedService: true
