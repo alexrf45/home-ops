@@ -35,7 +35,7 @@ spec:
         "lbipam.cilium.io/ips": "10.3.3.40"
       type: LoadBalancer
     podDnsConfig:
-      enabled: true
+      enabled: false
       policy: "None"
       nameservers:
         - 127.0.0.1
