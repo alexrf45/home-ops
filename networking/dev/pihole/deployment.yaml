@@ -34,7 +34,6 @@ spec:
       - env:
         - name: TUNNEL_METRICS
           value: 127.0.0.1:3000
-      - env:
         - name: TZ
           value: "America/New_York"
         - name: WEBPASSWORD
