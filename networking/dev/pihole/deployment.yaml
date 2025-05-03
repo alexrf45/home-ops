@@ -31,7 +31,7 @@ spec:
         - containerPort: 67
           name: dns-udp
           protocol: UDP
-        env:
+      - env:
         - name: TUNNEL_METRICS
           value: 127.0.0.1:3000
       - env:
