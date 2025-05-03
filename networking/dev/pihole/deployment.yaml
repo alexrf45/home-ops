@@ -72,6 +72,6 @@ spec:
                 - NET_ADMIN
       restartPolicy: Always
       volumes:
-        - name: pihole
+        - name: pv-smb-pihole-dev
           persistentVolumeClaim:
             claimName: pvc-pihole-dev-smb
