@@ -6,7 +6,7 @@ metadata:
 spec:
   defaultBackend:
     service:
-      name: pihole
+      name: pihole-web
       port:
         name: https
   ingressClassName: tailscale

@@ -84,7 +84,7 @@ metadata:
   labels:
     app: pihole
   name: pihole
-  namespace: pihole
+  namespace: networking
 spec:
   ports:
   - name: dns-udp
@@ -111,7 +111,7 @@ metadata:
   labels:
     app: pihole
   name: pihole-web
-  namespace: pihole
+  namespace: networking
 spec:
   ports:
   - name: pihole-http
