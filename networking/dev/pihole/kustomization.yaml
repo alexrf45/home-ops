@@ -1,8 +1,9 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - deployment.yaml
+  #- deployment.yaml
+  - release.yaml
   - secrets.yaml
-  - ingress.yaml
+  #  - ingress.yaml
   - secrets-smb.yaml
   - storage-pihole-dev.yaml

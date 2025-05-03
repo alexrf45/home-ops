@@ -10,7 +10,7 @@ spec:
     ingress:
       annotations:
         cert-manager.io/cluster-issuer: letsencrypt-staging
-      enabled: false
+      enabled: true
       hosts:
       - dev.internal.pihole.fr3d.dev
       ingressClassName: cilium
@@ -21,9 +21,10 @@ spec:
         - dev.internal.pihole.fr3d.dev
         secretName: pihole-tls
     persistentVolumeClaim:
-      enabled: false
-      storageClass: local-path
+      enabled: true
+      existingClaim: pihole-pvc
+      storageClass: smb
       accessModes:
-        - ReadWriteOnce
+        - ReadWriteMany
       size: 2048Mi
     mixedService: true
