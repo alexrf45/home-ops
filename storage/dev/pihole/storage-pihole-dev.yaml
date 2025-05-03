@@ -5,6 +5,7 @@ metadata:
   annotations:
     pv.kubernetes.io/provisioned-by: smb.csi.k8s.io
   name: pv-smb-pihole-dev
+  namespace: networking
 spec:
   capacity:
     storage: 5Gi
