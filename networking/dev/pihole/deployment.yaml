@@ -65,13 +65,13 @@ spec:
               protocol: UDP
           volumeMounts:
             - mountPath: /etc/pihole
-              name: pv-smb-pihole-dev
+              name: pihole-pv
           securityContext:
             capabilities:
               add:
                 - NET_ADMIN
       restartPolicy: Always
       volumes:
-        - name: pv-smb-pihole-dev
+        - name: pihole-pv
           persistentVolumeClaim:
-            claimName: pvc-pihole-dev-smb
+            claimName: pihole-pvc
