@@ -22,7 +22,7 @@ spec:
         secretName: pihole-tls
     persistentVolumeClaim:
       enabled: true
-      existingClaim: pihole-pvc
+      existingClaim: pvc-pihole
       storageClass: smb
       accessModes:
         - ReadWriteMany
