@@ -5,3 +5,4 @@ resources:
   - secrets.yaml
   - ingress.yaml
   - secrets-smb.yaml
+  - storage-pihole-dev.yaml
