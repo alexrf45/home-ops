@@ -8,4 +8,4 @@ resources:
   - pihole
   - external-dns
   - tailscale
-
+  - onepassword-connect
