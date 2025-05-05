@@ -32,4 +32,13 @@ spec:
         namespace: db-ops
       interval: 12h
   targetNamespace: database
+  values:
+    replicaCount: 2
+    crds:
+      create: true
+    monitoring:
+      podMonitorEnabled: true
+      grafanaDashboard:
+        create: true
+        namespace: "monitoring"
 
