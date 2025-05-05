@@ -81,7 +81,7 @@ spec:
       defaultDashboardsTimezone: America/New_York
       ingress:
         annotations:
-          #cert-manager.io/cluster-issuer: letsencrypt-production
+          cert-manager.io/cluster-issuer: letsencrypt-production
         enabled: true
         hosts:
         - prod-internal-grafana
@@ -121,7 +121,7 @@ spec:
 
       prometheusSpec:
         nodeSelector:
-          kubernetes.io/hostname: "prod-node-203"
+          kubernetes.io/role: "worker"
         logFormat: logfmt
         logLevel: info
         replicas: 2
