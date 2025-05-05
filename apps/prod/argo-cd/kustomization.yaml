@@ -3,7 +3,7 @@ kind: Kustomization
 resources:
   - ../../base/argo-cd
   - repo.yaml
-  - project.yaml
+  #  - project.yaml
 patches:
   - path: release.yaml
     target:
