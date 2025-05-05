@@ -4,12 +4,19 @@ data "helm_template" "this" {
   repository = "https://helm.cilium.io/"
 
   chart        = "cilium"
-  version      = "1.17.1"
-  kube_version = "1.32.0"
+  version      = "1.17.3"
+  kube_version = "1.33.0"
 
   include_crds = true
 
   values = [<<-EOF
+    resources:
+      limits:
+        cpu: 2000m
+        memory: 2Gi
+      requests:
+        cpu: 100m
+        memory: 206Mi
     ipam:
       mode: kubernetes
 
