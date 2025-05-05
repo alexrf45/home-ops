@@ -12,7 +12,7 @@ spec:
         kind: HelmRepository
         name: argo
         namespace: flux-system
-      version: 7.8.2
+      version: 7.9.0
   install:
     remediation:
       retries: 3
@@ -105,7 +105,7 @@ spec:
       exporter:
         enabled: true
       haproxy:
-        enabled: false
+        enabled: true
         hardAntiAffinity: true
         metrics:
           enabled: true
