@@ -2,11 +2,6 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - cilium
-  - cert-manager
-  - local-path
-  - csi-driver-smb
-  - pihole
   - external-dns
   - tailscale
-  - onepassword-connect
-  - cloudnativepg
+  - pihole

@@ -136,7 +136,7 @@ spec:
         enabled: true
         controller: generic
         annotations:
-          #cert-manager.io/cluster-issuer: letsencrypt-staging
+          cert-manager.io/cluster-issuer: letsencrypt-staging
         hostname: dev-argo
         ingressClassName: tailscale
         path: /

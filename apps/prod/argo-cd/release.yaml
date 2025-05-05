@@ -136,8 +136,8 @@ spec:
         enabled: true
         controller: generic
         annotations:
-          #cert-manager.io/cluster-issuer: letsencrypt-production
-        hostname: prod-internal-argo
+          cert-manager.io/cluster-issuer: letsencrypt-production
+        hostname: prod-argo
         ingressClassName: tailscale
         path: /
         pathType: Prefix
