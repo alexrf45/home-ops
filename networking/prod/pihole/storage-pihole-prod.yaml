@@ -23,7 +23,7 @@ spec:
       source: //10.3.3.11/Home-Share/pihole-prod
     nodeStageSecretRef:
       name: smbcreds
-      namespace: storage
+      namespace: networking
 ---
 kind: PersistentVolumeClaim
 apiVersion: v1
