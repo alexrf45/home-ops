@@ -8,7 +8,7 @@ This repository automates the deployment of Kubernetes & Talos Linux on Proxmox 
 
 ## Services
 
-- [ ] Argo-CD
+- [ ] Argo-CD (Removed in dev)
 - [ ] Cert-Manager
 - [ ] Cillium
 - [ ] Cloudflare (coming soon)
@@ -28,3 +28,6 @@ This repository automates the deployment of Kubernetes & Talos Linux on Proxmox 
 new ways to optimize the talos linux bootstrap process
 
 2025-05-05 TF code is stable, prod scaled well
+
+2025-05-11 My personal blog is up and running at blog.fr3d.dev. 
+ - Cloudflare pages site at fr3d.dev will be removed soon
