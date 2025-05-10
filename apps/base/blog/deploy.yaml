@@ -24,8 +24,10 @@ spec:
         namespace: flux-system
       version: 0.3.0
   install:
-    crds: Create
+    remediation:
+      retries: 3
   interval: 1m0s
+  releaseName: dev-blog
   targetNamespace: dev-blog
   upgrade:
     crds: CreateReplace
