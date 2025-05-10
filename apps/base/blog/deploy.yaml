@@ -46,15 +46,15 @@ spec:
       port: 80
     ingress:
       enabled: true
-      className: "cilium"
+      className: "tailscale"
       annotations:
-        cert-manager.io/cluster-issuer: "letsencrypt-staging"
+        #cert-manager.io/cluster-issuer: "letsencrypt-staging"
       hosts:
-        - host: dev.int.blog.fr3d.dev
+        - host: dev-blog
           paths:
             - path: /
               pathType: Prefix
       tls:
         - secretName: dev-blog-tls
           hosts:
-            - dev.int.blog.fr3d.dev
+            - dev-blog
