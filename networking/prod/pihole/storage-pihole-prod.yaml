@@ -22,7 +22,7 @@ spec:
     volumeAttributes:
       source: //10.3.3.11/Home-Share/pihole-prod
     nodeStageSecretRef:
-      name: smbcreds
+      name: smbcreds-pihole
       namespace: networking
 ---
 kind: PersistentVolumeClaim
