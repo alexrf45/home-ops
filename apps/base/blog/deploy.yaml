@@ -6,7 +6,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 2h
-  url: https://alexrf45.github.io/lab-helmcharts/fr3d-blog/ 
+  url: https://alexrf45.github.io/lab-helmcharts/fr3d-blog/
 ---
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
@@ -15,7 +15,7 @@ metadata:
   namespace: flux-system
 spec:
   chartRef:
-    kind: HelmRepository
+    kind: HelmChart
     name: musings
     namespace: flux-system
   install:
