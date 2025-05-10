@@ -14,10 +14,14 @@ metadata:
   name: dev-blog
   namespace: flux-system
 spec:
-  chartRef:
-    kind: HelmChart
-    name: musings
-    namespace: flux-system
+  chart:
+    spec:
+      chartRef:
+      reconcileStrategy: ChartVersion
+      sourceRef:
+        kind: HelmRepository
+        name: musings
+        namespace: flux-system
   install:
     crds: Create
   interval: 1m0s
