@@ -1,0 +1,53 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v2
+kind: HelmRepository
+metadata:
+  name: musings
+  namespace: flux-system
+spec:
+  interval: 2h
+  url: https://alexrf45.github.io/lab-helmcharts/fr3d-blog/ 
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: dev-blog
+  namespace: flux-system
+spec:
+  chartRef:
+    kind: HelmRepository
+    name: musings
+    namespace: flux-system
+  install:
+    crds: Create
+  interval: 1m0s
+  targetNamespace: dev-blog
+  upgrade:
+    crds: CreateReplace
+  values:
+    replicaCount: 1
+    image:
+      repository: fonalex45/blog
+      pullPolicy: IfNotPresent
+      tag: "v2.2.0"
+    serviceAccount:
+      create: true
+      automount: true
+      name: ""
+    service:
+      type: ClusterIP
+      port: 80
+    ingress:
+      enabled: true
+      className: "cilium"
+      annotations:
+        cert-manager.io/cluster-issuer: "letsencrypt-staging"
+      hosts:
+        - host: dev.int.blog.fr3d.dev
+          paths:
+            - path: /
+              pathType: Prefix
+      tls:
+        - secretName: dev-blog-tls
+          hosts:
+            - dev.int.blog.fr3d.dev
