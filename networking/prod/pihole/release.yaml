@@ -23,9 +23,9 @@ spec:
     persistentVolumeClaim:
       enabled: true
       storageClass: smb
-      existingClaim: pvc-pihole
+      existingClaim: pvc-pihole-2
       accessModes:
-        - ReadWriteOnce
+        - ReadWriteMany
       size: 50Gi
     serviceDns:
       externalTrafficPolicy: Cluster
@@ -43,8 +43,8 @@ spec:
     resources:
       limits:
         cpu: 400m
-        memory: 200Mi
+        memory: 150Mi
       requests:
         cpu: 400m
-        memory: 200Mi
+        memory: 150Mi
     privileged: "true"
