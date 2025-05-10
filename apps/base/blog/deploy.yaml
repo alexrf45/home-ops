@@ -16,12 +16,13 @@ metadata:
 spec:
   chart:
     spec:
-      chartRef:
+      chart: musings
       reconcileStrategy: ChartVersion
       sourceRef:
         kind: HelmRepository
         name: musings
         namespace: flux-system
+      version: 0.3.0
   install:
     crds: Create
   interval: 1m0s
