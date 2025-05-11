@@ -12,8 +12,6 @@ metadata:
   namespace: vaultwarden
 spec:
   instances: 2
-  postgresql:
-    max_worker_processes: "40"
   storage:
     storageClass: smb
     size: 10Gi
