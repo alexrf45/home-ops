@@ -13,7 +13,7 @@ spec:
         kind: HelmRepository
         name: monitoring
         namespace: flux-system
-      version: 69.2.0
+      version: 72.3.0
   interval: 3m
   maxHistory: 3
   install:
@@ -31,7 +31,7 @@ spec:
     defaultRules:
       create: true
       rules:
-        alertmanager: true
+        alertmanager: false
         etcd: false
         configReloaders: true
         general: true
@@ -42,13 +42,13 @@ spec:
         k8sContainerResource: true
         k8sContainerMemoryWorkingSetBytes: true
         k8sPodOwner: true
-        kubeApiserverAvailability: false
+        kubeApiserverAvailability: true
         kubeApiserverBurnrate: false
         kubeApiserverHistogram: false
-        kubeApiserverSlos: true
+        kubeApiserverSlos: false
         kubeControllerManager: true
         kubelet: true
-        kubeProxy: true
+        kubeProxy: false
         kubePrometheusGeneral: true
         kubePrometheusNodeRecording: false
         kubernetesApps: true
@@ -60,14 +60,14 @@ spec:
         kubeStateMetrics: true
         network: true
         node: true
-        nodeExporterAlerting: false
+        nodeExporterAlerting: true
         nodeExporterRecording: false
         prometheus: true
         prometheusOperator: true
-        windows: true
+        windows: false
     cleanPrometheusOperatorObjectNames: true
     alertmanager:
-      enabled: true
+      enabled: false
     kubernetesServiceMonitors:
       enabled: true
     grafana:
@@ -81,15 +81,15 @@ spec:
       defaultDashboardsTimezone: America/New_York
       ingress:
         annotations:
-          cert-manager.io/cluster-issuer: letsencrypt-staging
+          #cert-manager.io/cluster-issuer: letsencrypt-staging
         enabled: true
         hosts:
-        - dev.internal.grafana.fr3d.dev
-        ingressClassName: cilium
+        - dev-grafana
+        ingressClassName: tailscale
         path: /
         tls:
         - hosts:
-          - dev.internal.grafana.fr3d.dev
+          - dev-grafana
           secretName: grafana-general-tls
       persistence:
         accessModes:
@@ -127,15 +127,15 @@ spec:
       ingress:
         enabled: true
         pathType: Prefix
-        ingressClassName: cilium
+        ingressClassName: tailscale
         annotations:
-          cert-manager.io/cluster-issuer: letsencrypt-staging
+          #cert-manager.io/cluster-issuer: letsencrypt-staging
         tls:
         - hosts:
-          - dev.internal.prometheus.fr3d.dev
+          - dev-prometheus
           secretName: prometheus-general-tls
         hosts:
-        - dev.internal.prometheus.fr3d.dev
+        - dev-prometheus
 
       prometheusSpec:
         podMonitorSelectorNilUsesHelmValues: false
