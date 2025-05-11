@@ -2,4 +2,3 @@
 # kind: Kustomization
 # resources:
   #- vaultwarden
-  #- secrets.yaml

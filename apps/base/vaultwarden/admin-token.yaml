@@ -5,7 +5,7 @@ kind: Secret
 metadata:
     creationTimestamp: null
     name: vaultwarden-prod-admin-token
-    namespace: vw
+    namespace: vaultwarden
 sops:
     age:
         - recipient: age1vml3vk5uzyztj96qgz7n0a6w8ynvtmxfarkp0jdl0hvcj003895qcp6z09

@@ -13,13 +13,9 @@ metadata:
 spec:
   instances: 2
   postgresql:
-    max_worker_processes: "60"
-    shared_buffers: 512MB
+    max_worker_processes: "40"
   storage:
-    storageClass: local-path
+    storageClass: smb
     size: 10Gi
   walStorage:
     size: 2Gi
-  backup:
-    volumeSnapshot:
-      className: smb

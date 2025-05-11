@@ -25,7 +25,7 @@ spec:
   chart:
     spec:
       chart: cloudnative-pg
-      version: "0.23.0"
+      version: "0.23.2"
       sourceRef:
         kind: HelmRepository
         name: cnpg
@@ -41,4 +41,3 @@ spec:
       grafanaDashboard:
         create: true
         namespace: "monitoring"
-
