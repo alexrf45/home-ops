@@ -23,7 +23,7 @@ spec:
         kind: HelmRepository
         name: vaultwarden
         namespace: flux-system
-      version: 1.2.2
+      version: 1.2.5
   install:
     remediation:
       retries: 3
@@ -40,7 +40,7 @@ spec:
   # Database type, must be one of: 'sqlite', 'mysql' or 'postgresql'.
       type: postgresql
       url: ""
-      existingSecret: vaultwarden-prod-db-url
+      existingSecret: vaultwarden-pg
       #existingSecretKey: database-url
       maxConnections: 15
     vaultwarden:
@@ -79,9 +79,9 @@ spec:
         # Disabling the admin token will make the admin portal accessible to anyone, use carefully: https://github.com/dani-garcia/vaultwarden/wiki/Disable-admin-token
         disableAdminToken: false
         ## Token for admin login, will be generated if not defined. https://github.com/dani-garcia/vaultwarden/wiki/Enabling-admin-page
-        token: 
+        token:
         ## Use existing secret for the admin token. Key is 'admin-token'.
-        existingSecret: vaultwarden-prod-admin-token
+        existingSecret: admin-token
         #existingSecretKey: admin-token
       emergency:
         # Allow any user to enable emergency access.
@@ -100,45 +100,39 @@ spec:
         security: starttls
         port: 587
         AuthMechanism: Login
-        existingSecret: vaultwarden-prod-mail-creds    #existingSecretKey: smtp-user, smtp-password
+        existingSecret: vaultwarden-mail-creds    #existingSecretKey: smtp-user, smtp-password
 
       log:
         # Log to file.
         file: ""
         level: "debug"
-
       icons:
         service: google
         disableDownload: false
-
     service:
       type: ClusterIP
       httpPort: 80
       externalTrafficPolicy: Cluster
     ingress:
       enabled: true
-      className: "cilium"
-      host: "prod.int.vaultwarden.fr3d.dev"
+      className: "tailscale"
+      host: "dev-int-vaultwarden"
       annotations:
-        cert-manager.io/cluster-issuer: "letsencrypt-production"
+        #cert-manager.io/cluster-issuer: "letsencrypt-staging"
       tls:
         - secretName: vw-tls
           hosts:
-            - prod.int.vaultwarden.fr3d.dev
-
+            - dev-int-vaultwarden
     persistence:
       enabled: true
       size: 3Gi
       accessMode: ReadWriteOnce
-      storageClass: "longhorn"
-
+      storageClass: "local-path"
     image:
       pullPolicy: IfNotPresent
       repository: vaultwarden/server
-      tag: "1.32.0"
-
+      #tag: "1.32.0"
     replicaCount: 1
-
     serviceAccount:
       create: true
-      name: "vw-sa"
+      name: "vaultwarden-srv-acct"

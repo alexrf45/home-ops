@@ -3,6 +3,6 @@ kind: Kustomization
 resources:
   - release.yaml
   - admin-token.yaml
-  - pg-secrets.yaml
-  - secrets.yaml
+  - pg-secrets-cluster.yaml
+  - smtp-secrets.yaml
 

@@ -4,6 +4,6 @@ resources:
   #- argo-cd
   - homepage
   - blog
-  #- vaultwarden
+  - vaultwarden
   #- syncthing
   #  - securecodebox

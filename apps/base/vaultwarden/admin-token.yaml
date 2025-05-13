@@ -4,7 +4,7 @@ data:
 kind: Secret
 metadata:
     creationTimestamp: null
-    name: vaultwarden-prod-admin-token
+    name: admin-token
     namespace: vaultwarden
 sops:
     age:
