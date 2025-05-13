@@ -11,6 +11,9 @@ metadata:
   name: vaultwarden-cluster
   namespace: vaultwarden
 spec:
+  postgresql:
+    pg_hba:
+      - hostssl postgres vaultwarden 10.43.0.0/16 scram-sha-256
   instances: 2
   storage:
     storageClass: smb
