@@ -16,7 +16,7 @@ spec:
       - hostssl postgres vaultwarden 10.43.0.0/16 scram-sha-256
   instances: 2
   storage:
-    storageClass: smb
+    storageClass: local-path
     size: 10Gi
   walStorage:
     size: 2Gi
