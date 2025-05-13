@@ -14,7 +14,7 @@ spec:
   postgresql:
     pg_hba:
       - hostssl postgres vaultwarden 10.43.0.0/16 scram-sha-256
-  instances: 2
+  instances: 3
   storage:
     storageClass: local-path
     size: 10Gi
