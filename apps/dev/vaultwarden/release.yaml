@@ -23,7 +23,7 @@ spec:
       strategy: rollback
       retries: 3
   interval: 10m
-  releaseName: argo
+  releaseName: dev
   targetNamespace: vaultwarden
   values:
     database:
