@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: dev-blog
+  name: blog
   labels:
-    app = "dev-blog"
+    app = "blog"
 ---
