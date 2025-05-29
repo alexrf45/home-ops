@@ -22,10 +22,10 @@ spec:
         secretName: pihole-tls
     persistentVolumeClaim:
       enabled: true
-      storageClass: smb
-      existingClaim: pvc-pihole-2
+      storageClass: local-path
+      #existingClaim: pvc-pihole-2
       accessModes:
-        - ReadWriteMany
+        - ReadWriteOnce
       size: 50Gi
     serviceDns:
       externalTrafficPolicy: Cluster
@@ -47,4 +47,4 @@ spec:
       requests:
         cpu: 400m
         memory: 150Mi
-    privileged: "true"
+    #privileged: "true"
