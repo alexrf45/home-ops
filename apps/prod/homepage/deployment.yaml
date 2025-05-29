@@ -28,7 +28,7 @@ spec:
           imagePullPolicy: Always
           env:
             - name: HOMEPAGE_ALLOWED_HOSTS
-              value: homepage-homepage.bun-dominant.ts.net:3000 # required, may need port. See gethomepage.dev/installation/#homepage_allowed_hosts
+              value: prod-homepage.bun-dominant.ts.net:3000 # required, may need port. See gethomepage.dev/installation/#homepage_allowed_hosts
           ports:
             - name: http
               containerPort: 3000
