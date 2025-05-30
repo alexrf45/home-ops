@@ -101,7 +101,7 @@ spec:
         storageClassName: local-path
         #type: sts
     nodeExporter:
-      enabled: true
+      enabled: false
     kubeApiServer:
       serviceMonitor:
         selector:
@@ -144,7 +144,7 @@ spec:
         scrapeConfigSelectorNilUsesHelmValues: false
         serviceMonitorSelectorNilUsesHelmValues: false
         logFormat: logfmt
-        logLevel: info
+        logLevel: debug
         replicas: 2
         persistentVolumeClaimRetentionPolicy:
           whenDeleted: Delete

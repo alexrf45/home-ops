@@ -23,8 +23,8 @@ spec:
     persistentVolumeClaim:
       enabled: true
       existingClaim: pvc-pihole
-      storageClass: smb
+      storageClass: local-path
       accessModes:
-        - ReadWriteMany
+        - ReadWriteOnce
       size: 2048Mi
     mixedService: true
