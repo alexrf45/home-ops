@@ -36,5 +36,5 @@ spec:
   resources:
     requests:
       storage: 5Gi
-  volumeName: pihole-pv
+  volumeName: pihole-pv-1
   storageClassName: smb
