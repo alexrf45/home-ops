@@ -3,7 +3,7 @@ kind: Kustomization
 resources:
   #- argo-cd
   - homepage
-  - blog
+  #- blog
   - vaultwarden
   #- syncthing
   #  - securecodebox
