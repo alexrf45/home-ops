@@ -22,6 +22,7 @@ mountOptions:
   - uid=1000
   - gid=1000
   - noperm
+  - nosharesock
   - mfsymlinks
   - cache=strict
   - noserverino  # required to prevent data corruption

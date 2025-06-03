@@ -12,19 +12,19 @@ spec:
         cert-manager.io/cluster-issuer: letsencrypt-staging
       enabled: true
       hosts:
-      - dev.internal.pihole.fr3d.dev
+      - dev.int.pihole.fr3d.dev
       ingressClassName: cilium
       path: /
       pathType: Prefix
       tls:
       - hosts:
-        - dev.internal.pihole.fr3d.dev
-        secretName: pihole-tls
+        - dev.int.pihole.fr3d.dev
+        secretName: pihole-dev-tls
     persistentVolumeClaim:
       enabled: true
       existingClaim: pvc-pihole
-      storageClass: local-path
+      storageClass: smb
       accessModes:
-        - ReadWriteOnce
+        - ReadWriteMany
       size: 2048Mi
     mixedService: true

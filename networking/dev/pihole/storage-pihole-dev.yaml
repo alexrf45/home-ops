@@ -20,7 +20,7 @@ spec:
     driver: smb.csi.k8s.io
     volumeHandle: pihole
     volumeAttributes:
-      source: //10.3.3.11/Home-Share/pihole-dev
+      source: //10.3.3.11/Home-Share
     nodeStageSecretRef:
       name: smbcreds
       namespace: storage
