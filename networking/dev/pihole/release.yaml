@@ -12,13 +12,13 @@ spec:
         # cert-manager.io/cluster-issuer: letsencrypt-staging
       enabled: true
       hosts:
-      - dev.int.pihole.fr3d.dev
+      - pihole-dev
       ingressClassName: tailscale
       path: /
       pathType: Prefix
       tls:
       - hosts:
-        - dev.int.pihole.fr3d.dev
+        - pihole-dev
         secretName: pihole-dev-tls
     persistentVolumeClaim:
       enabled: true
