@@ -9,11 +9,11 @@ spec:
   values:
     ingress:
       annotations:
-        cert-manager.io/cluster-issuer: letsencrypt-staging
+        # cert-manager.io/cluster-issuer: letsencrypt-staging
       enabled: true
       hosts:
       - dev.int.pihole.fr3d.dev
-      ingressClassName: cilium
+      ingressClassName: tailscale
       path: /
       pathType: Prefix
       tls:
