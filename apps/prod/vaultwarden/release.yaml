@@ -13,7 +13,7 @@ spec:
         kind: HelmRepository
         name: vaultwarden
         namespace: flux-system
-      version: 7.8.2
+      version: 1.25
   install:
     remediation:
       retries: 3
@@ -23,7 +23,7 @@ spec:
       strategy: rollback
       retries: 3
   interval: 10m
-  releaseName: argo
+  releaseName: prod
   targetNamespace: vaultwarden
   values:
     
