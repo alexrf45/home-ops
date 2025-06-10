@@ -1,0 +1,242 @@
+---
+
+controllers:
+  main:
+    containers:
+      main:
+        image:
+          # -- image repository
+          repository: filebrowser/filebrowser
+          # -- image tag
+          tag:
+          # -- image pull policy
+          pullPolicy: IfNotPresent
+        # -- Set the resource requests / limits for the container.
+        resources:
+          limits:
+            cpu: 500m
+            memory: 1024Mi
+          requests:
+            cpu: 250m
+            memory: 512Mi
+
+# -- Configure configMaps for the chart here.
+# Additional configMaps can be added by adding a dictionary key similar to the 'config' object.
+# @default -- See below
+configMaps:
+  config:
+    # -- Enables or disables the configMap
+    enabled: true
+    # -- Labels to add to the configMap
+    labels: {}
+    # -- Annotations to add to the configMap
+    annotations: {}
+    # -- configMap data content. Helm template enabled.
+    data:
+      settings.json: |
+        {
+          "port": "8080",
+          "baseURL": "",
+          "address": "",
+          "log": "stdout",
+          "database": "/database/filebrowser.db",
+          "root": "/srv"
+        }
+
+
+# -- Configure the services for the chart here.
+# Additional services can be added by adding a dictionary key similar to the 'main' service.
+# @default -- See below
+service:
+  main:
+    # -- Enables or disables the service
+    enabled: true
+
+    # -- Configure which controller this service should target
+    controller: main
+
+    # -- Set the service type
+    type: ClusterIP
+
+    # -- Provide additional annotations which may be required.
+    annotations: {}
+
+    # -- Provide additional labels which may be required.
+    labels: {}
+
+    # -- Allow adding additional match labels
+    extraSelectorLabels: {}
+
+    # -- Configure the Service port information here.
+    # Additional ports can be added by adding a dictionary key similar to the 'http' service.
+    # @default -- See below
+    ports:
+      http:
+        # -- Enables or disables the port
+        enabled: true
+
+        # -- Make this the primary port (used in probes, notes, etc...)
+        # If there is more than 1 service, make sure that only 1 port is marked as primary.
+        primary: true
+
+        # -- The port number
+        port: 8080
+
+        # -- Port protocol.
+        # Support values are `HTTP`, `HTTPS`, `TCP` and `UDP`.
+        # HTTP and HTTPS spawn a TCP service and get used for internal URL and name generation
+        protocol: HTTP
+
+
+# -- Configure the ingresses for the chart here.
+ingress:
+  {}
+
+  # -- An example is shown below
+  # main:
+  #   # -- Enables or disables the ingress
+  #   enabled: true
+
+  #   # -- Override the name suffix that is used for this ingress.
+  #   nameOverride:
+
+  #   # -- Provide additional annotations which may be required. Helm templates can be used.
+  #   annotations: {}
+
+  #   # -- Provide additional labels which may be required. Helm templates can be used.
+  #   labels: {}
+
+  #   # -- Set the ingressClass that is used for this ingress.
+  #   className:
+
+  #   # -- Configure the defaultBackend for this ingress. This will disable any other rules for the ingress.
+  #   defaultBackend:
+
+  #   ## Configure the hosts for the ingress
+  #   hosts:
+  #     - # -- Host address. Helm template can be passed.
+  #       host: chart-example.local
+  #       ## Configure the paths for the host
+  #       paths:
+  #         - # -- Path.  Helm template can be passed.
+  #           path: /
+  #           pathType: Prefix
+  #           service:
+  #             # -- Overrides the service name reference for this path
+  #             # The service name to reference.
+  #             name: main
+  #             # -- Reference a service identifier from this values.yaml
+  #             identifier: main
+  #             # -- Overrides the service port number reference for this path
+  #             port:
+
+  #   # -- Configure TLS for the ingress. Both secretName and hosts can process a Helm template.
+  #   tls: []
+  #   #  - secretName: chart-example-tls
+  #   #    hosts:
+  #   #      - chart-example.local
+
+
+
+# -- Configure persistence for the chart here.
+# Additional items can be added by adding a dictionary key similar to the 'config' key.
+# [[ref]](https://bjw-s-labs.github.io/helm-charts/docs/common-library/common-library-storage)
+# @default -- See below
+persistence:
+  config:
+    # -- Enables or disables the persistence item. Defaults to true
+    enabled: true
+
+    # -- Sets the persistence type
+    # Valid options are persistentVolumeClaim, emptyDir, nfs, hostPath, secret, configMap or custom
+    type: configMap
+
+    # -- Sets the name of the configMap to mount
+    name: filebrowser
+
+    # -- Configure mounts to all controllers and containers.
+    globalMounts:
+      - path: /config
+        readOnly: true
+
+  database:
+    # -- Enables or disables the persistence item. Defaults to true
+    enabled: true
+
+    # -- Sets the persistence type
+    # Valid options are persistentVolumeClaim, emptyDir, nfs, hostPath, secret, configMap or custom
+    type: persistentVolumeClaim
+
+    # -- Storage Class for the config volume.
+    # If set to `-`, dynamic provisioning is disabled.
+    # If set to something else, the given storageClass is used.
+    # If undefined (the default) or set to null, no storageClassName spec is set, choosing the default provisioner.
+    storageClass: # "-"
+
+    # -- If you want to reuse an existing claim, the name of the existing PVC can be passed here.
+    existingClaim: # your-claim
+
+    # -- The optional data source for the persistentVolumeClaim.
+    # [[ref]](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#volume-populators-and-data-sources)
+    dataSource: {}
+
+    # -- The optional volume populator for the persistentVolumeClaim.
+    # [[ref]](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#volume-populators-and-data-sources)
+    dataSourceRef: {}
+
+    # -- AccessMode for the persistent volume.
+    # Make sure to select an access mode that is supported by your storage provider!
+    # [[ref]](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#access-modes)
+    accessMode: ReadWriteOnce
+
+    # -- The amount of storage that is requested for the persistent volume.
+    size: 100Mi
+
+    # -- Set to true to retain the PVC upon `helm uninstall`
+    retain: true
+
+    # -- Configure mounts to all controllers and containers.
+    globalMounts:
+      - path: /database
+        readOnly: false
+
+  data:
+    # -- Enables or disables the persistence item. Defaults to true
+    enabled: true
+
+    # -- Sets the persistence type
+    # Valid options are persistentVolumeClaim, emptyDir, nfs, hostPath, secret, configMap or custom
+    type: persistentVolumeClaim
+
+    # -- Storage Class for the config volume.
+    # If set to `-`, dynamic provisioning is disabled.
+    # If set to something else, the given storageClass is used.
+    # If undefined (the default) or set to null, no storageClassName spec is set, choosing the default provisioner.
+    storageClass: # "-"
+
+    # -- If you want to reuse an existing claim, the name of the existing PVC can be passed here.
+    existingClaim: # your-claim
+
+    # -- The optional data source for the persistentVolumeClaim.
+    # [[ref]](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#volume-populators-and-data-sources)
+    dataSource: {}
+
+    # -- The optional volume populator for the persistentVolumeClaim.
+    # [[ref]](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#volume-populators-and-data-sources)
+    dataSourceRef: {}
+
+    # -- AccessMode for the persistent volume.
+    # Make sure to select an access mode that is supported by your storage provider!
+    # [[ref]](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#access-modes)
+    accessMode: ReadWriteOnce
+
+    # -- The amount of storage that is requested for the persistent volume.
+    size: 50Gi
+
+    # -- Set to true to retain the PVC upon `helm uninstall`
+    retain: true
+
+    # -- Configure mounts to all controllers and containers.
+    globalMounts:
+      - path: /srv
+        readOnly: false
