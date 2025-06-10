@@ -78,7 +78,7 @@ module "dev" {
     v4 = {
       install_disk = "/dev/vda"
       machine_type = "worker"
-      node         = "home-2"
+      node         = "home-3"
       vm_id        = 1003
       datastore_id = "local-lvm"
       storage_id   = "data"
@@ -92,7 +92,7 @@ module "dev" {
     v5 = {
       install_disk = "/dev/vda"
       machine_type = "worker"
-      node         = "home-3"
+      node         = "home-4"
       vm_id        = 1004
       datastore_id = "local-lvm"
       storage_id   = "data"
@@ -106,7 +106,7 @@ module "dev" {
     v6 = {
       install_disk = "/dev/vda"
       machine_type = "worker"
-      node         = "home-4"
+      node         = "home-5"
       vm_id        = 1005
       datastore_id = "local-lvm"
       storage_id   = "data"
