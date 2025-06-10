@@ -32,7 +32,8 @@ flux-deploy() {
     --url=ssh://git@github.com/alexrf45/home-ops.git \
     --path=clusters/prod \
     --private-key-file=/home/fr3d/.ssh/fr3d \
-    --branch main
+    --branch main \
+    --force
 
 }
 
