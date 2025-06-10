@@ -8,7 +8,7 @@ module "dev" {
     pve_endpoint  = "10.3.3.2"
     vip_ip        = "10.3.3.69"
     gateway       = "10.3.3.1"
-    talos_version = "v1.10.0"
+    talos_version = "v1.10.3"
     control_plane_extensions = [
       "intel-ucode",
       "glibc",
@@ -35,11 +35,11 @@ module "dev" {
     v1 = {
       install_disk     = "/dev/vda"
       machine_type     = "controlplane"
-      node             = "home-3"
+      node             = "home-0"
       vm_id            = 1000
       datastore_id     = "local-lvm"
       storage_id       = "data"
-      allow_scheduling = true
+      allow_scheduling = false
       ip               = "10.3.3.70"
       cores            = 2
       memory           = 8092
@@ -48,26 +48,69 @@ module "dev" {
 
     },
     v2 = {
+      install_disk     = "/dev/vda"
+      machine_type     = "controlplane"
+      node             = "home-1"
+      vm_id            = 1001
+      datastore_id     = "local-lvm"
+      storage_id       = "data"
+      allow_scheduling = false
+      ip               = "10.3.3.71"
+      cores            = 2
+      memory           = 8092
+      size             = 25
+      storage_size     = 200
+    },
+    v3 = {
+      install_disk     = "/dev/vda"
+      machine_type     = "controlplane"
+      node             = "home-2"
+      vm_id            = 1002
+      datastore_id     = "local-lvm"
+      storage_id       = "data"
+      allow_scheduling = false
+      ip               = "10.3.3.72"
+      cores            = 2
+      memory           = 8092
+      size             = 25
+      storage_size     = 200
+    },
+    v4 = {
       install_disk = "/dev/vda"
       machine_type = "worker"
-      node         = "home-4"
-      vm_id        = 1001
+      node         = "home-2"
+      vm_id        = 1003
       datastore_id = "local-lvm"
       storage_id   = "data"
-      ip           = "10.3.3.71"
+      ip           = "10.3.3.73"
       cores        = 2
       memory       = 8092
       size         = 25
       storage_size = 200
     },
-    v3 = {
+
+    v5 = {
+      install_disk = "/dev/vda"
+      machine_type = "worker"
+      node         = "home-3"
+      vm_id        = 1004
+      datastore_id = "local-lvm"
+      storage_id   = "data"
+      ip           = "10.3.3.74"
+      cores        = 2
+      memory       = 8092
+      size         = 25
+      storage_size = 200
+    },
+
+    v6 = {
       install_disk = "/dev/vda"
       machine_type = "worker"
       node         = "home-4"
-      vm_id        = 1002
+      vm_id        = 1005
       datastore_id = "local-lvm"
       storage_id   = "data"
-      ip           = "10.3.3.72"
+      ip           = "10.3.3.75"
       cores        = 2
       memory       = 8092
       size         = 25
