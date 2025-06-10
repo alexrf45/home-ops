@@ -1,6 +1,6 @@
 module "dev" {
   source    = "./module"
-  pve_nodes = ["home-3", "home-4"]
+  pve_nodes = ["home-0", "home-1", "home-2", "home-3", "home-4", "home-5"]
   cluster = {
     name          = "dev"
     env           = "dev"
