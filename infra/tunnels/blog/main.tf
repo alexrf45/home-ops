@@ -13,7 +13,7 @@ module "app" {
   site_domain    = "fr3d.dev"
   namespace      = "blog"
   service_domain = "http://prod-blog-musings:80"
-  replicas       = 2
+  replicas       = 1
   account_id     = var.account_id
   api_token      = var.api_token
 }
