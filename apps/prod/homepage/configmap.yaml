@@ -28,7 +28,7 @@ data:
            description: home network DNS
     - Monitoring:
         - Grafana (PROD):
-            href: https://prod-internal-grafana.bun-dominant.ts.net
+            href: https://prod-internal-grafana-1.bun-dominant.ts.net
             description: Grafana
     - Apps:
         - My Blog:
