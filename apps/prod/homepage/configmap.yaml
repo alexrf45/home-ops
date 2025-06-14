@@ -24,7 +24,7 @@ data:
   services.yaml: |
     - DNS:
         - Pihole (PROD):
-           href: https://prod-pihole.bun-dominant.ts.net/admin/login.php
+           href: https://prod-pihole-1.bun-dominant.ts.net/admin/login.php
            description: home network DNS
     - Monitoring:
         - Grafana (PROD):
