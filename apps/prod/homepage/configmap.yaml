@@ -11,8 +11,9 @@ data:
   settings.yaml: |
     statusStyle: dot
     theme: dark
-    color: stone
+    color: yellow
     headerStyle: boxedWidgets
+    bookmarksStyle: icons
   custom.css: ""
   custom.js: ""
   bookmarks.yaml: |
@@ -21,15 +22,18 @@ data:
             - abbr: GH
               href: https://github.com/alexrf45
   services.yaml: |
+    - DNS:
+        - Pihole (PROD):
+           href: https://prod-pihole.bun-dominant.ts.net/admin/login.php
+           description: home network DNS
     - Monitoring:
         - Grafana (PROD):
             href: https://prod-internal-grafana.bun-dominant.ts.net
             description: Grafana
-
     - Apps:
-        - My Second Service:
-            href: http://localhost/
-            description: Homepage is the best
+        - My Blog:
+            href: https://blog.fr3d.dev/
+            description: Musings of Fr3d
 
   widgets.yaml: |
     - kubernetes:
