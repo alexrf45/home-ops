@@ -35,7 +35,7 @@ spec:
       maxConnections: 15
     vaultwarden:
       ## Set Bitwarden URL, mandatory for invitations over email. Recommended if using a reverse proxy / ingress. Format is https://name or http://name
-      domain: "https://prod-vw.fr3d.dev"
+      domain: "https://dev.ext.fr3d.dev"
       # Allow any user to sign-up: https://github.com/dani-garcia/vaultwarden/wiki/Disable-registration-of-new-users
       allowSignups: true
       # Verify e-mail before login is enabled. SMTP must be enabled.
