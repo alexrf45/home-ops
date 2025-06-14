@@ -11,7 +11,7 @@ data:
   settings.yaml: |
     statusStyle: dot
     theme: dark
-    color: yellow
+    color: zinc
     headerStyle: boxedWidgets
     bookmarksStyle: icons
   custom.css: ""
