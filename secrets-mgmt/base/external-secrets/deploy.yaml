@@ -44,7 +44,7 @@ spec:
     concurrent: 1
     crds:
       conversion:
-        enabled: false
+        enabled: true
       createClusterExternalSecret: true
       createClusterSecretStore: true
       createPushSecret: true
