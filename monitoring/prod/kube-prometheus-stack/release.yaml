@@ -31,7 +31,7 @@ spec:
     defaultRules:
       create: true
       rules:
-        alertmanager: true
+        alertmanager: false
         etcd: false
         configReloaders: true
         general: true
@@ -48,7 +48,7 @@ spec:
         kubeApiserverSlos: true
         kubeControllerManager: true
         kubelet: true
-        kubeProxy: true
+        kubeProxy: false
         kubePrometheusGeneral: true
         kubePrometheusNodeRecording: false
         kubernetesApps: true
@@ -67,7 +67,7 @@ spec:
         windows: true
     cleanPrometheusOperatorObjectNames: true
     alertmanager:
-      enabled: true
+      enabled: false
     kubernetesServiceMonitors:
       enabled: true
     grafana:
