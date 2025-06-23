@@ -5,5 +5,5 @@ resources:
   - homepage
   #- blog
   - vaultwarden
-  #- syncthing
+  - wallabag
   #  - securecodebox
