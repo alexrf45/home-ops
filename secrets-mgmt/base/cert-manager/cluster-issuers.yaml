@@ -20,7 +20,6 @@ spec:
         selector:
           dnsZones:
             - "fr3d.dev"
-
 ---
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
