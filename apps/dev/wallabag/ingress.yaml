@@ -16,7 +16,7 @@ metadata:
 spec:
   ingressClassName: tailscale
   rules:
-    - host: "dev-int-wallabag"
+    - host: dev-int-wallabag
       http:
         paths:
           - path: "/"
