@@ -44,3 +44,14 @@ spec:
     existingSecret: "pgadmin-creds"
     secretKeys:
         pgadminPasswordKey: password
+    env:
+      email: pgadmin@fr3d.dev
+      enhanced_cookie_protection: "True"
+    persistentVolume:
+      storageClass: smb
+      existingClaim: "pvc-pgadmin"
+      accessModes:
+        - ReadWriteMany
+      size: 5Gi
+    nodeSelector:
+      node: "worker"
