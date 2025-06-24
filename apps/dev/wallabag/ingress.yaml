@@ -6,9 +6,9 @@ metadata:
   labels:
     app.kubernetes.io/name: wallabag
   annotations:
-    gethomepage.dev/description: Dynamically Detected Homepage
+    gethomepage.dev/description: Links for Later
     gethomepage.dev/enabled: "true"
-    gethomepage.dev/group: Cluster Management
+    gethomepage.dev/group: Apps
     gethomepage.dev/icon: wallabag.png
     gethomepage.dev/name: wallabag
     cert-manager.io/cluster-issuer: letsencrypt-staging
