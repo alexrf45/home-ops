@@ -7,6 +7,6 @@ data:
   SYMFONY__ENV__DATABASE_PORT: "5432"
   SYMFONY__ENV__DATABASE_DRIVER: pdo_pgsql
   SYMFONY__ENV__DATABASE_NAME: wallabag
-  SYMFONY__ENV__DATABASE_HOST: wallabag-db
+  SYMFONY__ENV__DATABASE_HOST: wallabag-dev-cluster
   SYMFONY__ENV__DOMAIN_NAME: "http://dev.int.wallabag.fr3d.dev"
 ---
