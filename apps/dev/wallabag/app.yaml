@@ -39,8 +39,7 @@ metadata:
   name: wallabag
   namespace: wallabag
 spec:
-  type: LoadBalancer
-  loadBalancerClass: tailscale
+  type: ClusterIP
   ports:
     - protocol: TCP
       port: 8083
