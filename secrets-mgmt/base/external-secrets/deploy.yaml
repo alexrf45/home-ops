@@ -30,32 +30,27 @@ spec:
         kind: HelmRepository
         name: external-secrets
         namespace: flux-system
-      version: v0.16.0
+      version: v0.18.0
 
   interval: 1m0s
   releaseName: external-secrets
   targetNamespace: external-secrets
   values:
-    certController:
-      create: true
-      replicaCount: 1
-      requeueInterval: 5m
-      revisionHistoryLimit: 5
-    concurrent: 1
-    crds:
-      conversion:
-        enabled: true
-      createClusterExternalSecret: true
-      createClusterSecretStore: true
-      createPushSecret: true
-    createOperator: true
-    dnsPolicy: ClusterFirst
-    installCRDs: true
+    global:
+      nodeSelector:
+        dedicated: "dev-node-1005"
     log:
       level: info
       timeEncoding: epoch
-    processClusterExternalSecret: true
-    processClusterStore: true
-    processPushSecret: true
+    installCRDs: true
+    crds:
+      createClusterExternalSecret: true
+      createClusterSecretStore: true
+      createPushSecret: true
+    serviceMonitor:
+      enabled: true
+      namespace: "monitoring"
+    grafanaDashboard:
+      enabled: true
     replicaCount: 1
-    revisionHistoryLimit: 4
+    revisionHistoryLimit: 15
