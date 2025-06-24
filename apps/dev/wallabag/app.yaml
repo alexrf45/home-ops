@@ -16,7 +16,7 @@ spec:
     - host: dev-wallabag
       http:
         paths:
-          - path: /?(.*)
+          - path: /
             pathType: ImplementationSpecific
             backend:
               service:
