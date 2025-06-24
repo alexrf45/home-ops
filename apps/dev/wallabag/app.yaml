@@ -45,9 +45,5 @@ spec:
       port: 8083
       targetPort: 80
       name: http
-    - protocol: TCP
-      port: 8083
-      targetPort: 443
-      name: https
   selector:
     app: wallabag
