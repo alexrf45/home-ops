@@ -22,6 +22,15 @@ spec:
                 name: wallabag
                 port:
                   number: 80
+        https:
+          paths:
+            - path: /
+              pathType: Prefix
+              backend:
+                service:
+                  name: wallabag
+                  port:
+                    number: 443
   defaultBackend:
     service:
       name: wallabag
