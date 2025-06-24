@@ -11,7 +11,8 @@ metadata:
     gethomepage.dev/group: Cluster Management
     gethomepage.dev/icon: wallabag.png
     gethomepage.dev/name: wallabag
-  cert-manager.io/cluster-issuer: letsencrypt-staging
+    cert-manager.io/cluster-issuer: letsencrypt-staging
+
 spec:
   rules:
     - host: "dev.int.wallabag.fr3d.dev"

@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ts-wallabag-ingress
+  namespace: wallabag
+  annotations:
+    gethomepage.dev/description: Dynamically Detected Homepage
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/group: Apps
+    gethomepage.dev/icon: wallabag.png
+    gethomepage.dev/name: wallabag-tailscale
+    tailscale.com/funnel: "true"
+spec:
+  ingressClassName: tailscale
+  tls:
+    - hosts:
+        - ts-dev-wallabag
+  defaultBackend:
+    service:
+      name: wallabag
+      port:
+        number: 80
+  ingressClassName: tailscale
+  tls:
+    - hosts:
+        - ts-dev-wallabag

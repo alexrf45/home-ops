@@ -6,3 +6,4 @@ resources:
   - configmap.yaml
   - app.yaml
   - ingress.yaml
+  - tailscale.yaml

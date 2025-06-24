@@ -4,4 +4,5 @@ resources:
   #- vaultwarden
   - cnpg
   - wallabag
+  - pgadmin
 

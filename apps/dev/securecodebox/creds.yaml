@@ -1,7 +1,0 @@
-apiVersion: onepassword.com/v1
-kind: OnePasswordItem
-metadata:
-  name: securecodebox-s3-staging
-  namespace: security
-spec:
-  itemPath: "vaults/HomeLab/items/securecodebox-s3-staging"
