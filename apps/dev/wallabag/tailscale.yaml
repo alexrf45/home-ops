@@ -11,6 +11,17 @@ metadata:
     gethomepage.dev/name: wallabag-tailscale
     tailscale.com/funnel: "true"
 spec:
+  rules:
+    - host: ts-dev-wallabag
+      http:
+        paths:
+          - path: /?(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: wallabag
+                port:
+                  number: 80
   defaultBackend:
     service:
       name: wallabag
