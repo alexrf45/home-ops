@@ -6,17 +6,16 @@ metadata:
   labels:
     app.kubernetes.io/name: wallabag
   annotations:
-    gethomepage.dev/description: Links for Later
+    gethomepage.dev/description: Dynamically Detected Homepage
     gethomepage.dev/enabled: "true"
     gethomepage.dev/group: Apps
     gethomepage.dev/icon: wallabag.png
     gethomepage.dev/name: wallabag
-    #cert-manager.io/cluster-issuer: letsencrypt-staging
+    cert-manager.io/cluster-issuer: letsencrypt-staging
 
 spec:
-  ingressClassName: tailscale
   rules:
-    - host: dev-int-wallabag
+    - host: "dev.int.wallabag.fr3d.dev"
       http:
         paths:
           - path: "/"
@@ -28,4 +27,4 @@ spec:
                   number: 80
             tls:
               - hosts:
-                  - dev-int-wallabag
+                  - dev.int.wallabag.fr3d.dev
