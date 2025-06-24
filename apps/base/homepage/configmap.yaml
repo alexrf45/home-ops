@@ -27,10 +27,6 @@ data:
             description: Grafana
 
     - Apps:
-        - My Second Service:
-            href: http://localhost/
-            description: Homepage is the best
-
   widgets.yaml: |
     - kubernetes:
         cluster:
