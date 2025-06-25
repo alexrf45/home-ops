@@ -38,7 +38,7 @@ spec:
   values:
     global:
       nodeSelector:
-        dedicated: "dev-node-1005"
+        node: "worker"
     log:
       level: info
       timeEncoding: epoch
