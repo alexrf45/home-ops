@@ -33,7 +33,7 @@ spec:
     volumes:
       - name: homepage-config
         configMap:
-          name: homepage-config
+          name: homepage
     volumeMounts:
       - mountPath: /app/config/custom.js
         name: homepage-config
