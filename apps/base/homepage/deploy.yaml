@@ -6,7 +6,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 5m0s
-  url: oci://ghcr.io/m0nsterrr/helm-charts
+  url: oci://ghcr.io/m0nsterrr/helm-charts/homepage
   ref:
     semver: ">=3.3.0"
   verify:
