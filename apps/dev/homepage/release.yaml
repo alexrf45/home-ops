@@ -11,7 +11,7 @@ spec:
     kind: OCIRepository
     name: homepage
   values:
-    replicaCount: 2
+    replicaCount: 1
     ingress:
       enabled: true
       ingressClassName: tailscale
