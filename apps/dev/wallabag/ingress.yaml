@@ -23,8 +23,8 @@ spec:
             name: wallabag
             port:
               number: 80
-        path: /
-        pathType: Prefix
+        path: /?(.*)
+        pathType: ImplementationSpecific
   tls:
   - hosts:
     - dev-wallabag

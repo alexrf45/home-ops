@@ -1,0 +1,47 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    meta.helm.sh/release-name: homepage
+    meta.helm.sh/release-namespace: homepage
+  creationTimestamp: "2025-06-25T16:07:58Z"
+  finalizers:
+  - tailscale.com/finalizer
+  generation: 1
+  labels:
+    app.kubernetes.io/instance: homepage
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: homepage
+    app.kubernetes.io/part-of: homepage
+    app.kubernetes.io/version: v1.3.2
+    helm.sh/chart: homepage-3.3.0_850e94f3e1f3
+    helm.toolkit.fluxcd.io/name: homepage
+    helm.toolkit.fluxcd.io/namespace: flux-system
+  name: homepage
+  namespace: homepage
+  resourceVersion: "6394615"
+  uid: 361834df-6acd-4ec8-aff0-11ca977d876d
+spec:
+  ingressClassName: tailscale
+  rules:
+  - host: prod-homepage
+    http:
+      paths:
+      - backend:
+          service:
+            name: homepage
+            port:
+              number: 80
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - prod-homepage
+    secretName: prod-homepage-tls
+status:
+  loadBalancer:
+    ingress:
+    - hostname: prod-homepage.bun-dominant.ts.net
+      ports:
+      - port: 443
+        protocol: TCP
