@@ -13,4 +13,4 @@ spec:
     provider: cosign
     matchOIDCIdentity:
       - issuer: "^https://token.actions.githubusercontent.com$"
-        subject: "ghcr.io/m0nsterrr/helm-charts/homepage:3.3.0"
+        subject: "https://github.com/M0NsTeRRR/helm-charts/.github/workflows/releases.yml@refs/heads/main"
