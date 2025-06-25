@@ -29,7 +29,7 @@ spec:
       node: "worker"
     extraEnv:
       - name: HOMEPAGE_ALLOWED_HOSTS
-        value: dev-homepage.bun-dominant.ts.net:3000
+        value: https://dev-homepage.bun-dominant.ts.net
     volumes:
       - name: homepage-config
         configMap:
