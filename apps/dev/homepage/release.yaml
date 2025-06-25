@@ -34,9 +34,6 @@ spec:
       - name: homepage-config
         configMap:
           name: homepage-config
-      - name: logs
-        emptyDir: {}
-
     volumeMounts:
       - mountPath: /app/config/custom.js
         name: homepage-config
