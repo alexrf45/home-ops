@@ -14,3 +14,5 @@ spec:
     matchOIDCIdentity:
       - issuer: "^https://token.actions.githubusercontent.com$"
         subject: "https://github.com/M0NsTeRRR/helm-charts/.github/workflows/releases.yml@refs/heads/main"
+---
+
