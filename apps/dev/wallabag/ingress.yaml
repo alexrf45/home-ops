@@ -11,20 +11,21 @@ metadata:
     gethomepage.dev/group: Apps
     gethomepage.dev/icon: wallabag.png
     gethomepage.dev/name: wallabag
-    cert-manager.io/cluster-issuer: letsencrypt-staging
-
+    #    cert-manager.io/cluster-issuer: letsencrypt-staging
 spec:
+  ingressClassName: tailscale
   rules:
-    - host: "dev.int.wallabag.fr3d.dev"
-      http:
-        paths:
-          - path: "/"
-            pathType: Prefix
-            backend:
-              service:
-                name: wallabag
-                port:
-                  number: 80
-            tls:
-              - hosts:
-                  - dev.int.wallabag.fr3d.dev
+  - host: dev-wallabag
+    http:
+      paths:
+      - backend:
+          service:
+            name: wallabag
+            port:
+              number: 80
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - dev-wallabag
+    secretName: dev-wallabag-tls
