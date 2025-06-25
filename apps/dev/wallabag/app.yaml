@@ -26,7 +26,6 @@ spec:
               cpu: 200m
         ports:
           - containerPort: 80
-            protocol: TCP
         envFrom:
           - configMapRef:
               name: wallabag-configmap
@@ -42,7 +41,7 @@ spec:
   type: ClusterIP
   ports:
     - protocol: TCP
-      port: 8083
+      port: 80
       targetPort: 80
       name: http
   selector:
