@@ -8,7 +8,7 @@ data:
   SYMFONY__ENV__DATABASE_DRIVER: pdo_pgsql
   SYMFONY__ENV__DATABASE_NAME: app
   SYMFONY__ENV__DATABASE_HOST: wallabag-dev-cluster-rw
-  SYMFONY__ENV__DOMAIN_NAME: "http://dev-wallabag.bun-dominant.ts.net"
+  SYMFONY__ENV__DOMAIN_NAME: "https://dev-wallabag.bun-dominant.ts.net"
   POPULATE_DATABASE: "true"
   PHP_MEMORY_LIMIT: "500M"
 ---
