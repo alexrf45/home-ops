@@ -10,6 +10,7 @@ spec:
   chartRef:
     kind: OCIRepository
     name: homepage
+  targetNamespace: homepage
   values:
     replicaCount: 1
     ingress:
@@ -32,7 +33,7 @@ spec:
     volumes:
       - name: homepage-config
         configMap:
-          name: homepage
+          name: homepage-config
       - name: logs
         emptyDir: {}
 
