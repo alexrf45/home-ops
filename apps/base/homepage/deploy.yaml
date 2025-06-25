@@ -6,11 +6,11 @@ metadata:
   namespace: flux-system
 spec:
   interval: 5m0s
-  url: oci://ghcr.io/m0nsterrr/helm-charts/homepage
-  #ref:
-# tag: latest
-  # verify:
-  #   provider: cosign
-  #   matchOIDCIdentity:
-  #     - issuer: "^https://token.actions.githubusercontent.com$"
-  #       subject: "ghcr.io/m0nsterrr/helm-charts/homepage:3.3.0"
+  url: oci://ghcr.io/m0nsterrr/helm-charts
+  ref:
+    tag: latest
+  verify:
+    provider: cosign
+    matchOIDCIdentity:
+      - issuer: "^https://token.actions.githubusercontent.com$"
+        subject: "ghcr.io/m0nsterrr/helm-charts/homepage:3.3.0"
