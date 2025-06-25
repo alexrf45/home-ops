@@ -7,8 +7,8 @@ metadata:
 spec:
   interval: 5m0s
   url: oci://ghcr.io/m0nsterrr/helm-charts/homepage
-  ref:
-    tag: latest
+  #ref:
+# tag: latest
   # verify:
   #   provider: cosign
   #   matchOIDCIdentity:
