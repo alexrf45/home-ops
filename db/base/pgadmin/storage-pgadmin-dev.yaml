@@ -16,13 +16,13 @@ spec:
   mountOptions:
     - dir_mode=0777
     - file_mode=0777
-    - uid=1000
-    - gid=1000
+    - uid=5050
+    - gid=5050
     - mfsymlinks
     - nobrl
   csi:
     driver: smb.csi.k8s.io
-    volumeHandle: dev-pgadmin-1
+    volumeHandle: dev-pgadmin-2
     volumeAttributes:
       source: //10.3.3.11/Home-Share/dev/pgadmin
     nodeStageSecretRef:
@@ -32,7 +32,7 @@ spec:
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: pvc-dev-pgadmin-1
+  name: pvc-dev-pgadmin-2
   namespace: database
 spec:
   accessModes:
@@ -40,5 +40,5 @@ spec:
   resources:
     requests:
       storage: 5Gi
-  volumeName: dev-pgadmin-1
+  volumeName: dev-pgadmin-2
   storageClassName: smb
