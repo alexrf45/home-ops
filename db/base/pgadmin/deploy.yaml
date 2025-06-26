@@ -39,7 +39,7 @@ spec:
       ingressClassName: tailscale
       hosts:
         - host: dev-pgadmin
-          path:
+          paths:
             - path: /
               pathType: Prefix
     existingSecret: "pgadmin-creds"
