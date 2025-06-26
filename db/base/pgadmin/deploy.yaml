@@ -37,15 +37,22 @@ spec:
     ingress:
       enabled: true
       ingressClassName: tailscale
+      annotations:
+        gethomepage.dev/description: PostgreSQL Admin UI
+        gethomepage.dev/enabled: "true"
+        gethomepage.dev/group: Apps
+        gethomepage.dev/icon: pgadmin.png
+        gethomepage.dev/name: pgadmin
+
       hosts:
         - host: dev-pgadmin
           paths:
             - path: /
               pathType: Prefix
-        tls:
-          - hosts:
-              - dev-pgadmin
-              secretName: dev-pgadmin-tls
+      tls:
+        - hosts:
+            - dev-pgadmin
+            secretName: dev-pgadmin-tls
 
     existingSecret: "pgadmin-creds"
     secretKeys:
