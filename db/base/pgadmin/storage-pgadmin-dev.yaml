@@ -32,7 +32,7 @@ spec:
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: pvc-pgadmin
+  name: pvc-dev-pgadmin
   namespace: database
 spec:
   accessModes:
