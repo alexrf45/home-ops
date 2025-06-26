@@ -31,7 +31,7 @@ spec:
     serverDefinitions:
       enabled: true
       resourceType: ConfigMap
-      existingConfigMap: "pgadmin-config"
+      existingConfigmap: "pgadmin-config"
     preferences:
       enabled: false
     ingress:
