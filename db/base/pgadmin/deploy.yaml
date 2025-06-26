@@ -50,9 +50,9 @@ spec:
             - path: /
               pathType: Prefix
       tls:
-        - hosts:
+        - secretName: dev-pgadmin-tls
+          hosts:
             - dev-pgadmin
-            secretName: dev-pgadmin-tls
 
     existingSecret: "pgadmin-creds"
     secretKeys:
