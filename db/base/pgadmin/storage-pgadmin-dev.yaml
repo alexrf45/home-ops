@@ -24,7 +24,7 @@ spec:
     driver: smb.csi.k8s.io
     volumeHandle: dev-pgadmin
     volumeAttributes:
-      source: //10.3.3.11/Home-Share
+      source: //10.3.3.11/Home-Share/dev/pgadmin
     nodeStageSecretRef:
       name: smbcreds
       namespace: storage
