@@ -12,6 +12,7 @@ metadata:
     gethomepage.dev/icon: wallabag.png
     gethomepage.dev/name: wallabag
     #    cert-manager.io/cluster-issuer: letsencrypt-staging
+    tailscale.com/funnel: "true"
 spec:
   ingressClassName: tailscale
   rules:
