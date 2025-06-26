@@ -4,8 +4,8 @@ kind: PersistentVolume
 metadata:
   annotations:
     pv.kubernetes.io/provisioned-by: smb.csi.k8s.io
-  name: pgadmin
-  namespace: pgadmin
+  name: dev-pgadmin
+  namespace: database
 spec:
   capacity:
     storage: 5Gi
@@ -22,7 +22,7 @@ spec:
     - nobrl
   csi:
     driver: smb.csi.k8s.io
-    volumeHandle: pgadmin
+    volumeHandle: dev-pgadmin
     volumeAttributes:
       source: //10.3.3.11/Home-Share
     nodeStageSecretRef:
@@ -33,12 +33,12 @@ kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
   name: pvc-pgadmin
-  namespace: pgadmin
+  namespace: database
 spec:
   accessModes:
     - ReadWriteMany
   resources:
     requests:
       storage: 5Gi
-  volumeName: pgadmin
+  volumeName: dev-pgadmin
   storageClassName: smb
