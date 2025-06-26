@@ -4,7 +4,7 @@ kind: PersistentVolume
 metadata:
   annotations:
     pv.kubernetes.io/provisioned-by: smb.csi.k8s.io
-  name: dev-pgadmin-1
+  name: dev-pgadmin-2
   namespace: database
 spec:
   capacity:
