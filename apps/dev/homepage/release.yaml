@@ -29,7 +29,7 @@ spec:
       node: "worker"
     config:
       allowedHosts:
-        - "https://dev-homepage.bun-dominant.ts.net:443"
+        - "dev-homepage.bun-dominant.ts.net"
     # extraEnv:
     #   - name: HOMEPAGE_ALLOWED_HOSTS
     #     value: https://dev-homepage.bun-dominant.ts.net
