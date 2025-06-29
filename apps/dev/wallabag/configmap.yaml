@@ -26,19 +26,3 @@ sops:
     mac: ENC[AES256_GCM,data:gHmnQDSpX1+5Bjo/nML5Q16kZbb36dE4idDsSajkXUIlBMdEGz5HsLwIUaZrOxZLGljE3FKjTXf3UUJtgkS4DHgQIcOco1dY5oHt4X83swULENpvv1NmTHb0YfMah043TxzbWMU180h/W5WQzqjwKjg74TkpEpU5VOdCaxWU4FU=,iv:fEVeN2jk/lHApKjP/XYl/56lqGNrl+Mqw6agog0eRoA=,tag:7a1YypX854lGz+89MJoKig==,type:str]
     encrypted_regex: ^(data|stringData)$
     version: 3.10.2
----
-sops:
-    age:
-        - recipient: age1vml3vk5uzyztj96qgz7n0a6w8ynvtmxfarkp0jdl0hvcj003895qcp6z09
-          enc: |
-            -----BEGIN AGE ENCRYPTED FILE-----
-            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBEQlhLQVFxUUN5Yy9XMldj
-            V21Hb09mT1F5WmpXVjFDZHdrVTRVcExCZHdRCnVaaWl4QzAvYTE5VjJrRjBQcnlF
-            UXppUHdwdUdhbThUbTJhWE1KL2ROeDQKLS0tIEp2eGE1S0JYQXVVUmc3UENnZnBz
-            RCs4SkhUd0RPSjk3T2toaVJBR1ZpaWMK3ZYG4hzoklYTirQifWe4wu9jQ0fp6Kvi
-            4BVgD7+Zdztjb5clR1K/KDWKndFnp1Fd12w1CtiXEez+pcnxpA9tHw==
-            -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2025-06-27T17:37:01Z"
-    mac: ENC[AES256_GCM,data:gHmnQDSpX1+5Bjo/nML5Q16kZbb36dE4idDsSajkXUIlBMdEGz5HsLwIUaZrOxZLGljE3FKjTXf3UUJtgkS4DHgQIcOco1dY5oHt4X83swULENpvv1NmTHb0YfMah043TxzbWMU180h/W5WQzqjwKjg74TkpEpU5VOdCaxWU4FU=,iv:fEVeN2jk/lHApKjP/XYl/56lqGNrl+Mqw6agog0eRoA=,tag:7a1YypX854lGz+89MJoKig==,type:str]
-    encrypted_regex: ^(data|stringData)$
-    version: 3.10.2
