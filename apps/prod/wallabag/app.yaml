@@ -1,0 +1,48 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wallabag
+  namespace: wallabag
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: wallabag
+  template:
+    metadata:
+      labels:
+        app: wallabag
+    spec:
+      containers:
+      - name: wallabag-web
+        image: wallabag/wallabag:2.6.10
+        resources:
+            requests:
+              memory: 128Mi
+              cpu: 100m
+            limits:
+              memory: 256Mi
+              cpu: 200m
+        ports:
+          - containerPort: 80
+        envFrom:
+          - configMapRef:
+              name: wallabag-configmap
+          - secretRef:
+              name: wallabag-container-env
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: wallabag
+  namespace: wallabag
+spec:
+  type: ClusterIP
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+      name: http
+  selector:
+    app: wallabag

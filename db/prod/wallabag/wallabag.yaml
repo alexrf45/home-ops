@@ -1,0 +1,24 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: wallabag
+  labels:
+    app = "wallabag"
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: wallabag-prod-cluster
+  namespace: wallabag
+spec:
+  postgresql:
+    pg_hba:
+      - hostssl postgres wallabag 10.43.0.0/16 scram-sha-256
+  instances: 3
+  storage:
+    storageClass: local-path
+    size: 20Gi
+  walStorage:
+    size: 5Gi
+
