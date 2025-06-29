@@ -19,7 +19,7 @@ spec:
   chart:
     spec:
       chart: tailscale-operator
-      version: '1.8*.x'
+      version: '1.8*.*'
       interval: 5m
       sourceRef:
         kind: HelmRepository
