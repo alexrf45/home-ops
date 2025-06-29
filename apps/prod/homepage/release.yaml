@@ -27,9 +27,9 @@ spec:
             - prod-homepage
     nodeSelector:
       node: "worker"
-    extraEnv:
-      - name: HOMEPAGE_ALLOWED_HOSTS
-        value: prod-homepage.bun-dominant.ts.net
+    config:
+      allowedHosts:
+        - "prod-homepage.bun-dominant.ts.net"
     volumes:
       - name: homepage-config
         configMap:
