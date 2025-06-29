@@ -9,10 +9,13 @@ data:
   kubernetes.yaml: |
     mode: cluster
   settings.yaml: |
+    title: My Homepage
     statusStyle: dot
     theme: dark
     color: stone
     headerStyle: boxedWidgets
+    hideVersion: true
+    disableUpdateCheck: true
   custom.css: ""
   custom.js: ""
   bookmarks.yaml: |
