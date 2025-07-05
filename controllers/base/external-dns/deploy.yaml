@@ -23,7 +23,7 @@ spec:
         kind: HelmRepository
         name: external-dns
         namespace: flux-system
-      version: 1.18.0
+      version: 1.17.0
   interval: 30m
   maxHistory: 3
   install:
@@ -33,6 +33,8 @@ spec:
   releaseName: external-dns
   targetNamespace: networking
   values:
+    image:
+      tag: v0.17.0
     provider:
       name: pihole
     env:
