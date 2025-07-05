@@ -1,5 +1,5 @@
 module "dev" {
-  source    = "./module"
+  source    = "git@github.com:alexrf45/lab.git//talos-pve-v1.3.3?ref=v1.3.3"
   pve_nodes = ["home-0", "home-1", "home-2", "home-3", "home-4", "home-5"]
   cluster = {
     name          = "dev"
@@ -8,7 +8,8 @@ module "dev" {
     pve_endpoint  = "10.3.3.2"
     vip_ip        = "10.3.3.69"
     gateway       = "10.3.3.1"
-    talos_version = "v1.10.3"
+    talos_version = "v1.10.5"
+    cilium_version = "v1.17.5"
     control_plane_extensions = [
       "intel-ucode",
       "glibc",
