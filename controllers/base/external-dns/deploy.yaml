@@ -34,7 +34,7 @@ spec:
   targetNamespace: networking
   values:
     image:
-      tag: v0.17.0
+      tag: v0.18.0
     provider:
       name: pihole
     env:
