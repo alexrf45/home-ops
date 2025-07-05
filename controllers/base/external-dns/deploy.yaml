@@ -44,7 +44,7 @@ spec:
     extraArgs:
       - --pihole-server=http://10.3.3.11
       - --pihole-tls-skip-verify
-    policy: sync
+    policy: upsert-only
     nodeSelector:
       node: "worker"
     
