@@ -4,4 +4,3 @@ resources:
   - cert-manager.crds.yaml
   - deploy.yaml
   - secrets.yaml
-  - cluster-issuers.yaml
