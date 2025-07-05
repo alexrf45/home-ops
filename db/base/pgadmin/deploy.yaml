@@ -62,7 +62,7 @@ spec:
       enhanced_cookie_protection: "True"
     persistentVolume:
       storageClass: smb
-      existingClaim: "pvc-dev-pgadmin-2"
+      existingClaim: "pvc-dev-pgadmin"
       accessModes:
         - ReadWriteMany
       size: 5Gi
