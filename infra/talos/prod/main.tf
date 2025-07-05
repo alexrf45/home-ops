@@ -1,6 +1,7 @@
 module "prod" {
   source    = "git@github.com:alexrf45/lab.git//talos-pve-v1.3.3?ref=v1.3.3"
   pve_nodes = ["home-0", "home-1", "home-2", "home-3", "home-4", "home-5"]
+  load_balancer_ip = "10.3.3.51"
   cluster = {
     name           = "prod"
     env            = "prod"
@@ -55,7 +56,7 @@ module "prod" {
       vm_id            = 2001
       datastore_id     = "local-lvm"
       storage_id       = "data"
-      allow_scheduling = true
+      allow_scheduling = false
       ip               = "10.3.3.81"
       cores            = 2
       memory           = 8092
@@ -69,7 +70,7 @@ module "prod" {
       vm_id            = 2002
       datastore_id     = "local-lvm"
       storage_id       = "data"
-      allow_scheduling = true
+      allow_scheduling = false
       ip               = "10.3.3.82"
       cores            = 2
       memory           = 8092

@@ -23,11 +23,11 @@ variable "node_network" {
 variable "load_balancer_start" {
   description = "The hostnum of the first load balancer host"
   type        = number
-  default     = 60
+  default     = 50
 }
 
 variable "load_balancer_stop" {
   description = "The hostnum of the last load balancer host"
   type        = number
-  default     = 69
+  default     = 59
 }
