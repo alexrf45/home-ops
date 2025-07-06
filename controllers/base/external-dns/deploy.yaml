@@ -46,6 +46,7 @@ spec:
     extraArgs:
       - --pihole-server=http://10.3.3.11
       - --pihole-tls-skip-verify
+      - --ignore-endpointslices
     policy: upsert-only
     nodeSelector:
       node: "worker"
