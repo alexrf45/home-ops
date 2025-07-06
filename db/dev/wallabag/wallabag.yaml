@@ -18,14 +18,30 @@ spec:
   instances: 3
   storage:
     size: 10Gi
-    storageClass: smb
-    pvcTemplate:
-      accessModes:
-        - ReadWriteMany
-      resources:
-        requests:
-          storage: 10Gi
-      volumeMode: Filesystem
+    storageClass: local-path
   walStorage:
     size: 2Gi
+  backup:
+    barmanObjectStore:
+      destinationPath: s3://BUCKET_NAME/path/to/folder
+      s3Credentials:
+        accessKeyId:
+          name: aws-creds
+          key: ACCESS_KEY_ID
+        secretAccessKey:
+          name: aws-creds
+          key: ACCESS_SECRET_KEY
+      wal:
+        compression: gzip
+    retentionPolicy: "15d"
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: ScheduledBackup
+metadata:
+  name: wallabag-backup
+spec:
+  schedule: "0 0 0 * * *"
+  backupOwnerReference: self
+  cluster:
+    name: wallabag-dev-cluster
 

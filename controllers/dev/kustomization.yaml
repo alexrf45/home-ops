@@ -5,7 +5,7 @@ resources:
   - ../base/csi-driver-smb
   - ../base/cert-manager
   - ../base/external-secrets
-  - ../base/external-dns
+  #  - ../base/external-dns
   - ../base/onepassword-connect
   - ../base/tailscale
   - ../base/cloudnativepg
