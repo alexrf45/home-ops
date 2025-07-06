@@ -35,7 +35,7 @@ spec:
   values:
     image:
       repository: gcr.io/k8s-staging-external-dns/external-dns
-      tag: v20250706-v0.18.0-22-g1b77c19d
+      tag: sha256:fdefa1f386bac449465268ae6ffb61b9e0dd6f37a3e1034115c7f339bbc85478
     provider:
       name: pihole
     rbac:
