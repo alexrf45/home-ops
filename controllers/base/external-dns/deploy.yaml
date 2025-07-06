@@ -37,6 +37,11 @@ spec:
       tag: v0.18.0
     provider:
       name: pihole
+    rbac:
+      additionalPermissions:
+        - apiGroups: ["discovery.k8s.io"]
+          resources: ["endpointslices"]
+          verbs: ["get", "list", "watch"]
     env:
       - name: EXTERNAL_DNS_PIHOLE_PASSWORD
         valueFrom:
@@ -46,7 +51,6 @@ spec:
     extraArgs:
       - --pihole-server=http://10.3.3.11
       - --pihole-tls-skip-verify
-      - --ignore-endpointslices
     policy: upsert-only
     nodeSelector:
       node: "worker"
