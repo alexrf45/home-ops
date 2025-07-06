@@ -52,6 +52,7 @@ spec:
     extraArgs:
       - --pihole-server=http://10.3.3.11
       - --pihole-tls-skip-verify
+      - --pihole-api-version=6
     dnsConfig:
       namservers:
         - 10.3.3.11
