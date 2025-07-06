@@ -15,10 +15,17 @@ spec:
   postgresql:
     pg_hba:
       - hostssl postgres wallabag 10.43.0.0/16 scram-sha-256
-  instances: 2
+  instances: 3
   storage:
-    storageClass: smb
     size: 10Gi
+    pvcTemplate:
+      accessModes:
+        - ReadWriteMany
+      resources:
+        requests:
+          storage: 10Gi
+      storageClass: smb
+      volumeMode: Filesystem
   walStorage:
     size: 2Gi
 
