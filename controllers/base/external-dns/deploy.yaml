@@ -34,8 +34,8 @@ spec:
   targetNamespace: networking
   values:
     image:
-      repository: gcr.io/k8s-staging-external-dns/external-dns
-      tag: fdefa1f386bac449465268ae6ffb61b9e0dd6f37a3e1034115c7f339bbc85478
+      repository: gcr.io/k8s-staging-external-dns/external-dns@
+      tag: sha256:fdefa1f386bac449465268ae6ffb61b9e0dd6f37a3e1034115c7f339bbc85478
     provider:
       name: pihole
     rbac:
