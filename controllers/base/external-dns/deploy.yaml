@@ -51,6 +51,10 @@ spec:
     extraArgs:
       - --pihole-server=http://10.3.3.11
       - --pihole-tls-skip-verify
+    dnsConfig:
+      namservers:
+        - 10.3.3.11
+        - 1.1.1.1
     policy: upsert-only
     nodeSelector:
       node: "worker"
