@@ -18,13 +18,13 @@ spec:
   instances: 3
   storage:
     size: 10Gi
+    storageClass: smb
     pvcTemplate:
       accessModes:
         - ReadWriteMany
       resources:
         requests:
           storage: 10Gi
-      storageClass: smb
       volumeMode: Filesystem
   walStorage:
     size: 2Gi
