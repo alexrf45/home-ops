@@ -34,7 +34,7 @@ spec:
   targetNamespace: networking
   values:
     image:
-      tag: v0.18.0
+      tag: v20250706-v0.18.0-22-g1b77c19d
     provider:
       name: pihole
     rbac:
