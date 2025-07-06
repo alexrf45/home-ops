@@ -8,6 +8,8 @@ module "prod" {
     endpoint       = "10.3.3.80"
     pve_endpoint   = "10.3.3.2"
     vip_ip         = "10.3.3.79"
+    nameserver1    = "1.1.1.1"
+    nameserver2    = "10.3.3.11"
     gateway        = "10.3.3.1"
     talos_version  = "v1.10.5"
     cilium_version = "v1.17.5"
