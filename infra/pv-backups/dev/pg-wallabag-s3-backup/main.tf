@@ -16,6 +16,6 @@ module "wallabag" {
   env        = "dev"
   app        = "wallabag"
   username   = "dev-wallabag-pg-db-user"
-  path       = "/backup/dev/wallabag"
+  path       = "/backup/dev/wallabag/"
   versioning = "Enabled"
 }
