@@ -86,7 +86,6 @@ spec:
               - dev-it-tools
     persistence:
       config:
-        nameOverride: dev-it-tools
         enabled: true
         storageClass: local-path
         retain: Yes
