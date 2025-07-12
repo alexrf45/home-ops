@@ -36,16 +36,9 @@ override.tf.json
 .terraformrc
 terraform.rc
 remote-state/remote.tfbackend
-**/dev/outputs/*
-**/prod/outputs/*
-#patch.yaml
 remote.tfbackend
 .env
 .envrc
-**config/
-talosconfig
-kubeconfig
-#outputs 
 pve-secret.sh
 pve-secret.txt
 1password-credentials.json

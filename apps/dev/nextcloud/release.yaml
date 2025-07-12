@@ -1,0 +1,99 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: nextcloud
+  namespace: flux-system
+spec:
+  chart:
+    spec:
+      chart: nextcloud
+      reconcileStrategy: ChartVersion
+      sourceRef:
+        kind: HelmRepository
+        name: nextcloud
+        namespace: flux-system
+      version: 6.6.10
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  interval: 10m
+  releaseName: nextcloud
+  targetNamespace: nextcloud
+  values:
+    ingress:
+      className: tailscale
+      enabled: true
+      tls:
+        - secretName: nextcloud-tls
+          hosts:
+            - dev-nextcloud
+    nextcloud:
+      host: dev-nextcloud.bun-dominant.ts.net
+      existingSecret:
+        enabled: true
+        secretName: "nextcloud-secrets"
+        usernameKey: nextcloud-username
+        passwordKey: nextcloud-password
+        tokenKey: nextcloud-token
+        smtpUsernameKey: smtp-username
+        smtp-PasswordKey: smtp-password
+        smtpHostKey: smtp-host
+      trustedDomains: ["dev-nextcloud.bun-dominant.ts.net" ]
+      mail:
+        enabled: true
+        fromAddress: admin
+        domain: fr3d.dev
+      objectStore:
+        s3:
+          enabled: true
+          region: "us-east-1"
+          existingSecret: "nextcloud-secrets"
+          secretKeys:
+            accessKey: "access_key_id"
+            secretKey: "secret_access_key"
+            bucket: "bucket"
+      internalDatabase:
+        enabled: false
+      
+      externalDatabase:
+        enabled: true
+        type: postgresql
+        existingSecret:
+          enabled: true
+          secretName: "nextcloud-secrets"
+          usernameKey: "username"
+          passwordKey: "password"
+          hostKey: "db-host"
+          databaseKey: "app"
+      redis:
+        enabled: true
+        auth:
+          enabled: true
+          existingSecret: "nextcloud-secrets"
+          existingSecretPasswordKey: "redis-password"
+        global:
+          storageClass: "local-path"
+      cronjob:
+        enabled: true
+      persistence:
+        enabled: true
+        storageClass: smb
+        exisitingClaim: "dev-nextcloud-pvc"
+        accessMode: ReadWriteMany
+        size: 250Gi
+      hpa:
+        enabled: true
+        cputhreshold: 40
+        minpods: 1
+        maxPods: 5
+        nodeSelector:
+          node: "worker"
+      rbac:
+        enabled: true
+

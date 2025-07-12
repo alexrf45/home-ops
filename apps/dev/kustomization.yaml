@@ -7,3 +7,4 @@ resources:
   #- vaultwarden
   - wallabag
   - it-tools
+  #- nextcloud

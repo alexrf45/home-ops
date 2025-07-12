@@ -1,0 +1,41 @@
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: nextcloud-dev-cluster
+  namespace: nextcloud
+spec:
+  postgresql:
+    pg_hba:
+      - hostssl postgres nextcloud 10.43.0.0/16 scram-sha-256
+  instances: 3
+  storage:
+    size: 10Gi
+    storageClass: local-path
+  walStorage:
+    size: 2Gi
+  backup:
+    barmanObjectStore:
+      destinationPath: s3://dev-nextcloud-cc72d31e-b4a8-a4f6-aa9a-f8fd10db7f26
+      s3Credentials:
+        accessKeyId:
+          name: aws-creds
+          key: AWS_ACCESS_KEY_ID
+        secretAccessKey:
+          name: aws-creds
+          key: AWS_SECRET_ACCESS_KEY
+      wal:
+        compression: gzip
+    retentionPolicy: "15d"
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: ScheduledBackup
+metadata:
+  name: nextcloud-backup
+  namespace: nextcloud
+spec:
+  schedule: "0 0 0 * * *"
+  backupOwnerReference: self
+  cluster:
+    name: nextcloud-dev-cluster
+

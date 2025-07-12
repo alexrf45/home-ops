@@ -16,7 +16,7 @@ data "aws_iam_policy_document" "s3-iam" {
   }
 }
 
-resource "aws_iam_role_policy" "longhorn_role" {
+resource "aws_iam_role_policy" "db_role" {
   name   = "${var.env}-${var.app}-role-policy"
   role   = aws_iam_role.backup_role.id
   policy = data.aws_iam_policy_document.s3-iam.json

@@ -2,7 +2,7 @@ data "aws_caller_identity" "current" {}
 
 data "aws_iam_policy_document" "s3" {
   statement {
-    sid    = "longhornbackup001"
+    sid    = "pgbackup001"
     effect = "Allow"
     principals {
       type = "AWS"
@@ -29,7 +29,7 @@ data "aws_iam_policy_document" "s3" {
 resource "random_uuid" "test" {
 }
 
-resource "aws_s3_bucket" "longhorn_backup" {
+resource "aws_s3_bucket" "db_backup" {
   bucket        = "${var.env}-${var.app}-${random_uuid.test.result}"
   force_destroy = var.env == "dev" ? true : false
   tags = {
@@ -40,14 +40,14 @@ resource "aws_s3_bucket" "longhorn_backup" {
 }
 
 resource "aws_s3_bucket_versioning" "enabled" {
-  bucket = aws_s3_bucket.longhorn_backup.id
+  bucket = aws_s3_bucket.db_backup.id
   versioning_configuration {
     status = var.versioning
   }
 }
 
 resource "aws_s3_bucket_server_side_encryption_configuration" "default" {
-  bucket = aws_s3_bucket.longhorn_backup.id
+  bucket = aws_s3_bucket.db_backup.id
   rule {
     apply_server_side_encryption_by_default {
       sse_algorithm = "AES256"
@@ -56,12 +56,12 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "default" {
 }
 
 resource "aws_s3_bucket_policy" "backend" {
-  bucket = aws_s3_bucket.longhorn_backup.id
+  bucket = aws_s3_bucket.db_backup.id
   policy = data.aws_iam_policy_document.s3.json
 }
 
 resource "aws_s3_bucket_public_access_block" "public_access" {
-  bucket                  = aws_s3_bucket.longhorn_backup.id
+  bucket                  = aws_s3_bucket.db_backup.id
   block_public_acls       = true
   block_public_policy     = true
   ignore_public_acls      = true

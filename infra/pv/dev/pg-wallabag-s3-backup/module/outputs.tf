@@ -7,17 +7,17 @@ output "account_id" {
 }
 
 output "s3_bucket_arn" {
-  value       = aws_s3_bucket.longhorn_backup.arn
+  value       = aws_s3_bucket.db_backup.arn
   description = "The ARN of the S3 bucket"
 }
 
 output "bucket_name" {
-  value       = aws_s3_bucket.longhorn_backup.id
+  value       = aws_s3_bucket.db_backup.id
   description = "The name of the bucket"
 }
 
 output "bucket_url" {
-  value = aws_s3_bucket.longhorn_backup.bucket_domain_name
+  value = aws_s3_bucket.db_backup.bucket_domain_name
 }
 
 output "user_arn" {

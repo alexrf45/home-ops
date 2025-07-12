@@ -1,6 +1,6 @@
 resource "kubernetes_secret" "aws_secret" {
   metadata {
-    name      = "aws-secret"
+    name      = "aws-creds"
     namespace = var.app
   }
   data = {
