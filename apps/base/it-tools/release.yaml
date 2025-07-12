@@ -85,5 +85,11 @@ spec:
             hosts:
               - dev-it-tools
     persistence:
-      tmp:
-        type: local-path
+      config:
+        nameOverride: dev-it-tools
+        enabled: true
+        storageClass: local-path
+        retain: Yes
+        type: persistentVolumeClaim
+        accessMode: ReadWriteOnce
+        size: 500GMi
