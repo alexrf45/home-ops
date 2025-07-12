@@ -6,3 +6,4 @@ resources:
   #- blog
   #- vaultwarden
   - wallabag
+  - it-tools
