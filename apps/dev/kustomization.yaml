@@ -5,4 +5,4 @@ resources:
   - homepage
   #- blog
   #- vaultwarden
-  #  - wallabag
+  - wallabag
