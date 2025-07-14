@@ -80,21 +80,21 @@ spec:
           storageClass: "local-path"
       cronjob:
         enabled: true
-      persistence:
-        enabled: true
-        storageClass: local-path
-        exisitingClaim: "dev-nextcloud-pvc"
-        accessMode: ReadWriteMany
-        size: 250Gi
-      hpa:
-        enabled: true
-        cputhreshold: 40
-        minpods: 1
-        maxPods: 5
-        nodeSelector:
-          node: "worker"
-      rbac:
-        enabled: true
+    persistence:
+      enabled: true
+      storageClass: local-path
+      exisitingClaim: "dev-nextcloud-pvc"
+      accessMode: ReadWriteMany
+      size: 250Gi
+    hpa:
+      enabled: true
+      cputhreshold: 40
+      minpods: 1
+      maxPods: 5
+      nodeSelector:
+        node: "worker"
+    rbac:
+      enabled: true
     livenessProbe:
       enabled: false
       initialDelaySeconds: 10
