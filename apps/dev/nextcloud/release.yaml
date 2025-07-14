@@ -85,7 +85,7 @@ spec:
       storageClass: local-path
       exisitingClaim: "dev-nextcloud-pvc"
       accessMode: ReadWriteMany
-      size: 250Gi
+      size: 100Gi
     hpa:
       enabled: true
       cputhreshold: 40
