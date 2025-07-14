@@ -86,6 +86,8 @@ spec:
       exisitingClaim: "dev-nextcloud-pvc"
       accessMode: ReadWriteMany
       size: 100Gi
+    nodeSelector:
+        node: "worker"
     hpa:
       enabled: true
       cputhreshold: 40
