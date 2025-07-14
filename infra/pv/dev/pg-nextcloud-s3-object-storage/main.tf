@@ -16,5 +16,5 @@ module "nextcloud" {
   app        = "nextcloud"
   username   = "dev-nextcloud-object-store-user"
   path       = "/dev/nextcloud/storage/"
-  versioning = "Enabled"
+  versioning = "Disabled"
 }

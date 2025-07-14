@@ -2,7 +2,7 @@ data "aws_caller_identity" "current" {}
 
 data "aws_iam_policy_document" "s3" {
   statement {
-    sid    = "pgbackup001"
+    sid    = "objstorage001"
     effect = "Allow"
     principals {
       type = "AWS"

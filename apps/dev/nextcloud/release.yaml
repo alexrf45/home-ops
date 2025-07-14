@@ -47,28 +47,27 @@ spec:
       trustedDomains: ["dev-nextcloud.bun-dominant.ts.net" ]
       mail:
         enabled: true
-        fromAddress: admin
+        fromAddress: nextcloudadm@fr3d.dev
         domain: fr3d.dev
       objectStore:
         s3:
           enabled: true
           region: "us-east-1"
-          existingSecret: "nextcloud-secrets"
+          existingSecret: "dev-nextcloud-secret"
           secretKeys:
-            accessKey: "access_key_id"
-            secretKey: "secret_access_key"
-            bucket: "bucket"
+            accessKey: "AWS_ACCESS_KEY_ID"
+            secretKey: "AWS_SECRET_ACCESS_KEY"
+            bucket: "BUCKET"
       internalDatabase:
         enabled: false
-      
       externalDatabase:
         enabled: true
         type: postgresql
         existingSecret:
           enabled: true
           secretName: "nextcloud-secrets"
-          usernameKey: "username"
-          passwordKey: "password"
+          usernameKey: "db-username"
+          passwordKey: "db-password"
           hostKey: "db-host"
           databaseKey: "app"
       redis:
@@ -83,7 +82,7 @@ spec:
         enabled: true
       persistence:
         enabled: true
-        storageClass: smb
+        storageClass: local-path
         exisitingClaim: "dev-nextcloud-pvc"
         accessMode: ReadWriteMany
         size: 250Gi

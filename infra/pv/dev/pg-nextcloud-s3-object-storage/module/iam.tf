@@ -24,7 +24,7 @@ resource "aws_iam_role_policy" "db_role" {
 
 
 resource "aws_iam_role" "backup_role" {
-  name = "${var.env}-${var.app}-role"
+  name = "${var.env}-${var.app}-role-${random_uuid.test.result}"
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -52,7 +52,7 @@ resource "aws_iam_user" "user" {
   }
 }
 resource "aws_iam_user_policy" "policy" {
-  name   = "${var.env}-${var.app}-user-policy"
+  name   = "${var.env}-${var.app}-user-policy-${random_uuid.test.result}"
   user   = aws_iam_user.user.name
   policy = data.aws_iam_policy_document.s3-iam.json
 }
