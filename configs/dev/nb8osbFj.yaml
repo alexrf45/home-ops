@@ -1,0 +1,22 @@
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: nextcloud-ts-network-policy
+  namespace: networking
+spec:
+  endpointSelector:
+    matchLabels:
+      app: 57d3b592-b488-4f76-b18f-09f21f53efd2
+      tailscale.com/managed: 'true'
+      tailscale.com/parent-resource-ns: nextcloud
+      tailscale.com/parent-resource-type: ingress
+      tailscale.com/parent-resource: nextcloud
+  ingress:
+  - {}
+  egress:
+  - toEntities:
+    - world
+    toPorts:
+    - ports:
+      - port: '443'
+        protocol: TCP

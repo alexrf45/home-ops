@@ -1,0 +1,49 @@
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: it-tools-tailscale
+  namespace: networking
+spec:
+  endpointSelector:
+    matchLabels:
+      app: e10b5d49-687e-4bd2-a393-e55ce5014ab1
+      tailscale.com/managed: 'true'
+      tailscale.com/parent-resource-ns: it-tools
+      tailscale.com/parent-resource-type: ingress
+      tailscale.com/parent-resource: it-tools-it-tools
+  ingress:
+  - {}
+  egress:
+  - toEntities:
+    - world
+    toPorts:
+    - ports:
+      - port: '443'
+        protocol: TCP
+    - ports:
+      - port: '41641'
+        protocol: UDP
+    - ports:
+      - port: '43799'
+        protocol: UDP
+    - ports:
+      - port: '43812'
+        protocol: UDP
+    - ports:
+      - port: '3478'
+        protocol: UDP
+  - toEndpoints:
+    - matchLabels:
+        k8s:app.kubernetes.io/controller: it-tools
+        k8s:app.kubernetes.io/instance: it-tools-it-tools
+        k8s:app.kubernetes.io/name: it-tools-it-tools
+        k8s:io.cilium.k8s.namespace.labels.kubernetes.io/metadata.name: it-tools
+        k8s:io.cilium.k8s.namespace.labels.kustomize.toolkit.fluxcd.io/name: apps
+        k8s:io.cilium.k8s.namespace.labels.kustomize.toolkit.fluxcd.io/namespace: flux-system
+        k8s:io.cilium.k8s.policy.cluster: default
+        k8s:io.cilium.k8s.policy.serviceaccount: default
+        k8s:io.kubernetes.pod.namespace: it-tools
+    toPorts:
+    - ports:
+      - port: '8080'
+        protocol: TCP

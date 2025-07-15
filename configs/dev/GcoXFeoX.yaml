@@ -1,0 +1,37 @@
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: chart-grafana-9.0.0
+  namespace: monitoring
+spec:
+  endpointSelector:
+    matchLabels:
+      helm.sh/chart: grafana-9.0.0
+  ingress:
+  - fromEndpoints:
+    - matchLabels:
+        operator.prometheus.io/name: kube-prometheus-stack
+        operator.prometheus.io/shard: '0'
+        prometheus: kube-prometheus-stack
+    toPorts:
+    - ports:
+      - port: '3000'
+        protocol: TCP
+  egress:
+  - toEntities:
+    - world
+    toPorts:
+    - ports:
+      - port: '443'
+        protocol: TCP
+  - toEndpoints:
+    - matchLabels:
+        k8s:io.cilium.k8s.namespace.labels.kubernetes.io/metadata.name: kube-system
+        k8s:io.cilium.k8s.policy.cluster: default
+        k8s:io.cilium.k8s.policy.serviceaccount: coredns
+        k8s:io.kubernetes.pod.namespace: kube-system
+        k8s:k8s-app: kube-dns
+    toPorts:
+    - ports:
+      - port: '53'
+        protocol: UDP
