@@ -1,6 +1,6 @@
 module "prod" {
-  source    = "git@github.com:alexrf45/lab.git//talos-pve-v1.3.3?ref=v1.3.3"
-  pve_nodes = ["home-0", "home-1", "home-2", "home-3", "home-4", "home-5"]
+  source           = "git@github.com:alexrf45/lab.git//talos-pve-v1.3.3?ref=v1.4.1"
+  pve_nodes        = ["home-0", "home-1", "home-2", "home-3", "home-4", "home-5"]
   load_balancer_ip = "10.3.3.51"
   cluster = {
     name           = "prod"
