@@ -1,0 +1,37 @@
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: app-kustomize-controller
+  namespace: flux-system
+spec:
+  endpointSelector:
+    matchLabels:
+      app: kustomize-controller
+  ingress:
+  - {}
+  egress:
+  - toEndpoints:
+    - matchLabels:
+        app: source-controller
+    toPorts:
+    - ports:
+      - port: '9090'
+        protocol: TCP
+  - toEndpoints:
+    - matchLabels:
+        app: notification-controller
+    toPorts:
+    - ports:
+      - port: '9090'
+        protocol: TCP
+  - toEndpoints:
+    - matchLabels:
+        k8s:io.cilium.k8s.namespace.labels.kubernetes.io/metadata.name: kube-system
+        k8s:io.cilium.k8s.policy.cluster: default
+        k8s:io.cilium.k8s.policy.serviceaccount: coredns
+        k8s:io.kubernetes.pod.namespace: kube-system
+        k8s:k8s-app: kube-dns
+    toPorts:
+    - ports:
+      - port: '53'
+        protocol: UDP
