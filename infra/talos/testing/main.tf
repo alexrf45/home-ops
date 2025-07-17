@@ -1,5 +1,5 @@
 #NOTE: Consider building another helm chart into cluster bootstrap
-
+#NOTE: deploy main module first then build out k8s/flux bootstrap
 #TEST: not yet. Will deploy either later tonight or in the morning
 
 
