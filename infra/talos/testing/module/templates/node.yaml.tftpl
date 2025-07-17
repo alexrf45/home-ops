@@ -1,4 +1,7 @@
 machine:
+  nodeLabels:
+    node-role.kubernetes.io/worker: true
+    node: worker
   files:
     - path: /etc/cri/conf.d/20-customization.part
       op: create
@@ -36,5 +39,5 @@ machine:
   network:
     hostname: ${hostname}
     nameservers:
-      - 1.1.1.1
-      - 8.8.8.8
+      - ${nameserver1}
+      - ${nameserver2}

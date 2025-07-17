@@ -1,16 +1,3 @@
-# output "schematic_id" {
-#   value = talos_image_factory_schematic.this.id
-# }
-
-# output "installer_image_iso" {
-#   value = data.talos_image_factory_urls.this.urls.iso
-# }
-
-# output "installer_disk_image" {
-#   value = data.talos_image_factory_urls.this.urls.disk_image
-# }
-
-
 output "client_configuration" {
   value     = data.talos_client_configuration.this.talos_config
   sensitive = true

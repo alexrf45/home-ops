@@ -21,21 +21,16 @@ data "talos_machine_configuration" "this" {
   machine_secrets  = talos_machine_secrets.this.machine_secrets
   config_patches = each.value.machine_type == "controlplane" ? [
     templatefile("${path.module}/templates/control_plane.yaml.tftpl", {
-      hostname         = format("%s-controlplane-%s", var.cluster.name, each.value.vm_id)
+      install_disk     = each.value.install_disk
+      install_image    = talos_image_factory_schematic.controlplane.id
+      hostname         = format("%s-%s-controlplane-%s", var.cluster.name, each.value.node, each.value.vm_id)
       allow_scheduling = each.value.allow_scheduling
       node_name        = each.value.node
       cluster_name     = var.cluster.name
       endpoint         = var.cluster.pve_endpoint
       vip_ip           = var.cluster.vip_ip
-
-    }),
-    templatefile("${path.module}/templates/node.yaml.tftpl", {
-      install_disk  = each.value.install_disk
-      install_image = talos_image_factory_schematic.controlplane.id
-      hostname      = format("%s-controlplane-%s", var.cluster.name, each.value.vm_id)
-      node_name     = each.value.node
-      cluster_name  = var.cluster.name
-
+      nameserver1      = var.cluster.nameserver1
+      nameserver2      = var.cluster.nameserver2
     }),
     templatefile("${path.module}/templates/patch.yaml.tftpl", {
       tailscale_auth = var.cluster.tailscale_auth
@@ -58,9 +53,11 @@ data "talos_machine_configuration" "this" {
     templatefile("${path.module}/templates/node.yaml.tftpl", {
       install_disk  = each.value.install_disk
       install_image = talos_image_factory_schematic.worker.id
-      hostname      = format("%s-node-%s", var.cluster.name, each.value.vm_id)
+      hostname      = format("%s-%s-node-%s", var.cluster.name, each.value.node, each.value.vm_id)
       node_name     = each.value.node
       cluster_name  = var.cluster.name
+      nameserver1   = var.cluster.nameserver1
+      nameserver2   = var.cluster.nameserver2
     }),
   ]
 }

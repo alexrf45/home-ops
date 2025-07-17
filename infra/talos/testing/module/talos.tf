@@ -30,7 +30,7 @@ data "talos_machine_configuration" "this" {
 
     }),
     templatefile("${path.module}/templates/node.yaml.tftpl", {
-      install_disk  = each.value.install_disk
+      install_disk  = var.cluster.install_disk
       install_image = talos_image_factory_schematic.controlplane.id
       hostname      = format("%s-controlplane-%s", var.cluster.name, each.value.vm_id)
       node_name     = each.value.node

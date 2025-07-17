@@ -21,15 +21,3 @@ variable "node_network" {
   default     = "10.3.3.0/24"
 }
 
-
-variable "load_balancer_start" {
-  description = "The hostnum of the first load balancer host"
-  type        = number
-  default     = 40
-}
-
-variable "load_balancer_stop" {
-  description = "The hostnum of the last load balancer host"
-  type        = number
-  default     = 49
-}

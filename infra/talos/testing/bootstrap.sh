@@ -9,7 +9,7 @@ deploy() {
 
   terraform apply --auto-approve
 
-  terraform output -raw kube_config >"$HOME/.kube/dev"
+  terraform output -raw kube_config >"$HOME/.kube/test"
 
   #terraform output -raw kube_config >"$HOME/.kube/config"
 
@@ -28,7 +28,7 @@ flux-deploy() {
   flux bootstrap git \
     --cluster-domain=cluster.local \
     --url=ssh://git@github.com/alexrf45/home-ops.git \
-    --path=clusters/dev \
+    --path=clusters/test \
     --private-key-file=/home/fr3d/.ssh/fr3d \
     --branch main \
     --force
@@ -39,10 +39,9 @@ destroy() {
 
   terraform destroy
 
-  rm ~/.kube/dev
+  rm ~/.kube/test
 
-  rm ~/.talos/dev
-
+  rm ~/.talos/test
   #  mv ~/.kube/config_bk ~/.kube/config
 }
 deploy
