@@ -1,15 +1,3 @@
-resource "proxmox_virtual_environment_download_file" "talos_control_plane_image" {
-  count                   = length(var.pve_hosts)
-  content_type            = "iso"
-  datastore_id            = var.pve_config.iso_datastore
-  node_name               = var.pve_hosts[count.index]
-  url                     = data.talos_image_factory_urls.controlplane.urls.disk_image
-  decompression_algorithm = "zst"
-  file_name               = "${var.cluster.env}-${random_id.test.id}-control-plane-talos.img"
-  overwrite               = false
-  upload_timeout          = 240
-}
-
 resource "proxmox_virtual_environment_download_file" "talos_worker_image" {
   count                   = length(var.pve_hosts)
   content_type            = "iso"
@@ -26,12 +14,14 @@ resource "random_id" "test" {
   byte_length = 5
 }
 
-resource "proxmox_virtual_environment_vm" "talos_vm" {
-  for_each        = var.nodes
-  name            = each.value.machine_type == "controlplane" ? "${var.cluster.env}-control-plane-${random_id.test.id}" : "${var.cluster.env}-node-${random_id.test.id}"
+
+#TODO: Refactor to create a worker and control plane resource
+resource "proxmox_virtual_environment_vm" "worker" {
+  for_each        = var.worker
+  name            = format("cp-%s-%s", random_id.test.id, each.key)
   node_name       = each.value.node
-  description     = each.value.machine_type == "controlplane" ? "${var.pve_config.control_plane_description}" : "${var.pve_config.worker_description}"
-  tags            = each.value.machine_type == "controlplane" ? var.pve_config.control_plane_tags : var.pve_config.worker_tags
+  description     = var.cluster.control_plane_description
+  tags            = var.cluser.control_plane_tags
   install_disk    = var.cluster.install_disk
   machine         = "q35"
   scsi_hardware   = "virtio-scsi-single"
@@ -50,19 +40,13 @@ resource "proxmox_virtual_environment_vm" "talos_vm" {
   memory {
     dedicated = each.value.memory
   }
-  tpm_state {
-    datastore_id = each.value.datastore_id
-    version      = "v2.0"
-  }
   efi_disk {
-    datastore_id = each.value.datastore_id
-    file_format  = "raw"
-    type         = "4m"
+    type = "4m"
   }
   disk {
     datastore_id = each.value.datastore_id
     interface    = "virtio0"
-    file_id      = each.value.machine_type == "controlplane" ? proxmox_virtual_environment_download_file.talos_control_plane_image[0].id : proxmox_virtual_environment_download_file.talos_worker_image[0].id
+    file_id      = proxmox_virtual_environment_download_file.talos_control_plane_image[0].id
     file_format  = "raw"
     ssd          = true
     iothread     = true
@@ -82,14 +66,13 @@ resource "proxmox_virtual_environment_vm" "talos_vm" {
   }
 
   initialization {
-    datastore_id = each.value.datastore_id
     dns {
-      servers = ["${var.cluster.nameserver1}", "${var.cluster.nameserver2}"]
+      servers = ["${var.ns1}", "${var.ns2}"]
     }
     ip_config {
       ipv4 {
         address = "${each.value.ip}/24"
-        gateway = var.pve_config.gateway
+        gateway = var.gateway
       }
     }
   }
@@ -103,8 +86,5 @@ resource "proxmox_virtual_environment_vm" "talos_vm" {
     type = "l26"
   }
 
-  lifecycle {
-    ignore_changes = all
-  }
 }
 

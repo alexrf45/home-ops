@@ -4,53 +4,62 @@ variable "pve_hosts" {
   default     = ["pve"]
 }
 
-variable "pve_config" {
-  description = "values for pve virtual machines"
-  type = object({
-    pve_endpoint              = string
-    gateway                   = string
-    control_plane_description = string
-    control_plane_tags        = list(string)
-    worker_description        = string
-    worker_tags               = list(string)
-    iso_datastore             = string
-  })
+variable "gateway" {
+  description = "default gateway of node network"
+  type        = string
+  default     = "10.3.3.1"
 }
 
-variable "cluster" {
-  description = "Cluster configuration"
-  type = object({
-    name                     = string
-    env                      = string
-    endpoint                 = string
-    node_network             = string
-    vip_ip                   = string
-    nameserver1              = string
-    nameserver2              = string
-    talos_version            = string
-    platform                 = string
-    install_disk             = string
-    tailscale_auth           = string
-    control_plane_extensions = list(string)
-    worker_extensions        = list(string)
-
-  })
+variable "ns1" {
+  description = "primary name server"
+  type        = string
+  default     = "1.1.1.1"
 }
 
-variable "nodes" {
-  description = "Configuration for cluster nodes"
+variable "ns2" {
+  description = "secondary nameserver"
+  type        = string
+  default     = "8.8.8.8"
+}
+
+
+variable "controlplane" {
+  description = "configuration for worker nodes"
   type = map(object({
-    machine_type     = string
-    node             = string
-    ip               = string
-    datastore_id     = string
-    storage_id       = string
-    allow_scheduling = optional(bool, true)
-    cores            = number
-    memory           = number
-    size             = number
-    storage_size     = number
+    machine_type = string
+    node         = string
+    ip           = string
+    storage_id   = string
+    cores        = number
+    memory       = number
+    size         = number
+    storage_size = number
   }))
+}
+
+variable "worker" {
+  description = "configuration for worker nodes"
+  type = map(object({
+    machine_type = string
+    node         = string
+    ip           = string
+    storage_id   = string
+    cores        = number
+    memory       = number
+    size         = number
+    storage_size = number
+  }))
+}
+
+variable "talos_config" {
+  description = "talos configuration"
+  type = object({
+    talos_version    = string
+    name             = string
+    env              = string
+    install_disk     = string
+    allow_scheduling = optional(bool, true)
+  })
 }
 
 variable "cilium_config" {
