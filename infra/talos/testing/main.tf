@@ -8,24 +8,31 @@ module "testing" {
   # source    = "git@github.com:alexrf45/lab.git//talos-pve-v1.3.3?ref=v1.4.1"
 
   #pve hosts
-  pve_nodes = ["home-3", "home-4", "home-5"]
+  pve_hosts = ["home-3", "home-4", "home-5"]
 
-  #tags
 
+  pve_config = {
+    pve_endpoint              = "10.3.3.2"
+    gateway                   = "10.3.3.1"
+    control_plane_description = "test cluster"
+    control_plane_tags        = ["k8s", "talos", "test", "control_plane"]
+    worker_description        = "test nodes"
+    worker_tags               = ["k8s", "talos", "test", "worker"]
+    iso_datastore             = "local"
+  }
   # talos & pve configuration
   cluster = {
     #proxmox specific
-    pve_endpoint   = "10.3.3.2"
-    node_network   = "10.3.3.0/24"
-    gateway        = "10.3.3.1"
     name           = "testing"
     env            = "testing"
-    install_disk   = "/dev/vda"
     endpoint       = "10.3.3.101"
+    node_network   = "10.3.3.0/24"
     vip_ip         = "10.3.3.101"
+    nameserver1    = "1.1.1.1"
+    nameserver2    = "10.3.3.11"
     talos_version  = "v1.10.5"
     platform       = "nocloud"
-    iso_datastore  = "local"
+    install_disk   = "/dev/vda"
     tailscale_auth = var.auth_key
 
     control_plane_extensions = [
@@ -37,8 +44,6 @@ module "testing" {
       "i915",
       "tailscale"
     ]
-    control_plane_description = "test cluster"
-    control_plane_tags        = ["k8s", "talos", "test", "control_plane"]
 
     worker_extensions = [
       "intel-ucode",
@@ -48,25 +53,6 @@ module "testing" {
       "qemu-guest-agent",
       "i915"
     ]
-    worker_description = "test nodes"
-    worker_tags        = ["k8s", "talos", "test", "worker"]
-  }
-
-  # cilium chart values
-  cilium_config = {
-    kube_version               = "1.33.0"
-    version                    = "1.17.6"
-    hubble_enabled             = true
-    hubble_ui_enabled          = true
-    relay_enabled              = true
-    relay_pods_rollout         = true
-    ingress_controller_enabled = true
-    ingress_default_controller = true
-    gateway_api_enabled        = true
-    load_balancer_mode         = "shared"
-    load_balancer_start        = 110
-    load_balancer_stop         = 120
-    load_balancer_ip           = "10.3.3.110"
   }
 
   # talos vm configuration
@@ -105,6 +91,22 @@ module "testing" {
       size         = 25
       storage_size = 50
     },
+  }
+  # cilium chart values
+  cilium_config = {
+    kube_version               = "1.33.0"
+    version                    = "1.17.6"
+    hubble_enabled             = true
+    hubble_ui_enabled          = true
+    relay_enabled              = true
+    relay_pods_rollout         = true
+    ingress_controller_enabled = true
+    ingress_default_controller = true
+    gateway_api_enabled        = true
+    load_balancer_mode         = "shared"
+    load_balancer_start        = 110
+    load_balancer_stop         = 120
+    load_balancer_ip           = "10.3.3.110"
   }
 }
 

@@ -1,51 +1,40 @@
-variable "pve_nodes" {
+variable "pve_hosts" {
   description = "hostname/id of pve host"
   type        = list(string)
   default     = ["pve"]
 }
 
-variable "cluster" {
-  description = "Cluster configuration"
+variable "pve_config" {
+  description = "values for pve virtual machines"
   type = object({
-    name                      = string
-    env                       = string
-    endpoint                  = string
     pve_endpoint              = string
-    node_network              = string
-    vip_ip                    = string
     gateway                   = string
-    talos_version             = string
-    control_plane_extensions  = list(string)
     control_plane_description = string
     control_plane_tags        = list(string)
-    worker_extensions         = list(string)
     worker_description        = string
     worker_tags               = list(string)
-    platform                  = string
     iso_datastore             = string
-    install_disk              = string
-    tailscale_auth            = string
   })
 }
 
-variable "control_plane_description" {
-  type    = string
-  default = "Talos Control Plane"
-}
+variable "cluster" {
+  description = "Cluster configuration"
+  type = object({
+    name                     = string
+    env                      = string
+    endpoint                 = string
+    node_network             = string
+    vip_ip                   = string
+    nameserver1              = string
+    nameserver2              = string
+    talos_version            = string
+    platform                 = string
+    install_disk             = string
+    tailscale_auth           = string
+    control_plane_extensions = list(string)
+    worker_extensions        = list(string)
 
-variable "control_plane_tags" {
-  type    = list(string)
-  default = ["k8s", "talos", "pve", "control-plane"]
-}
-
-variable "worker_tags" {
-  type    = list(string)
-  default = ["k8s", "talos", "pve", "worker"]
-}
-
-variable "worker_description" {
-  type    = string
-  default = "Talos Worker"
+  })
 }
 
 variable "nodes" {

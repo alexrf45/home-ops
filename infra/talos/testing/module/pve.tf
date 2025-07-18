@@ -1,8 +1,8 @@
 resource "proxmox_virtual_environment_download_file" "talos_control_plane_image" {
-  count                   = length(var.pve_nodes)
+  count                   = length(var.pve_hosts)
   content_type            = "iso"
-  datastore_id            = var.cluster.iso_datastore
-  node_name               = var.pve_nodes[count.index]
+  datastore_id            = var.pve_config.iso_datastore
+  node_name               = var.pve_hosts[count.index]
   url                     = data.talos_image_factory_urls.controlplane.urls.disk_image
   decompression_algorithm = "zst"
   file_name               = "${var.cluster.env}-${random_id.test.id}-control-plane-talos.img"
@@ -11,10 +11,10 @@ resource "proxmox_virtual_environment_download_file" "talos_control_plane_image"
 }
 
 resource "proxmox_virtual_environment_download_file" "talos_worker_image" {
-  count                   = length(var.pve_nodes)
+  count                   = length(var.pve_hosts)
   content_type            = "iso"
-  datastore_id            = var.cluster.iso_datastore
-  node_name               = var.pve_nodes[count.index]
+  datastore_id            = var.pve_config.iso_datastore
+  node_name               = var.pve_hosts[count.index]
   url                     = data.talos_image_factory_urls.worker.urls.disk_image
   decompression_algorithm = "zst"
   file_name               = "${var.cluster.env}-${random_id.test.id}-worker-talos.img"
@@ -30,8 +30,9 @@ resource "proxmox_virtual_environment_vm" "talos_vm" {
   for_each        = var.nodes
   name            = each.value.machine_type == "controlplane" ? "${var.cluster.env}-control-plane-${random_id.test.id}" : "${var.cluster.env}-node-${random_id.test.id}"
   node_name       = each.value.node
-  description     = each.value.machine_type == "controlplane" ? "${var.control_plane_description}" : "${var.worker_description}"
-  tags            = each.value.machine_type == "controlplane" ? var.control_plane_tags : var.worker_tags
+  description     = each.value.machine_type == "controlplane" ? "${var.pve_config.control_plane_description}" : "${var.pve_config.worker_description}"
+  tags            = each.value.machine_type == "controlplane" ? var.pve_config.control_plane_tags : var.pve_config.worker_tags
+  install_disk    = var.cluster.install_disk
   machine         = "q35"
   scsi_hardware   = "virtio-scsi-single"
   stop_on_destroy = true
@@ -83,12 +84,12 @@ resource "proxmox_virtual_environment_vm" "talos_vm" {
   initialization {
     datastore_id = each.value.datastore_id
     dns {
-      servers = ["1.1.1.1", "10.3.3.11"]
+      servers = ["${var.cluster.nameserver1}", "${var.cluster.nameserver2}"]
     }
     ip_config {
       ipv4 {
         address = "${each.value.ip}/24"
-        gateway = var.cluster.gateway
+        gateway = var.pve_config.gateway
       }
     }
   }
