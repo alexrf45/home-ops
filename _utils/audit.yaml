@@ -1,5 +1,7 @@
 apiVersion: audit.k8s.io/v1 # This is required.
 kind: Policy
+metadata:
+  namespace: kube-system
 # Don't generate audit events for all requests in RequestReceived stage.
 omitStages:
   - "RequestReceived"
