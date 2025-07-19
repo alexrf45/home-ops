@@ -35,29 +35,6 @@ variable "talos_config" {
     vip_ip                   = string
     install_disk             = string
   })
-  default = {
-    talos_version    = "1.10.5"
-    platform         = "nocloud"
-    allow_scheduling = false
-    install_disk     = "/dev/vda"
-    control_plane_extensions = [
-      "intel-ucode",
-      "glibc",
-      "iscsi-tools",
-      "util-linux-tools",
-      "qemu-guest-agent",
-      "i915",
-      "tailscale"
-    ]
-    worker_extensions = [
-      "intel-ucode",
-      "glibc",
-      "iscsi-tools",
-      "util-linux-tools",
-      "qemu-guest-agent",
-      "i915"
-    ]
-  }
 }
 
 variable "pve_config" {
@@ -69,12 +46,6 @@ variable "pve_config" {
     gateway       = string
     password      = string
   })
-  default = {
-    hosts         = ["pve"]
-    iso_datastore = "local"
-    pve_endpoint  = "10.3.3.2"
-    gateway       = "10.3.3.1"
-  }
 }
 
 variable "nodes" {
@@ -121,6 +92,9 @@ variable "cilium_config" {
     ingress_default_controller = true
     gateway_api_enabled        = false
     load_balancer_mode         = "shared"
+    load_balancer_ip           = "10.3.3.2"
+    load_balancer_start        = 10
+    load_balancer_stop         = 20
   }
 }
 variable "dns_servers" {
