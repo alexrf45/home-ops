@@ -10,7 +10,7 @@ output "kube_config" {
 }
 
 output "machine_config" {
-  value     = data.talos_machine_configuration.this.machine_configuration
+  value     = data.talos_client_configuration.this.talos_config
   sensitive = true
 }
 

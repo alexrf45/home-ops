@@ -42,7 +42,7 @@ data "talos_machine_configuration" "control_plane" {
           {
             name = "cilium"
             contents = join("---\n", [
-              data.helm_template.cilium_template.manifest,
+              data.helm_template.this.manifest,
               "# Source cilium.tf\n${local.cilium_lb_manifest}",
             ])
           }
