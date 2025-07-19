@@ -34,5 +34,5 @@ resource "proxmox_virtual_environment_download_file" "talos_control_plane_image"
   decompression_algorithm = "zst"
   file_name               = "${var.environment}-${random_id.this.id}-control-plane-talos.img"
   overwrite               = false
-  upload_timeout          = 240
+  upload_timeout          = 600
 }

@@ -36,5 +36,5 @@ resource "proxmox_virtual_environment_download_file" "talos_worker_image" {
   decompression_algorithm = "zst"
   file_name               = "${var.environment}-${random_id.that.id}-worker-talos.img"
   overwrite               = false
-  upload_timeout          = 120
+  upload_timeout          = 600
 }
