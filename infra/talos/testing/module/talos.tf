@@ -51,6 +51,7 @@ data "talos_machine_configuration" "this" {
     ] : [
     templatefile("${path.module}/templates/node.yaml.tftpl", {
       install_disk  = var.talos_config.install_disk
+      environment   = var.environment
       install_image = talos_image_factory_schematic.worker.id
       hostname      = format("%s-node-%d", var.environment, random_id.that.id)
       cluster_name  = var.cluster_name
