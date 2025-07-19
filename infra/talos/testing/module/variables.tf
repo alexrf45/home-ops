@@ -30,10 +30,10 @@ variable "talos_config" {
     worker_extensions        = list(string)
     platform                 = string
     allow_scheduling         = bool
-    install_disk             = string
     tailscale_auth           = string
     endpoint                 = string
     vip_ip                   = string
+    install_disk             = string
   })
   default = {
     talos_version    = "1.10.5"
