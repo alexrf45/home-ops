@@ -23,7 +23,7 @@ variable "ns2" {
 }
 
 
-variable "controlplane" {
+variable "nodes" {
   description = "configuration for worker nodes"
   type = map(object({
     machine_type = string
@@ -37,26 +37,14 @@ variable "controlplane" {
   }))
 }
 
-variable "worker" {
-  description = "configuration for worker nodes"
-  type = map(object({
-    machine_type = string
-    node         = string
-    ip           = string
-    storage_id   = string
-    cores        = number
-    memory       = number
-    size         = number
-    storage_size = number
-  }))
-}
 
-variable "talos_config" {
+variable "talos" {
   description = "talos configuration"
   type = object({
     talos_version    = string
     name             = string
     env              = string
+    endpoint         = string
     install_disk     = string
     allow_scheduling = optional(bool, true)
   })

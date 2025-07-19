@@ -4,38 +4,36 @@ resource "talos_machine_secrets" "this" {
 
 data "talos_client_configuration" "this" {
   depends_on = [
-    proxmox_virtual_environment_vm.talos_vm
+    proxmox_virtual_environment_vm.worker,
+    proxmox_virtual_environment_vm.cp
   ]
-  cluster_name         = var.cluster.name
+  cluster_name         = var.talos.name
   client_configuration = talos_machine_secrets.this.client_configuration
   nodes                = [for k, v in var.nodes : v.ip]
   endpoints            = [for k, v in var.nodes : v.ip if v.machine_type == "controlplane"]
 }
 
+locals {
+  num = "0"
+}
+
 data "talos_machine_configuration" "this" {
   for_each         = var.nodes
-  cluster_name     = var.cluster.name
-  cluster_endpoint = "https://${var.cluster.endpoint}:6443"
-  talos_version    = var.cluster.talos_version
+  cluster_name     = var.talos.name
+  cluster_endpoint = "https://${var.talos.endpoint}:6443"
+  talos_version    = var.talos.talos_version
   machine_type     = each.value.machine_type
   machine_secrets  = talos_machine_secrets.this.machine_secrets
   config_patches = each.value.machine_type == "controlplane" ? [
     templatefile("${path.module}/templates/control_plane.yaml.tftpl", {
-      hostname         = format("%s-controlplane-%s", var.cluster.env, var.cluster.talos_version)
+      hostname         = format("%s-controlplane-%d", var.cluster.env, index(keys(var.nodes), each.key) + 1)
       allow_scheduling = each.value.allow_scheduling
       node_name        = each.value.node
       cluster_name     = var.cluster.name
       endpoint         = var.pve_config.pve_endpoint
       vip_ip           = var.cluster.vip_ip
-
-    }),
-    templatefile("${path.module}/templates/node.yaml.tftpl", {
-      install_disk  = var.cluster.install_disk
-      install_image = talos_image_factory_schematic.controlplane.id
-      hostname      = format("%s-controlplane-%s", var.cluster.env, var.cluster.talos_version)
-      node_name     = each.value.node
-      cluster_name  = var.cluster.name
-
+      install_disk     = var.cluster.install_disk
+      install_image    = talos_image_factory_schematic.controlplane.id
     }),
     templatefile("${path.module}/templates/patch.yaml.tftpl", {
       tailscale_auth = var.cluster.tailscale_auth
