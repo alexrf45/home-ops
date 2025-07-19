@@ -7,7 +7,7 @@ machine:
           discard_unpacked_layers = false
   time:
     servers:
-      - time.cloudflare.com 
+      - time.cloudflare.com
   kubelet:
     extraArgs:
       rotate-server-certificates: true
@@ -64,3 +64,19 @@ cluster:
     - https://raw.githubusercontent.com/alex1989hu/kubelet-serving-cert-approver/main/deploy/standalone-install.yaml
     - https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
     - https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.3.0/standard-install.yaml
+  inlineManifests:
+    - name: namespace-flux
+      contents: |-
+        apiVersion: v1
+        kind: Namespace
+        metadata:
+          name: flux-system
+    - name: namespace-networking
+      contents: |-
+        apiVersion: v1
+        kind: Namespace
+        metadata:
+          name: cilium
+          labels:
+            pod-security.kubernetes.io/enforce: "privileged"
+            app: "cilium"

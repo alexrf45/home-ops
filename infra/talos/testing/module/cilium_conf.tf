@@ -1,10 +1,10 @@
 data "helm_template" "this" {
   name       = "cilium"
-  namespace  = "networking"
+  namespace  = "cilium"
   repository = "https://helm.cilium.io/"
 
   chart        = "cilium"
-  version      = var.cilium_config.version
+  version      = var.cilium_config.cilium_version
   kube_version = var.cilium_config.kube_version
   include_crds = true
 

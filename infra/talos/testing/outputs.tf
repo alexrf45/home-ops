@@ -3,11 +3,7 @@ output "client_configuration" {
   sensitive = true
 }
 
-output "kube_config" {
-  value     = module.testing.kube_config
-  sensitive = true
-}
-output "machine_config" {
-  value     = module.testing.machine_config
+output "kubeconfig" {
+  value     = module.testing.kubeconfig
   sensitive = true
 }

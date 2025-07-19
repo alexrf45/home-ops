@@ -1,4 +1,6 @@
-# random.tf
-resource "random_id" "cluster" {
-  byte_length = 5
+resource "random_id" "this" {
+  byte_length = 4
+}
+resource "random_id" "that" {
+  byte_length = 4
 }

@@ -1,59 +1,102 @@
-# variables.tf
-variable "cluster" {
-  description = "Cluster configuration"
+variable "environment" {
+  description = "operating environment of cluster"
+  type        = string
+  validation {
+    condition = anytrue([
+      var.environment == "dev",
+      var.environment == "staging",
+      var.environment == "production",
+      var.environment == "testing",
+      var.environment == "sandbox",
+    ])
+    error_message = "Please use one of the approved environement names: dev, staging, production, testing, sandbox"
+  }
+}
+
+variable "cluster_name" {
+  description = "name of talos cluster"
+  type        = string
+  validation {
+    condition     = can(regex("^[a-zA-Z0-9]+$", var.cluster_name)) && length(var.cluster_name) >= 4
+    error_message = "Cluster name must contain only alphanumeric characters and be at least 4 characters long."
+  }
+}
+
+variable "talos_config" {
+  description = "configuration options for talos config patches"
   type = object({
-    name                      = string
-    env                       = string
-    endpoint                  = string
-    talos_version             = string
-    platform                  = string
-    allow_scheduling          = bool
-    install_disk              = string
-    node_network              = string
-    gateway                   = string
-    vip_ip                    = string
-    control_plane_extensions  = list(string)
-    worker_extensions         = list(string)
-    tailscale_auth            = string
-    control_plane_description = optional(string, "Talos Control Plane")
-    control_plane_tags        = optional(list(string), ["talos", "kubernetes", "control-plane"])
+    talos_version            = string
+    control_plane_extensions = list(string)
+    worker_extensions        = list(string)
+    platform                 = string
+    allow_scheduling         = bool
+    install_disk             = string
+    tailscale_auth           = string
+    endpoint                 = string
+    vip_ip                   = string
   })
+  default = {
+    talos_version    = "1.10.5"
+    platform         = "nocloud"
+    allow_scheduling = false
+    install_disk     = "/dev/vda"
+    control_plane_extensions = [
+      "intel-ucode",
+      "glibc",
+      "iscsi-tools",
+      "util-linux-tools",
+      "qemu-guest-agent",
+      "i915",
+      "tailscale"
+    ]
+    worker_extensions = [
+      "intel-ucode",
+      "glibc",
+      "iscsi-tools",
+      "util-linux-tools",
+      "qemu-guest-agent",
+      "i915"
+    ]
+  }
 }
 
 variable "pve_config" {
-  description = "Proxmox VE configuration"
+  description = "Proxmox VE configuration options"
   type = object({
     hosts         = list(string)
-    iso_datastore = string
     pve_endpoint  = string
+    iso_datastore = string
+    gateway       = string
+    password      = string
   })
   default = {
     hosts         = ["pve"]
     iso_datastore = "local"
-    pve_endpoint  = "https://pve:8006"
+    pve_endpoint  = "10.3.3.2"
+    gateway       = "10.3.3.1"
   }
 }
 
-variable "node_config" {
-  description = "Node configuration"
-  type = object({
-    control_plane_count = number
-    worker_count        = number
-    base_ip             = string # e.g., "10.3.3.10" - will increment from here
-    cores               = number
-    memory              = number
-    disk_size           = number
-    storage_size        = number
-    datastore_id        = string
-    storage_id          = string
-  })
+variable "nodes" {
+  description = "Configuration for cluster nodes"
+  type = map(object({
+    machine_type = string
+    node         = string
+    ip           = string
+    storage_id   = string
+    cores        = number
+    memory       = number
+    size         = number
+    storage_size = number
+  }))
 }
 
 variable "cilium_config" {
   description = "Configuration options for bootstrapping cilium"
   type = object({
+    node_network               = string
     kube_version               = string
-    version                    = string
+    cilium_version             = string
     hubble_enabled             = bool
     hubble_ui_enabled          = bool
     relay_enabled              = bool
@@ -66,8 +109,20 @@ variable "cilium_config" {
     load_balancer_start        = number
     load_balancer_stop         = number
   })
+  default = {
+    node_network               = "10.3.3.0/24"
+    kube_version               = "1.33.0"
+    cilium_version             = "1.17.6"
+    hubble_enabled             = false
+    hubble_ui_enabled          = false
+    relay_enabled              = false
+    relay_pods_rollout         = false
+    ingress_controller_enabled = true
+    ingress_default_controller = true
+    gateway_api_enabled        = false
+    load_balancer_mode         = "shared"
+  }
 }
-
 variable "dns_servers" {
   description = "DNS servers for the nodes"
   type = object({
