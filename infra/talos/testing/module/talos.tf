@@ -21,7 +21,7 @@ data "talos_machine_configuration" "this" {
   machine_secrets  = talos_machine_secrets.this.machine_secrets
   config_patches = each.value.machine_type == "controlplane" ? [
     templatefile("${path.module}/templates/control_plane.yaml.tftpl", {
-      hostname         = format("%s-controlplane-%s", var.environment, random_id.this.id)
+      hostname         = format("%s-controlplane-%s-%s", var.environment, random_id.this.id, each.key)
       allow_scheduling = var.talos_config.allow_scheduling
       cluster_name     = var.cluster_name
       endpoint         = var.talos_config.endpoint
@@ -53,7 +53,7 @@ data "talos_machine_configuration" "this" {
       install_disk  = var.talos_config.install_disk
       environment   = var.environment
       install_image = talos_image_factory_schematic.worker.id
-      hostname      = format("%s-node-%s", var.environment, random_id.that.id)
+      hostname      = format("%s-node-%s-%s", var.environment, random_id.that.id, each.key)
       cluster_name  = var.cluster_name
       nameserver1   = var.dns_servers.primary
       nameserver2   = var.dns_servers.secondary

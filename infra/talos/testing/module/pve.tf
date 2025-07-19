@@ -1,6 +1,6 @@
 resource "proxmox_virtual_environment_vm" "this" {
   for_each        = var.nodes
-  name            = each.value.machine_type == "controlplane" ? format("${var.environment}-control-plane-%s", random_id.this.id) : format("${var.environment}-node-%s", random_id.that.id)
+  name            = each.value.machine_type == "controlplane" ? format("${var.environment}-control-plane-%s-%s", random_id.this.id, each.key) : format("${var.environment}-node-%s-%s", random_id.that.id, each.key)
   node_name       = each.value.node
   description     = each.value.machine_type == "controlplane" ? "Talos CP: ${var.environment}" : "Talos Worker: ${var.environment}"
   tags            = each.value.machine_type == "controlplane" ? ["k8s", "cp", "${var.environment}"] : ["k8s", "worker", "${var.environment}"]
