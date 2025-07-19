@@ -12,10 +12,10 @@ terraform {
       source  = "hashicorp/helm"
       version = ">= 2.17.0"
     }
-    flux = {
-      source  = "fluxcd/flux"
-      version = ">=1.6.4"
-    }
+    # flux = {
+    #   source  = "fluxcd/flux"
+    #   version = ">=1.6.4"
+    # }
   }
   backend "s3" {
 

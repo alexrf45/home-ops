@@ -1,57 +1,56 @@
-variable "pve_hosts" {
-  description = "hostname/id of pve host"
-  type        = list(string)
-  default     = ["pve"]
-}
-
-variable "gateway" {
-  description = "default gateway of node network"
-  type        = string
-  default     = "10.3.3.1"
-}
-
-variable "ns1" {
-  description = "primary name server"
-  type        = string
-  default     = "1.1.1.1"
-}
-
-variable "ns2" {
-  description = "secondary nameserver"
-  type        = string
-  default     = "8.8.8.8"
-}
-
-
-variable "nodes" {
-  description = "configuration for worker nodes"
-  type = map(object({
-    machine_type = string
-    node         = string
-    ip           = string
-    storage_id   = string
-    cores        = number
-    memory       = number
-    size         = number
-    storage_size = number
-  }))
-}
-
-
-variable "talos" {
-  description = "talos configuration"
+# variables.tf
+variable "cluster" {
+  description = "Cluster configuration"
   type = object({
-    talos_version    = string
-    name             = string
-    env              = string
-    endpoint         = string
-    install_disk     = string
-    allow_scheduling = optional(bool, true)
+    name                      = string
+    env                       = string
+    endpoint                  = string
+    talos_version             = string
+    platform                  = string
+    allow_scheduling          = bool
+    install_disk              = string
+    node_network              = string
+    gateway                   = string
+    vip_ip                    = string
+    control_plane_extensions  = list(string)
+    worker_extensions         = list(string)
+    tailscale_auth            = string
+    control_plane_description = optional(string, "Talos Control Plane")
+    control_plane_tags        = optional(list(string), ["talos", "kubernetes", "control-plane"])
+  })
+}
+
+variable "pve_config" {
+  description = "Proxmox VE configuration"
+  type = object({
+    hosts         = list(string)
+    iso_datastore = string
+    pve_endpoint  = string
+  })
+  default = {
+    hosts         = ["pve"]
+    iso_datastore = "local"
+    pve_endpoint  = "https://pve:8006"
+  }
+}
+
+variable "node_config" {
+  description = "Node configuration"
+  type = object({
+    control_plane_count = number
+    worker_count        = number
+    base_ip             = string # e.g., "10.3.3.10" - will increment from here
+    cores               = number
+    memory              = number
+    disk_size           = number
+    storage_size        = number
+    datastore_id        = string
+    storage_id          = string
   })
 }
 
 variable "cilium_config" {
-  description = "configuration options for bootstraping cilium"
+  description = "Configuration options for bootstrapping cilium"
   type = object({
     kube_version               = string
     version                    = string
@@ -66,6 +65,17 @@ variable "cilium_config" {
     load_balancer_ip           = string
     load_balancer_start        = number
     load_balancer_stop         = number
-
   })
+}
+
+variable "dns_servers" {
+  description = "DNS servers for the nodes"
+  type = object({
+    primary   = string
+    secondary = string
+  })
+  default = {
+    primary   = "1.1.1.1"
+    secondary = "8.8.8.8"
+  }
 }

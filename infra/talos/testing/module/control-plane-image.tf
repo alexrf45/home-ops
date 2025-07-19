@@ -1,5 +1,5 @@
+# control-plane-image.tf
 data "talos_image_factory_extensions_versions" "controlplane" {
-  # get the latest talos version
   talos_version = var.cluster.talos_version
   filters = {
     names = var.cluster.control_plane_extensions
@@ -12,7 +12,6 @@ data "talos_image_factory_urls" "controlplane" {
   platform      = var.cluster.platform
 }
 
-
 resource "talos_image_factory_schematic" "controlplane" {
   schematic = yamlencode(
     {
@@ -24,5 +23,3 @@ resource "talos_image_factory_schematic" "controlplane" {
     }
   )
 }
-
-

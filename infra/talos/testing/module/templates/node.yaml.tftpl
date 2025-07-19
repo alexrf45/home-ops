@@ -2,6 +2,7 @@ machine:
   nodeLabels:
     node-role.kubernetes.io/worker: true
     node: worker
+    environment: ${environment}
   files:
     - path: /etc/cri/conf.d/20-customization.part
       op: create

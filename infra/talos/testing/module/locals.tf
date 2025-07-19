@@ -1,4 +1,20 @@
+# locals.tf
 locals {
+  # Generate IP addresses for nodes
+  control_plane_ips = [
+    for i in range(var.node_config.control_plane_count) :
+    cidrhost("${var.node_config.base_ip}/24", i)
+  ]
+
+  worker_ips = [
+    for i in range(var.node_config.worker_count) :
+    cidrhost("${var.node_config.base_ip}/24", i + var.node_config.control_plane_count)
+  ]
+
+  # All node IPs combined
+  all_node_ips = concat(local.control_plane_ips, local.worker_ips)
+
+  # Cilium load balancer manifests
   cilium_external_lb_manifests = [
     {
       apiVersion = "cilium.io/v2alpha1"
