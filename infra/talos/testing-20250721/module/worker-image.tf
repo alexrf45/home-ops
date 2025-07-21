@@ -26,15 +26,3 @@ resource "talos_image_factory_schematic" "worker" {
 }
 
 
-
-resource "proxmox_virtual_environment_download_file" "talos_worker_image" {
-  count                   = length(var.pve_config.hosts)
-  content_type            = "iso"
-  datastore_id            = var.pve_config.iso_datastore
-  node_name               = var.pve_config.hosts[count.index]
-  url                     = data.talos_image_factory_urls.worker.urls.disk_image
-  decompression_algorithm = "zst"
-  file_name               = "${var.environment}-${random_id.that.id}-worker-talos.img"
-  overwrite               = false
-  upload_timeout          = 600
-}

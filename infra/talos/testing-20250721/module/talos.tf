@@ -4,7 +4,7 @@ resource "talos_machine_secrets" "this" {
 
 data "talos_client_configuration" "this" {
   depends_on = [
-    proxmox_virtual_environment_vm.this
+    proxmox_virtual_environment_vm.talos_vm
   ]
   cluster_name         = var.cluster_name
   client_configuration = talos_machine_secrets.this.client_configuration
@@ -21,13 +21,14 @@ data "talos_machine_configuration" "this" {
   machine_secrets  = talos_machine_secrets.this.machine_secrets
   config_patches = each.value.machine_type == "controlplane" ? [
     templatefile("${path.module}/templates/control_plane.yaml.tftpl", {
-      hostname         = format("%s-controlplane-%s-%s", var.environment, random_id.this.id, each.key)
-      allow_scheduling = var.talos_config.allow_scheduling
+      install_disk     = var.talos_config.install_disk
+      install_image    = talos_image_factory_schematic.controlplane.id
+      hostname         = format("${var.cluster_name}-${each.value.node}-controlplane-${random_id.example[each.key].hex}")
+      allow_scheduling = each.talos_config.allow_scheduling
+      node_name        = each.value.node
       cluster_name     = var.cluster_name
       endpoint         = var.talos_config.endpoint
       vip_ip           = var.talos_config.vip_ip
-      install_disk     = var.talos_config.install_disk
-      install_image    = talos_image_factory_schematic.controlplane.id
       nameserver1      = var.dns_servers.primary
       nameserver2      = var.dns_servers.secondary
     }),
@@ -51,9 +52,9 @@ data "talos_machine_configuration" "this" {
     ] : [
     templatefile("${path.module}/templates/node.yaml.tftpl", {
       install_disk  = var.talos_config.install_disk
-      environment   = var.environment
       install_image = talos_image_factory_schematic.worker.id
-      hostname      = format("%s-node-%s-%s", var.environment, random_id.that.id, each.key)
+      hostname      = format("${var.cluster_name}-${each.value.node}-node-${random_id.example[each.key].hex}")
+      node_name     = each.value.node
       cluster_name  = var.cluster_name
       nameserver1   = var.dns_servers.primary
       nameserver2   = var.dns_servers.secondary
@@ -64,7 +65,7 @@ data "talos_machine_configuration" "this" {
 
 resource "talos_machine_configuration_apply" "this" {
   depends_on = [
-    proxmox_virtual_environment_vm.this,
+    proxmox_virtual_environment_vm.talos_vm,
     data.talos_machine_configuration.this
   ]
   for_each                    = var.nodes
@@ -78,7 +79,7 @@ resource "talos_machine_configuration_apply" "this" {
   }
   lifecycle {
     # re-run config apply if vm changes
-    replace_triggered_by = [proxmox_virtual_environment_vm.this[each.key]]
+    replace_triggered_by = [proxmox_virtual_environment_vm.talos_vm[each.key]]
   }
 
 }
@@ -88,7 +89,7 @@ resource "talos_machine_configuration_apply" "this" {
 #You only need to bootstrap 1 control node, we pick the first one
 resource "talos_machine_bootstrap" "this" {
   depends_on = [
-    proxmox_virtual_environment_vm.this,
+    proxmox_virtual_environment_vm.talos_vm,
     talos_machine_configuration_apply.this
   ]
   node                 = [for k, v in var.nodes : v.ip if v.machine_type == "controlplane"][0]
@@ -102,7 +103,7 @@ resource "talos_machine_bootstrap" "this" {
 resource "time_sleep" "wait_until_bootstrap" {
   depends_on = [
     talos_machine_bootstrap.this,
-    proxmox_virtual_environment_vm.this
+    proxmox_virtual_environment_vm.talos_vm
   ]
   create_duration = "2m"
 }

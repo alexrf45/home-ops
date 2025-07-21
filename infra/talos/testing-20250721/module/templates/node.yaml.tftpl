@@ -1,7 +1,4 @@
 machine:
-  nodeLabels:
-    node: worker
-    environment: ${environment}
   files:
     - path: /etc/cri/conf.d/20-customization.part
       op: create
@@ -10,7 +7,7 @@ machine:
           discard_unpacked_layers = false
   time:
     servers:
-      - time.cloudflare.com
+      - /dev/ptp0
   kubelet:
     extraArgs:
       rotate-server-certificates: true
@@ -39,5 +36,5 @@ machine:
   network:
     hostname: ${hostname}
     nameservers:
-      - ${nameserver1}
-      - ${nameserver2}
+      - 1.1.1.1
+      - 8.8.8.8

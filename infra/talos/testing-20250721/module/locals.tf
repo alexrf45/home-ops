@@ -1,5 +1,4 @@
 locals {
-
   cilium_external_lb_manifests = [
     {
       apiVersion = "cilium.io/v2alpha1"

@@ -1,3 +1,6 @@
+
+
+
 variable "environment" {
   description = "operating environment of cluster"
   type        = string

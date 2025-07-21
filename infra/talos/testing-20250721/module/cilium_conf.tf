@@ -1,6 +1,6 @@
 data "helm_template" "this" {
   name       = "cilium"
-  namespace  = "cilium"
+  namespace  = "networking"
   repository = "https://helm.cilium.io/"
 
   chart        = "cilium"
