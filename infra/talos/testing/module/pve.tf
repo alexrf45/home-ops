@@ -1,23 +1,23 @@
 resource "proxmox_virtual_environment_download_file" "talos_control_plane_image" {
-  count                   = length(var.pve_config.pve_hosts)
+  count                   = length(var.pve_config.hosts)
   content_type            = "iso"
   datastore_id            = var.pve_config.iso_datastore
-  node_name               = var.pve_config.pve_hosts[count.index]
+  node_name               = var.pve_config.hosts[count.index]
   url                     = data.talos_image_factory_urls.controlplane.urls.disk_image
   decompression_algorithm = "zst"
-  file_name               = "${var.environment}-${random_id.example[each.key].hex}-control-plane-talos.img"
+  file_name               = "${var.environment}-${var.cluster_name}-control-plane-talos.img"
   overwrite               = false
   upload_timeout          = 120
 }
 
 resource "proxmox_virtual_environment_download_file" "talos_worker_image" {
-  count                   = length(var.pve_config.pve_hosts)
+  count                   = length(var.pve_config.hosts)
   content_type            = "iso"
   datastore_id            = var.pve_config.iso_datastore
-  node_name               = var.pve_config.pve_hosts[count.index]
+  node_name               = var.pve_config.hosts[count.index]
   url                     = data.talos_image_factory_urls.worker.urls.disk_image
   decompression_algorithm = "zst"
-  file_name               = "${var.environment}-${random_id.example[each.key].hex}-worker-talos.img"
+  file_name               = "${var.environment}-${var.cluster_name}-worker-talos.img"
   overwrite               = false
   upload_timeout          = 120
 }
@@ -75,7 +75,7 @@ resource "proxmox_virtual_environment_vm" "talos_vm" {
 
   initialization {
     dns {
-      servers = var.dns_servers
+      servers = ["${var.dns_servers.primary}", "${var.dns_servers.secondary}"]
     }
     ip_config {
       ipv4 {

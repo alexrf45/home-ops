@@ -24,7 +24,7 @@ data "talos_machine_configuration" "this" {
       install_disk     = var.talos_config.install_disk
       install_image    = talos_image_factory_schematic.controlplane.id
       hostname         = format("${var.cluster_name}-${each.value.node}-controlplane-${random_id.example[each.key].hex}")
-      allow_scheduling = each.talos_config.allow_scheduling
+      allow_scheduling = var.talos_config.allow_scheduling
       node_name        = each.value.node
       cluster_name     = var.cluster_name
       endpoint         = var.talos_config.endpoint
