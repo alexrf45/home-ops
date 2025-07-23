@@ -26,16 +26,24 @@ data:
   services.yaml: |
     - DNS:
         - Pihole (PROD):
-           href: https://prod-pihole-1.bun-dominant.ts.net/admin/login.php
+           href: https://10.3.3.11/admin
            description: home network DNS
     - Monitoring:
         - Grafana (PROD):
             href: https://prod-internal-grafana-1.bun-dominant.ts.net
             description: Grafana
+        - PVE:
+            href: https://10.3.3.2:8006/#v1:0:=node%2Fhome-4:4:::::8::5
+            description: Promox Cluster
+        - Cockpit (home-base):
+            href: https://10.3.3.11:9090/
+            description: Host Management UI
     - Apps:
         - My Blog:
             href: https://blog.fr3d.dev/
             description: Musings of Fr3d
+        - Syncthing:
+            href: http://10.3.3.11:8384/
 
   widgets.yaml: |
     - kubernetes:
