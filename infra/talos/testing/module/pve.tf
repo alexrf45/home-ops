@@ -7,7 +7,7 @@ resource "proxmox_virtual_environment_download_file" "talos_control_plane_image"
   decompression_algorithm = "zst"
   file_name               = "${var.environment}-${var.cluster_name}-control-plane-talos.img"
   overwrite               = false
-  upload_timeout          = 120
+  upload_timeout          = 1800
 }
 
 resource "proxmox_virtual_environment_download_file" "talos_worker_image" {
@@ -19,7 +19,7 @@ resource "proxmox_virtual_environment_download_file" "talos_worker_image" {
   decompression_algorithm = "zst"
   file_name               = "${var.environment}-${var.cluster_name}-worker-talos.img"
   overwrite               = false
-  upload_timeout          = 120
+  upload_timeout          = 1800
 }
 
 

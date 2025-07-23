@@ -9,6 +9,9 @@ machine:
     servers:
       - /dev/ptp0
   kubelet:
+    nodeIP:
+      validSubnets:
+        - ${node_network}
     extraArgs:
       rotate-server-certificates: true
     clusterDNS:
@@ -36,5 +39,5 @@ machine:
   network:
     hostname: ${hostname}
     nameservers:
-      - 1.1.1.1
-      - 8.8.8.8
+      - ${primary}
+      - ${secondary}

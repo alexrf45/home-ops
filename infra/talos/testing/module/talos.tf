@@ -29,8 +29,8 @@ data "talos_machine_configuration" "this" {
       cluster_name     = var.cluster_name
       endpoint         = var.talos_config.endpoint
       vip_ip           = var.talos_config.vip_ip
-      nameserver1      = var.dns_servers.primary
-      nameserver2      = var.dns_servers.secondary
+      primary          = var.dns_servers.primary
+      secondary        = var.dns_servers.secondary
     }),
     templatefile("${path.module}/templates/patch.yaml.tftpl", {
       tailscale_auth = var.talos_config.tailscale_auth
@@ -56,8 +56,9 @@ data "talos_machine_configuration" "this" {
       hostname      = format("${var.cluster_name}-${each.value.node}-node-${random_id.example[each.key].hex}")
       node_name     = each.value.node
       cluster_name  = var.cluster_name
-      nameserver1   = var.dns_servers.primary
-      nameserver2   = var.dns_servers.secondary
+      node_network  = var.cilium_config.node_network
+      primary       = var.dns_servers.primary
+      secondary     = var.dns_servers.secondary
     }),
   ]
 }
