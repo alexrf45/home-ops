@@ -89,7 +89,7 @@ spec:
         path: /
         tls:
         - hosts:
-          - prod-internal-grafana
+          - prod-int-grafana
          # secretName: grafana-general-tls
       persistence:
         accessModes:
@@ -97,11 +97,11 @@ spec:
         enabled: true
         finalizers:
         - kubernetes.io/pvc-protection
-        size: 5Gi
+        size: 10Gi
         storageClassName: local-path
         type: sts
     nodeExporter:
-      enabled: false
+      enabled: true
     prometheus:
       enabled: true
       thanosService:
@@ -127,9 +127,9 @@ spec:
         replicas: 2
         persistentVolumeClaimRetentionPolicy:
           whenDeleted: Delete
-          whenScaled: Retain
+          whenScaled: Delete
         retention: 7d
-        retentionSize: 5GB
+        retentionSize: 10GB
         routePrefix: /
         storageSpec:
           volumeClaimTemplate:
@@ -137,7 +137,7 @@ spec:
               storageClassName: local-path
               resources:
                 requests:
-                  storage: 5Gi
+                  storage: 10Gi
     prometheus-node-exporter:
        enabled: true
        fullnameOverride: node-exporter
