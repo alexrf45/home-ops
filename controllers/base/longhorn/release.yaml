@@ -13,7 +13,7 @@ spec:
         kind: HelmRepository
         name: longhorn
         namespace: flux-system
-      version: 1.7.1
+      version: 1.9.1
   interval: 1m0s
   releaseName: longhorn
   targetNamespace: storage
