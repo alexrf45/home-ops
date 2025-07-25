@@ -63,16 +63,21 @@ spec:
         className: tailscale
         annotations:
         hosts:
-          - host: prod-it-tools
+          - host: testing-it-tools
             paths:
               - path: /
                 service:
                   identifier: app
                   port: http
         tls:
-          - secretName: prod-it-tools-tls
+          - secretName: testing-it-tools-tls
             hosts:
-              - prod-it-tools
+              - testing-it-tools
     persistence:
-      tmp:
-        type: longhorn
+      config:
+        enabled: true
+        storageClass: longhorn
+        retain: false
+        type: persistentVolumeClaim
+        accessMode: ReadWriteOnce
+        size: 1Gi
