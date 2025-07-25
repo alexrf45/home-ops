@@ -1,0 +1,34 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: longhorn
+spec:
+  chart:
+    spec:
+      version: "1.9.1"
+  values:
+    defaultSettings:
+      deletingConfirmationFlag: false
+      snapshotMaxCount: 3
+    longhornUI:
+      replicas: 2
+    persistence:
+      defaultClass: true
+      defaultClassReplicaCount: 3
+      defaultDataLocality: best-effort
+      migratable: true
+      reclaimPolicy: Delete
+    preUpgradeChecker:
+      jobEnabled: true
+      upgradeVersionCheck: true
+    service:
+      manager:
+        type: ClusterIP
+        externalTrafficPolicy: Cluster
+      ui:
+        type: ClusterIP
+        externalTrafficPolicy: Cluster
+    metrics:
+      serviceMonitor:
+        enabled: false
+
