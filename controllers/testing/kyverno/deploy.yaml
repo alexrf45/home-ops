@@ -27,7 +27,8 @@ spec:
   values:
     global:
       resyncPeriod: 10m
-      crdWatcher: enabled
+      crdWatcher:
+        enabled: true
       nodeSelector:
         node: "worker"
     nameOverride: "kyverno-testing"
