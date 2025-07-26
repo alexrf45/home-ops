@@ -29,10 +29,10 @@ spec:
     retentionPolicy: "15d"
   bootstrap:
     recovery:
-      source: wallabag-disaster-recovery
+      source: wallabag-dev-cluster
 
   externalClusters:
-    - name: wallabag-disaster-recovery
+    - name: wallabag-dev-cluster
       barmanObjectStore:
         destinationPath: s3://dev-wallabag-405ec8c7-6d89-073c-3e35-05c372b8f2ff/wallabag-dev-cluster
         s3Credentials:
