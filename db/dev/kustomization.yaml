@@ -3,7 +3,7 @@ kind: Kustomization
 resources:
   #- vaultwarden
   - ../base/wallabag
-  - wallabag
+  #  - wallabag
   #- pgadmin
   #  - nextcloud
 
