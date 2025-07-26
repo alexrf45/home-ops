@@ -49,7 +49,7 @@ spec:
         httpsPort: 8443
         logLevel: info
         serviceMonitor:
-          enabled: true
+          enabled: false
           interval: 30s
           path: "/metrics"
       sync:
