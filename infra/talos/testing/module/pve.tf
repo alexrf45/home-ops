@@ -64,13 +64,14 @@ resource "proxmox_virtual_environment_vm" "talos_vm" {
     size        = each.value.size
   }
   disk {
-    interface   = "virtio1"
-    file_format = "raw"
-    ssd         = true
-    iothread    = true
-    cache       = "writethrough"
-    discard     = "on"
-    size        = each.value.storage_size
+    datastore_id = each.value.storage_id
+    interface    = "virtio1"
+    file_format  = "raw"
+    ssd          = true
+    iothread     = true
+    cache        = "writethrough"
+    discard      = "on"
+    size         = each.value.storage_size
   }
 
   initialization {

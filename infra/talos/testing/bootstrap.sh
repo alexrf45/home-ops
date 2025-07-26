@@ -9,14 +9,11 @@ deploy() {
 
   terraform apply --auto-approve
 
-  terraform output -raw kube_config >"$HOME/.kube/test"
+  terraform output -raw kubeconfig >"$HOME/.kube/testing"
 
-  #terraform output -raw kube_config >"$HOME/.kube/config"
-
-  cp ~/.kube/config ~/.kube/config_bk && KUBECONFIG=~/.kube/dev:~/.kube/prod:~/.kube/testing kubectl config view --flatten >~/.kube/config_tmp && mv ~/.kube/config_tmp ~/.kube/config
+  #cp ~/.kube/config ~/.kube/config_bk && KUBECONFIG=~/.kube/dev:~/.kube/prod:~/.kube/testing kubectl config view --flatten >~/.kube/config_tmp && mv ~/.kube/config_tmp ~/.kube/config
 
   #kubectl label node dev-node-1 dev-node-2 dev-node-3 node-role.kubernetes.io/worker=true
-
 }
 
 flux-deploy() {
@@ -44,6 +41,6 @@ destroy() {
   rm ~/.talos/test
   #  mv ~/.kube/config_bk ~/.kube/config
 }
-deploy
+#deploy
 flux-deploy
-destroy
+#destroy
