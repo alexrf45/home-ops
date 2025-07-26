@@ -1,0 +1,39 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: kyverno
+  namespace: flux-system
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: kyverno
+      version: 3.4.4
+      sourceRef:
+        name: kyverno
+        kind: HelmRepository
+        namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  targetNamespace: kyverno
+  values:
+    global:
+      resyncPeriod: 10m
+      crdWatcher: enabled
+      nodeSelector:
+        node: "worker"
+    nameOverride: "kyverno-testing"
+    crds:
+      reportsServer:
+        enabled: false
+    grafana:
+      enabled: false
+      namespace: "monitoring"
