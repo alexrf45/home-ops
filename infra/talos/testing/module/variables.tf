@@ -37,6 +37,7 @@ variable "talos_config" {
     endpoint                 = string
     vip_ip                   = string
     install_disk             = string
+    storage_path             = string
   })
 }
 

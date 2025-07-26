@@ -1,4 +1,13 @@
 machine:
+  install:
+    disk: ${install_disk}
+    image: ${install_image}
+    extraKernelArgs:
+      - console=ttyS1
+      - panic=10
+      - cpufreq.default_governor=performance
+      - intel_idle.max_cstate=0
+
   network:
     hostname: ${hostname}
     interfaces:

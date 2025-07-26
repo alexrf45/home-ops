@@ -27,10 +27,10 @@ data "talos_machine_configuration" "this" {
       allow_scheduling = var.talos_config.allow_scheduling
       node_name        = each.value.node
       cluster_name     = var.cluster_name
-      endpoint         = var.talos_config.endpoint
-      vip_ip           = var.talos_config.vip_ip
-      primary          = var.dns_servers.primary
-      secondary        = var.dns_servers.secondary
+      #endpoint         = var.talos_config.endpoint
+      vip_ip    = var.talos_config.vip_ip
+      primary   = var.dns_servers.primary
+      secondary = var.dns_servers.secondary
     }),
     templatefile("${path.module}/templates/patch.yaml.tftpl", {
       tailscale_auth = var.talos_config.tailscale_auth
@@ -53,6 +53,7 @@ data "talos_machine_configuration" "this" {
     templatefile("${path.module}/templates/node.yaml.tftpl", {
       install_disk  = var.talos_config.install_disk
       install_image = talos_image_factory_schematic.worker.id
+      storage_path  = var.talos_config.storage_path
       hostname      = format("${var.cluster_name}-${each.value.node}-node-${random_id.example[each.key].hex}")
       node_name     = each.value.node
       cluster_name  = var.cluster_name

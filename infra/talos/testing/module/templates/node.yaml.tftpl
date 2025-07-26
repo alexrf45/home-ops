@@ -1,4 +1,10 @@
 machine:
+  sysctls:
+    vm.nr_hugepages: "1024"
+  kernel:
+    modules:
+      - name: nvme_tcp
+      - name: vfio_pci
   files:
     - path: /etc/cri/conf.d/20-customization.part
       op: create
@@ -17,9 +23,9 @@ machine:
     clusterDNS:
       - 10.43.0.10
     extraMounts:
-      - destination: /var/data
+      - destination: ${storage_path}
         type: bind
-        source: /var/data
+        source: ${storage_path}
         options:
           - rbind
           - rshared
@@ -27,7 +33,7 @@ machine:
   disks:
     - device: /dev/vdb
       partitions:
-        - mountpoint: /var/data
+        - mountpoint: ${storage_path}
   install:
     disk: ${install_disk}
     image: ${install_image}
