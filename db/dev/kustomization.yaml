@@ -4,6 +4,6 @@ resources:
   #- vaultwarden
   - ../base/wallabag
   - wallabag
-  - pgadmin
-  - nextcloud
+  #- pgadmin
+  #  - nextcloud
 

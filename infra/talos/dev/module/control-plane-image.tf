@@ -1,15 +1,15 @@
 data "talos_image_factory_extensions_versions" "controlplane" {
   # get the latest talos version
-  talos_version = var.cluster.talos_version
+  talos_version = var.talos_config.talos_version
   filters = {
-    names = var.cluster.control_plane_extensions
+    names = var.talos_config.control_plane_extensions
   }
 }
 
 data "talos_image_factory_urls" "controlplane" {
-  talos_version = var.cluster.talos_version
+  talos_version = var.talos_config.talos_version
   schematic_id  = talos_image_factory_schematic.controlplane.id
-  platform      = var.cluster.platform
+  platform      = var.talos_config.platform
 }
 
 

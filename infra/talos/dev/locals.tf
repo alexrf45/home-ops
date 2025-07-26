@@ -30,8 +30,8 @@ locals {
       spec = {
         blocks = [
           {
-            start = cidrhost(var.node_network, var.load_balancer_start)
-            stop  = cidrhost(var.node_network, var.load_balancer_stop)
+            start = cidrhost(var.cilium_config.node_network, var.cilium_config.load_balancer_start)
+            stop  = cidrhost(var.cilium_config.node_network, var.cilium_config.load_balancer_stop)
           },
         ]
       }

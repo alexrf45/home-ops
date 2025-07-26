@@ -1,0 +1,58 @@
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: wallabag-dev-cluster
+  namespace: wallabag
+spec:
+  postgresql:
+    pg_hba:
+      - hostssl postgres wallabag 10.43.0.0/16 scram-sha-256
+  instances: 3
+  storage:
+    size: 10Gi
+    storageClass: longhorn
+  walStorage:
+    size: 2Gi
+  backup:
+    barmanObjectStore:
+      destinationPath: s3://dev-wallabag-405ec8c7-6d89-073c-3e35-05c372b8f2ff
+      s3Credentials:
+        accessKeyId:
+          name: aws-creds
+          key: AWS_ACCESS_KEY_ID
+        secretAccessKey:
+          name: aws-creds
+          key: AWS_SECRET_ACCESS_KEY
+      wal:
+        compression: gzip
+    retentionPolicy: "15d"
+  bootstrap:
+    recovery:
+      source: wallabag-disaster-recovery
+
+  externalClusters:
+    - name: wallabag-disaster-recovery
+      barmanObjectStore:
+        destinationPath: s3://dev-wallabag-405ec8c7-6d89-073c-3e35-05c372b8f2ff
+        s3Credentials:
+          accessKeyId:
+            name: aws-creds
+            key: AWS_ACCESS_KEY_ID
+          secretAccessKey:
+            name: aws-creds
+            key: AWS_SECRET_ACCESS_KEY
+        wal:
+          maxParallel: 8
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: ScheduledBackup
+metadata:
+  name: wallabag-backup
+  namespace: wallabag
+spec:
+  schedule: "0 0 0 * * *"
+  backupOwnerReference: self
+  cluster:
+    name: wallabag-dev-cluster
+

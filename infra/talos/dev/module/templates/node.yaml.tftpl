@@ -1,4 +1,10 @@
 machine:
+  sysctls:
+    vm.nr_hugepages: "1024"
+  kernel:
+    modules:
+      - name: nvme_tcp
+      - name: vfio_pci
   files:
     - path: /etc/cri/conf.d/20-customization.part
       op: create
@@ -9,14 +15,17 @@ machine:
     servers:
       - /dev/ptp0
   kubelet:
+    nodeIP:
+      validSubnets:
+        - ${node_network}
     extraArgs:
       rotate-server-certificates: true
     clusterDNS:
       - 10.43.0.10
     extraMounts:
-      - destination: /var/data
+      - destination: ${storage_path}
         type: bind
-        source: /var/data
+        source: ${storage_path}
         options:
           - rbind
           - rshared
@@ -24,7 +33,7 @@ machine:
   disks:
     - device: /dev/vdb
       partitions:
-        - mountpoint: /var/data
+        - mountpoint: ${storage_path}
   install:
     disk: ${install_disk}
     image: ${install_image}
@@ -36,5 +45,5 @@ machine:
   network:
     hostname: ${hostname}
     nameservers:
-      - 1.1.1.1
-      - 8.8.8.8
+      - ${primary}
+      - ${secondary}
