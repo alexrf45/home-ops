@@ -34,7 +34,7 @@ spec:
   externalClusters:
     - name: wallabag-disaster-recovery
       barmanObjectStore:
-        destinationPath: s3://dev-wallabag-405ec8c7-6d89-073c-3e35-05c372b8f2ff/
+        destinationPath: s3://dev-wallabag-405ec8c7-6d89-073c-3e35-05c372b8f2ff
         s3Credentials:
           accessKeyId:
             name: aws-creds
