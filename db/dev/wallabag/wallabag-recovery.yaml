@@ -34,7 +34,7 @@ spec:
   externalClusters:
     - name: wallabag-disaster-recovery
       barmanObjectStore:
-        destinationPath: s3://dev-wallabag-405ec8c7-6d89-073c-3e35-05c372b8f2ff
+        destinationPath: s3://dev-wallabag-405ec8c7-6d89-073c-3e35-05c372b8f2ff/wallabag-dev-cluster
         s3Credentials:
           accessKeyId:
             name: aws-creds
@@ -51,7 +51,7 @@ metadata:
   name: wallabag-backup
   namespace: wallabag
 spec:
-  schedule: "0 0 0 * * *"
+  schedule: "0 0 * * *"
   backupOwnerReference: self
   cluster:
     name: wallabag-dev-cluster
