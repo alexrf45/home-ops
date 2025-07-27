@@ -14,15 +14,14 @@ spec:
     storageClass: longhorn
   walStorage:
     size: 2Gi
+  bootstrap:
+    recovery:
+      source: wallabag-dev-cluster
   plugins:
   - name: barman-cloud.cloudnative-pg.io
     isWALArchiver: true
     parameters:
       barmanObjectName: wallabag-dev-cluster
-  bootstrap:
-    recovery:
-      source: wallabag-dev-cluster
-
   externalClusters:
   - name: wallabag-dev-cluster
     plugin:
