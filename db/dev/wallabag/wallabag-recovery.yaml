@@ -19,7 +19,6 @@ spec:
     isWALArchiver: true
     parameters:
       barmanObjectName: wallabag-dev-cluster
-    retentionPolicy: "7d"
   bootstrap:
     recovery:
       source: wallabag-dev-cluster
