@@ -33,17 +33,11 @@ spec:
 
   externalClusters:
     - name: wallabag-dev-cluster
-      barmanObjectStore:
-        destinationPath: s3://dev-wallabag-405ec8c7-6d89-073c-3e35-05c372b8f2ff/wallabag-dev-cluster/
-        s3Credentials:
-          accessKeyId:
-            name: aws-creds
-            key: AWS_ACCESS_KEY_ID
-          secretAccessKey:
-            name: aws-creds
-            key: AWS_SECRET_ACCESS_KEY
-        wal:
-          maxParallel: 8
+      plugin:
+        name: barman-cloud.cloudnative-pg.io
+        parameters:
+          barmanObjectName: wallabag-dev-cluster
+          serverName: wallabag-dev-cluster
 ---
 apiVersion: postgresql.cnpg.io/v1
 kind: ScheduledBackup
