@@ -24,12 +24,12 @@ spec:
       source: wallabag-dev-cluster
 
   externalClusters:
-    - name: wallabag-dev-cluster
-      plugin:
-        name: barman-cloud.cloudnative-pg.io
-        parameters:
-          barmanObjectName: wallabag-dev-cluster
-          serverName: wallabag-dev-cluster
+  - name: wallabag-dev-cluster
+    plugin:
+      name: barman-cloud.cloudnative-pg.io
+      parameters:
+        barmanObjectName: wallabag-dev-cluster
+        serverName: wallabag-dev-cluster
 ---
 apiVersion: postgresql.cnpg.io/v1
 kind: ScheduledBackup
@@ -41,4 +41,7 @@ spec:
   backupOwnerReference: self
   cluster:
     name: wallabag-dev-cluster
+  method: plugin
+  pluginConfiguration:
+    name: barman-cloud.cloudnative-pg.io
 
