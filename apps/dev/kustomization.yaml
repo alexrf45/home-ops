@@ -6,5 +6,5 @@ resources:
   #- blog
   #- vaultwarden
   - wallabag
-  - it-tools
+  #  - it-tools
   #  - nextcloud
