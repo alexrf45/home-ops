@@ -14,18 +14,11 @@ spec:
     storageClass: longhorn
   walStorage:
     size: 2Gi
-  backup:
-    barmanObjectStore:
-      destinationPath: s3://dev-wallabag-405ec8c7-6d89-073c-3e35-05c372b8f2ff
-      s3Credentials:
-        accessKeyId:
-          name: aws-creds
-          key: AWS_ACCESS_KEY_ID
-        secretAccessKey:
-          name: aws-creds
-          key: AWS_SECRET_ACCESS_KEY
-      wal:
-        compression: gzip
+  plugins:
+  - name: barman-cloud.cloudnative-pg.io
+    isWALArchiver: true
+    parameters:
+      barmanObjectName: wallabag-dev-cluster
     retentionPolicy: "15d"
   bootstrap:
     recovery:

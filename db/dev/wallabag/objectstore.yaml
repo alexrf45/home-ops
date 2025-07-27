@@ -4,7 +4,7 @@ metadata:
   name: wallabag-dev-cluster
 spec:
   configuration:
-    destinationPath: s3://dev-wallabag-405ec8c7-6d89-073c-3e35-05c372b8f2ff/wallabag-dev-cluster/
+    destinationPath: s3://dev-wallabag-405ec8c7-6d89-073c-3e35-05c372b8f2ff
     s3Credentials:
       accessKeyId:
         name: aws-creds
@@ -13,4 +13,4 @@ spec:
         name: aws-creds
         key: AWS_SECRET_ACCESS_KEY
     wal:
-      maxParallel: 8
+      compression: gzip
