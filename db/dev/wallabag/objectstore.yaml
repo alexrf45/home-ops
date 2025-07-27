@@ -4,6 +4,7 @@ metadata:
   name: wallabag-dev-cluster
   namespace: database
 spec:
+  retentionPolicy: "7d"
   configuration:
     destinationPath: s3://dev-wallabag-405ec8c7-6d89-073c-3e35-05c372b8f2ff
     s3Credentials:
