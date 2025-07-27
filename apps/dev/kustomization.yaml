@@ -5,6 +5,6 @@ resources:
   - homepage
   #- blog
   #- vaultwarden
-  - wallabag
+  #- wallabag
   #  - it-tools
   #  - nextcloud
