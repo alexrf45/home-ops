@@ -6,8 +6,7 @@ metadata:
 spec:
   retentionPolicy: "7d"
   configuration:
-    destinationPath: s3://dev-wallabag-405ec8c7-6d89-073c-3e35-05c372b8f2ff
-    endpointURL: https://dev-wallabag-405ec8c7-6d89-073c-3e35-05c372b8f2ff.s3.aws.com
+    destinationPath: "s3://dev-wallabag-405ec8c7-6d89-073c-3e35-05c372b8f2ff/backups"
     s3Credentials:
       accessKeyId:
         name: aws-creds
@@ -17,3 +16,6 @@ spec:
         key: AWS_SECRET_ACCESS_KEY
     wal:
       compression: gzip
+    data:
+      compression: gzip
+      retentionPolicy: "7d"
