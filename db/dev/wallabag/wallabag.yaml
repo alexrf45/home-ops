@@ -11,12 +11,12 @@ spec:
   instances: 3
   storage:
     size: 10Gi
-    storageClass: local-path
+    storageClass: longhorn
   walStorage:
     size: 2Gi
   backup:
     barmanObjectStore:
-      destinationPath: s3://dev-wallabag-405ec8c7-6d89-073c-3e35-05c372b8f2ff
+      destinationPath: "s3://dev-wallabag-405ec8c7-6d89-073c-3e35-05c372b8f2ff/dev"
       s3Credentials:
         accessKeyId:
           name: aws-creds
@@ -34,7 +34,7 @@ metadata:
   name: wallabag-backup
   namespace: wallabag
 spec:
-  schedule: "0 0 0 * * *"
+  schedule: "0 0 * * *"
   backupOwnerReference: self
   cluster:
     name: wallabag-dev-cluster
