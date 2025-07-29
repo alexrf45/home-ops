@@ -44,5 +44,3 @@ spec:
   pluginConfiguration:
     name: barman-cloud.cloudnative-pg.io
   immediate: true
-  retentionPolicy: "7d"
-
