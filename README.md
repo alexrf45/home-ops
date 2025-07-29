@@ -12,15 +12,23 @@ This repository automates the deployment of Kubernetes & Talos Linux on Proxmox 
 - [ ] Cert-Manager
 - [ ] Cillium
 - [ ] Cloudflare (coming soon)
-- [ ] External-Secrets
+- [ ] External-Secrets (All)
 - [ ] External-DNS (removed)
 - [ ] Grafana
 - [ ] Pi-Hole (removed)
 - [ ] Prometheus
 - [ ] Local-Path Provisioner (removed in dev)
 - [ ] CSI-Driver-SMB (removed in dev)
-- [ ] Longhorn - Testing, Dev
-- [ ] More to come!
+- [ ] Longhorn (Testing, Dev)
+- [ ] Tailscale (Testing, Dev, Prod)
+- [ ] OnePassword
+- [ ] BarmanCloud Plugin for CloudnativePG (Dev)
+- [ ] CloudnativePG (Dev)
+
+## Apps
+
+- [ ] Wallabag (Dev)
+- [ ] ![Blog](https://blog.fr3d.dev) (Prod)
 
 ## Updates
 
@@ -32,3 +40,5 @@ new ways to optimize the talos linux bootstrap process
 2025-05-11 My personal blog is up and running at blog.fr3d.dev.
 
 **2025-07-26** Testing cluster added. Testing cnpg database disaster recovery
+
+2025-07-26 Disaster reocovery a success. 2026 I plan to invest in a NAS & set up local block storage backups
