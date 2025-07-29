@@ -81,15 +81,15 @@ spec:
       defaultDashboardsTimezone: America/New_York
       ingress:
         annotations:
-          #cert-manager.io/cluster-issuer: letsencrypt-staging
+          cert-manager.io/cluster-issuer: letsencrypt-staging
         enabled: true
         hosts:
-        - dev-grafana
-        ingressClassName: tailscale
+        - dev.int.grafana.fr3d.dev
+        ingressClassName: cilium
         path: /
         tls:
         - hosts:
-          - dev-grafana
+          - dev.int.grafana.fr3d.dev
           secretName: grafana-general-tls
       persistence:
         accessModes:
@@ -127,15 +127,15 @@ spec:
       ingress:
         enabled: true
         pathType: Prefix
-        ingressClassName: tailscale
+        ingressClassName: cilium
         annotations:
-          #cert-manager.io/cluster-issuer: letsencrypt-staging
+          cert-manager.io/cluster-issuer: letsencrypt-staging
         tls:
         - hosts:
-          - dev-prometheus
+          - dev.int.prom.fr3d.dev
           secretName: prometheus-general-tls
         hosts:
-        - dev-prometheus
+        - dev.int.prom.fr3d.dev
 
       prometheusSpec:
         podMonitorSelectorNilUsesHelmValues: false
