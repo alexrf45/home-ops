@@ -6,7 +6,7 @@ metadata:
 spec:
   retentionPolicy: "7d"
   configuration:
-    destinationPath: "s3://dev-wallabag-405ec8c7-6d89-073c-3e35-05c372b8f2ff/wallabag-dev-cluster"
+    destinationPath: "s3://dev-wallabag-405ec8c7-6d89-073c-3e35-05c372b8f2ff"
     s3Credentials:
       accessKeyId:
         name: aws-creds
