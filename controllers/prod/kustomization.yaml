@@ -3,9 +3,10 @@ kind: Kustomization
 resources:
   - ../base/local-path
   - ../base/csi-driver-smb
+  #- ../base/longhorn
   - ../base/cert-manager
   - ../base/external-secrets
-  #- ../base/external-dns
+  - ../base/external-dns
   - ../base/onepassword-connect
   - ../base/tailscale
   - ../base/cloudnativepg
