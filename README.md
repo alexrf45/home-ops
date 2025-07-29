@@ -4,41 +4,59 @@
 
 ![Static Badge](https://img.shields.io/badge/talos-v1.10.5-orange?style=plastic&logo=Talos&logoColor=%23FF7300) ![Static Badge](https://img.shields.io/badge/k8s-v1.33.0-blue?style=plastic&logo=Kubernetes&logoColor=%23326CE5&logoSize=auto) ![Static Badge](https://img.shields.io/badge/flux-v2.5.1-blue?style=plastic&logo=flux&logoSize=auto&link=https%3A%2F%2Fblog.fr3d.dev) ![Static Badge](https://img.shields.io/badge/terraform-v1.12.2-purple?style=plastic&logo=terraform&color=%237B42BC) ![Static Badge](https://img.shields.io/badge/proxmox-v8.4.1-orange?style=plastic&logo=proxmox&logoSize=auto&link=https%3A%2F%2Fblog.fr3d.dev)
 
-This repository automates the deployment of Kubernetes & Talos Linux on Proxmox with Terraform & Flux
+This repository automates the deployment of Kubernetes & Talos Linux on Proxmox with Terraform & Flux.
 
-## Services
+## Infrastructure Services
 
-- [ ] Argo-CD (Removed)
-- [ ] Cert-Manager
-- [ ] Cillium
-- [ ] Cloudflare (coming soon)
-- [ ] External-Secrets (All)
-- [ ] External-DNS (removed)
-- [ ] Grafana
-- [ ] Pi-Hole (removed)
-- [ ] Prometheus
-- [ ] Local-Path Provisioner (removed in dev)
-- [ ] CSI-Driver-SMB (removed in dev)
-- [ ] Longhorn (Testing, Dev)
-- [ ] Tailscale (Testing, Dev, Prod)
-- [ ] OnePassword
-- [ ] BarmanCloud Plugin for CloudnativePG (Dev)
-- [ ] CloudnativePG (Dev)
+| Service            | Status      | Environment        | Notes                               |
+| ------------------ | ----------- | ------------------ | ----------------------------------- |
+| Cert-Manager       | Active      | All                | SSL certificate management          |
+| Cilium             | Active      | All                | CNI networking                      |
+| Cloudflare         | Coming Soon | N/A                | DNS and security                    |
+| External-Secrets   | Active      | All                | Secret management                   |
+| Grafana            | Active      | Dev                | Monitoring dashboards               |
+| Prometheus         | Active      | Dev                | Metrics collection                  |
+| Longhorn           | Testing     | Testing,Dev        | Distributed storage                 |
+| Tailscale          | Active      | Testing, Dev, Prod | VPN mesh networking                 |
+| OnePassword        | Active      | All                | Password management                 |
+| BarmanCloud Plugin | Active      | Dev                | PostgreSQL backup for CloudnativePG |
+| CloudnativePG      | Active      | Dev                | PostgreSQL operator                 |
 
-## Apps
+### Removed Services
 
-- [ ] Wallabag (Dev)
-- [ ] ![Blog](https://blog.fr3d.dev) (Prod)
+| Service                | Reason                     |
+| ---------------------- | -------------------------- |
+| Argo-CD                | Replaced with Flux         |
+| External-DNS           | No longer needed           |
+| Pi-Hole                | Consolidated DNS solution  |
+| Local-Path Provisioner | Removed in dev environment |
+| CSI-Driver-SMB         | Removed in dev environment |
 
-## Updates
+## Applications
 
-2025-02-02 The terraform code is subject to change as I find
-new ways to optimize the talos linux bootstrap process
+| Application   | Status | Environment | URL                                    |
+| ------------- | ------ | ----------- | -------------------------------------- |
+| Personal Blog | Active | Prod        | [blog.fr3d.dev](https://blog.fr3d.dev) |
+| Wallabag      | Active | Dev         | Read-later service                     |
 
-2025-05-05 TF code is stable, prod scaled well
+## Updates & Changelog
 
-2025-05-11 My personal blog is up and running at blog.fr3d.dev.
+| Date       | Update                                                                                                 |
+| ---------- | ------------------------------------------------------------------------------------------------------ |
+| 2025-07-26 | Testing cluster added for CloudnativePG database disaster recovery                                     |
+| 2025-07-26 | Disaster recovery testing successful. Planning NAS investment and local block storage backups for 2026 |
+| 2025-05-11 | Personal blog launched at blog.fr3d.dev                                                                |
+| 2025-05-05 | Terraform code stabilized, production environment scaled successfully                                  |
+| 2025-02-02 | Terraform code refactoring for optimized Talos Linux bootstrap process                                 |
 
-**2025-07-26** Testing cluster added. Testing cnpg database disaster recovery
+## Architecture
 
-2025-07-26 Disaster reocovery a success. 2026 I plan to invest in a NAS & set up local block storage backups
+This homelab setup provides:
+
+- **Infrastructure as Code**: Terraform for Proxmox VM provisioning
+- **GitOps**: Flux for Kubernetes application deployment
+- **Consolidated Networking**: Cilium for ingress & network security
+- **Monitoring**: Prometheus + Grafana stack
+- **Storage**: Longhorn for distributed persistent volumes
+- **Security**: Cert-Manager for TLS, External-Secrets & OnePassword for secret management
+
