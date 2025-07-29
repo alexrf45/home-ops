@@ -17,6 +17,8 @@ spec:
   bootstrap:
     recovery:
       source: wallabag-dev-cluster
+      recoveryTarget:
+        targetImmediate: true
   plugins:
   - name: barman-cloud.cloudnative-pg.io
     isWALArchiver: true
