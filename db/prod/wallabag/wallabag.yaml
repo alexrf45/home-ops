@@ -41,7 +41,7 @@ metadata:
   name: wallabag-backup
   namespace: wallabag
 spec:
-  schedule: "00 7 * * 0,3,5"
+  schedule: "0 0 * * *"
   cluster:
     name: wallabag-prod-cluster
   backupOwnerReference: self
