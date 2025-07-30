@@ -8,7 +8,7 @@ resources:
   - ../base/onepassword-connect
   - ../base/tailscale
   - cloudnativepg
-  #- redis-operator
+  - redis-operator
   #- ../base/csi-driver-smb
   #- ../base/longhorn
 
