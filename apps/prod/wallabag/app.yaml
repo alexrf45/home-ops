@@ -76,12 +76,6 @@ metadata:
   labels:
     app.kubernetes.io/name: wallabag
   annotations:
-    gethomepage.dev/description: Dynamically Detected Homepage
-    gethomepage.dev/enabled: "true"
-    gethomepage.dev/group: Apps
-    gethomepage.dev/icon: wallabag.png
-    gethomepage.dev/name: wallabag
-    #    cert-manager.io/cluster-issuer: letsencrypt-staging
     tailscale.com/funnel: "true"
 spec:
   ingressClassName: tailscale
@@ -95,7 +89,7 @@ spec:
             port:
               number: 80
         path: /
-        pathType: Prefix 
+        pathType: Prefix
   tls:
   - hosts:
     - prod-wallabag
