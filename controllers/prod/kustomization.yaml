@@ -9,4 +9,5 @@ resources:
   - ../base/external-dns
   - ../base/onepassword-connect
   - ../base/tailscale
-  - ../base/cloudnativepg
+  #- ../base/cloudnativepg
+  - cloudnativepg
