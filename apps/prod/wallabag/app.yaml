@@ -32,6 +32,10 @@ spec:
         env:
         - name: SYMFONY__ENV__DATABASE_USER
           value: "op://HomeLab/wallabag_prod/username"
+          valueFrom:
+            secretKeyRef:
+              name: wallabag-prod-db-creds
+              key: db_user
         - name: SYMFONY__ENV__DATABASE_PASSWORD
           value: "op://HomeLab/wallabag_prod/password"
         - name: SYMFONY__ENV__DATABASE_NAME
