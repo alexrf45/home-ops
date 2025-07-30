@@ -13,6 +13,9 @@ spec:
     metadata:
       labels:
         app: wallabag
+        node: worker
+      annotations:
+        operator.1password.io/inject: "wallabag-web"
     spec:
       containers:
       - name: wallabag-web
@@ -26,11 +29,28 @@ spec:
               cpu: 200m
         ports:
           - containerPort: 80
-        envFrom:
-          - configMapRef:
-              name: wallabag-configmap
-          - secretRef:
-              name: wallabag-container-env
+        env:
+        - name: SYMFONY__ENV__DATABASE_USER
+          value: "op://HomeLab/wallabag_prod/username"
+        - name: SYMFONY__ENV__DATABASE_PASSWORD
+          value: "op://HomeLab/wallabag_prod/password"
+        - name: SYMFONY__ENV__DATABASE_NAME
+          value: "op://HomeLab/wallabag_prod/database"
+        - name: SYMFONY__ENV__DATABASE_PORT
+          value: "op://HomeLab/wallabag_prod/port"
+        - name: SYMFONY__ENV__DATABASE_HOST
+          value: "op://HomeLab/wallabag_prod/server"
+        - name: SYMFONY__ENV__DATABASE_DRIVER
+          value: "pdo_pgsql"
+        - name: SYMFONY__ENV__FOSUSER_REGISTRATION
+          value: "false"
+        - name: POPULATE_DATABASE
+          value: "true"
+        - name: PHP_MEMORY_LIMIT
+          value: 500M
+        - name: SYMFONY__ENV__DOMAIN_NAME
+          value: "http://url:443"
+
 ---
 apiVersion: v1
 kind: Service
@@ -46,3 +66,37 @@ spec:
       name: http
   selector:
     app: wallabag
+    node: worker
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: wallabag
+  namespace: wallabag
+  labels:
+    app.kubernetes.io/name: wallabag
+  annotations:
+    gethomepage.dev/description: Dynamically Detected Homepage
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/group: Apps
+    gethomepage.dev/icon: wallabag.png
+    gethomepage.dev/name: wallabag
+    #    cert-manager.io/cluster-issuer: letsencrypt-staging
+    tailscale.com/funnel: "true"
+spec:
+  ingressClassName: tailscale
+  rules:
+  - host: prod-wallabag
+    http:
+      paths:
+      - backend:
+          service:
+            name: wallabag
+            port:
+              number: 80
+        path: /
+        pathType: Prefix 
+  tls:
+  - hosts:
+    - prod-wallabag
+    secretName: prod-wallabag-tls
