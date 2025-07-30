@@ -36,7 +36,7 @@ spec:
     redisOperator:
       name: redis-operator
       imageName: ghcr.io/ot-container-kit/redis-operator/redis-operator
-      imageTag: "0.21.0"
+      imageTag: "v0.21.0"
       imagePullPolicy: Always
       webhook: false
       automountServiceAccountToken: true
