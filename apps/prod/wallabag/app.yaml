@@ -15,7 +15,7 @@ spec:
         app: wallabag
         node: worker
       annotations:
-        operator.1password.io/inject: "wallabag-web"
+        operator.1password.io/inject: "wallabag-prod-db-creds"
     spec:
       containers:
       - name: wallabag-web
