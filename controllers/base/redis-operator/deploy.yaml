@@ -57,11 +57,21 @@ spec:
     service:
       name: webhook-service
       namespace: redis
+    certificate:
+     name: redis-operator
+     secretName: redis-operator-tls
     issuer:
       create: false
+      kind: ClusterIssuer
+      type: acme
+      name: letsencrypt-staging
+      email: homelab@fr3d.dev
+      server: https://acme-staging-v02.api.letsencrypt.org/directory
+      privateKeySecretName: letsencrypt-staging
+      solver:
+        enabled: false
     certmanager:
       enabled: true
       apiVersion: "cert-manager.io/v1"
-    priorityClassName: ""
     nodeSelector:
       node: "worker"
