@@ -50,6 +50,12 @@ spec:
           value: 500M
         - name: SYMFONY__ENV__DOMAIN_NAME
           value: "http://url:443"
+        - name: SYMFONY__ENV__SECRET
+          value: "op://HomeLab/wallabag_prod/app_secret"
+        - name: SYMFONY__ENV__REDIS_HOST
+          value: "op://HomeLab/wallabag_prod/redis_host"
+        - name: SYMFONY__ENV__REDIS_PASSWORD
+          value: "op://HomeLab/wallabag_prod/redis_password"
 
 ---
 apiVersion: v1
