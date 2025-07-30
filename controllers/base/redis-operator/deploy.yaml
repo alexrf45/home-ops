@@ -24,7 +24,7 @@ spec:
   interval: 30m
   chart:
     spec:
-      chart: ot-helm/redis-operator
+      chart: redis-operator
       version: "0.21.0"
       sourceRef:
         kind: HelmRepository
