@@ -63,7 +63,10 @@ spec:
         - name: PHP_MEMORY_LIMIT
           value: 500M
         - name: SYMFONY__ENV__DOMAIN_NAME
-          value: "http://url:443"
+          valueFrom:
+            secretKeyRef:
+              name: wallabag-prod-creds
+              key: url
         - name: SYMFONY__ENV__SECRET
           valueFrom:
             secretKeyRef:
