@@ -72,13 +72,13 @@ spec:
         - name: SYMFONY__ENV__REDIS_HOST
           valueFrom:
             secretKeyRef:
-            name: wallabag-prod-creds
-            key: redis_host
+              name: wallabag-prod-creds
+              key: redis_host
         - name: SYMFONY__ENV__REDIS_PASSWORD
           valueFrom:
             secretKeyRef:
-            name: wallabag-prod-creds
-            key: redis_password
+              name: wallabag-prod-creds
+              key: redis_password
 
 ---
 apiVersion: v1
