@@ -43,7 +43,7 @@ spec:
           valueFrom:
             secretKeyRef:
               name: wallabag-prod-creds
-              key: server
+              key: database
         - name: SYMFONY__ENV__DATABASE_PORT
           valueFrom:
             secretKeyRef:
@@ -53,7 +53,7 @@ spec:
           valueFrom:
             secretKeyRef:
               name: wallabag-prod-creds
-              key: password
+              key: server
         - name: SYMFONY__ENV__DATABASE_DRIVER
           value: "pdo_pgsql"
         - name: SYMFONY__ENV__FOSUSER_REGISTRATION
