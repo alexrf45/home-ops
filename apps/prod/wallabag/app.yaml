@@ -15,9 +15,6 @@ spec:
         app: wallabag
         node: worker
       annotations:
-        operator.1password.io/auto-restart: "true"
-        operator.1password.io/item-path: "vaults/HomeLab/wallabag_prod"
-        operator.1password.io/item-name: "wallabag-prod-creds"
     spec:
       containers:
       - name: wallabag-web
@@ -33,19 +30,30 @@ spec:
           - containerPort: 80
         env:
         - name: SYMFONY__ENV__DATABASE_USER
-          value: "op://HomeLab/wallabag_prod/username"
           valueFrom:
             secretKeyRef:
-              name: wallabag-prod-db-creds
-              key: db_user
+              name: wallabag-prod-creds
+              key: username
         - name: SYMFONY__ENV__DATABASE_PASSWORD
-          value: "op://HomeLab/wallabag_prod/password"
+          valueFrom:
+            secretKeyRef:
+              name: wallabag-prod-creds
+              key: password
         - name: SYMFONY__ENV__DATABASE_NAME
-          value: "op://HomeLab/wallabag_prod/database"
+          valueFrom:
+            secretKeyRef:
+              name: wallabag-prod-creds
+              key: server
         - name: SYMFONY__ENV__DATABASE_PORT
-          value: "op://HomeLab/wallabag_prod/port"
+          valueFrom:
+            secretKeyRef:
+              name: wallabag-prod-creds
+              key: port
         - name: SYMFONY__ENV__DATABASE_HOST
-          value: "op://HomeLab/wallabag_prod/server"
+          valueFrom:
+            secretKeyRef:
+              name: wallabag-prod-creds
+              key: password
         - name: SYMFONY__ENV__DATABASE_DRIVER
           value: "pdo_pgsql"
         - name: SYMFONY__ENV__FOSUSER_REGISTRATION
@@ -57,11 +65,20 @@ spec:
         - name: SYMFONY__ENV__DOMAIN_NAME
           value: "http://url:443"
         - name: SYMFONY__ENV__SECRET
-          value: "op://HomeLab/wallabag_prod/app_secret"
+          valueFrom:
+            secretKeyRef:
+              name: wallabag-prod-creds
+              key: app_secret
         - name: SYMFONY__ENV__REDIS_HOST
-          value: "op://HomeLab/wallabag_prod/redis_host"
+          valueFrom:
+            secretKeyRef:
+            name: wallabag-prod-creds
+            key: redis_host
         - name: SYMFONY__ENV__REDIS_PASSWORD
-          value: "op://HomeLab/wallabag_prod/redis_password"
+          valueFrom:
+            secretKeyRef:
+            name: wallabag-prod-creds
+            key: redis_password
 
 ---
 apiVersion: v1
