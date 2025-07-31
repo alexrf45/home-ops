@@ -10,7 +10,7 @@ metadata:
 spec:
   postgresql:
     pg_hba:
-      - hostssl postgres wallabag 10.43.0.0/16 scram-sha-256
+      - hostssl wallabag wallabag 10.43.0.0/16 scram-sha-256
   instances: 3
   superuserSecret:
     name: wallabag-prod-db-creds
