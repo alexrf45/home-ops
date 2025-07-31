@@ -15,7 +15,9 @@ spec:
         app: wallabag
         node: worker
       annotations:
-        operator.1password.io/inject: "wallabag-prod-db-creds"
+        operator.1password.io/auto-restart: "true"
+        operator.1password.io/item-path: "vaults/HomeLab/wallabag_prod"
+        operator.1password.io/item-name: "wallabag-prod-creds"
     spec:
       containers:
       - name: wallabag-web

@@ -3,6 +3,7 @@ kind: Kustomization
 resources:
   - secrets.yaml
   - externalsecret.yaml
+  - app-secrets.yaml
   - configmap.yaml
   - app.yaml
   - ingress.yaml
