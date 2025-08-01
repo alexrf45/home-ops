@@ -19,7 +19,7 @@ spec:
       containers:
       - name: wallabag-web
         image: wallabag/wallabag:2.6.13
-        command: ["console"]
+        command: ["php bin/console"]
         args:
           ["wallabag:import:redis-worker" ,"--env=prod wallabag_v2"]
         resources:
