@@ -19,9 +19,6 @@ spec:
       containers:
       - name: wallabag-web
         image: wallabag/wallabag:2.6.13
-        command: ["php"]
-        args:
-          ["bin/console", "wallabag:import:redis-worker" ,"--env=prod", "wallabag_v2"]
         resources:
             requests:
               memory: 128Mi
