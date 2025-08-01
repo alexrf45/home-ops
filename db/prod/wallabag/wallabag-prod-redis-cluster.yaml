@@ -15,7 +15,7 @@ spec:
         name: ot-helm
         namespace: flux-system
       interval: 6h
-  targetNamespace: redis
+  targetNamespace: wallabag
   values:
     redisCluster:
       name: "wallabag-prod-redis-cluster"
