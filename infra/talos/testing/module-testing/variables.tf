@@ -52,7 +52,7 @@ variable "nodes" {
     ip               = string
     cores            = number
     memory           = number
-    datastore_id     = optional(string, "local-lvm")
+    datastore_id     = string
     storage_id       = string
     size             = number
     storage_size     = number
