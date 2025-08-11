@@ -1,9 +1,9 @@
 output "client_configuration" {
-  value     = module.testing.client_configuration
+  value     = module.dev.client_configuration
   sensitive = true
 }
 
 output "kubeconfig" {
-  value     = module.testing.kubeconfig
+  value     = module.dev.kubeconfig
   sensitive = true
 }
