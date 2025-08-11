@@ -3,5 +3,5 @@ kind: Kustomization
 resources:
   - wallabag-recovery.yaml
   - redis-secrets.yaml
-  - wallabag-dev-redis-cluster.yaml
+  #- wallabag-dev-redis-cluster.yaml
   

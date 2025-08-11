@@ -8,8 +8,8 @@ resources:
   - ../base/tailscale
   - ../base/cloudnativepg
   - redis-operator
-  - longhorn
-  #- ../base/local-path
+  #  - longhorn
+  - ../base/local-path
   #- ../base/csi-driver-smb
 
 
