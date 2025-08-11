@@ -2,7 +2,7 @@
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
-  name: wallabag-dev-cluster
+  name: wallabag-dev-cluster-restore
   namespace: wallabag
 spec:
   postgresql:
