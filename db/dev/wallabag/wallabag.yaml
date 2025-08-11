@@ -16,7 +16,7 @@ spec:
     size: 2Gi
   backup:
     barmanObjectStore:
-      destinationPath: "s3://dev-wallabag-405ec8c7-6d89-073c-3e35-05c372b8f2ff/dev"
+      destinationPath: "s3://dev-wallabag-405ec8c7-6d89-073c-3e35-05c372b8f2ff/backups"
       s3Credentials:
         accessKeyId:
           name: aws-creds
