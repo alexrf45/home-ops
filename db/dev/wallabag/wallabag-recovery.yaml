@@ -18,7 +18,7 @@ spec:
     recovery:
       source: wallabag-dev-cluster
       recoveryTarget:
-        backupID: "20250726T000001"
+        backupID: "20250730T070003"
         targetImmediate: true
   plugins:
   - name: barman-cloud.cloudnative-pg.io
