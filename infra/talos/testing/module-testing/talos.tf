@@ -84,11 +84,19 @@ resource "talos_machine_configuration_apply" "this" {
 
 }
 
+resource "time_sleep" "wait_until_apply" {
+  depends_on = [
+    talos_machine_configuration_apply.this,
+    proxmox_virtual_environment_vm.talos_vm
+  ]
+  create_duration = "2m"
+}
 
 
 #You only need to bootstrap 1 control node, we pick the first one
 resource "talos_machine_bootstrap" "this" {
   depends_on = [
+    time_sleep.wait_until_apply,
     proxmox_virtual_environment_vm.talos_vm,
     talos_machine_configuration_apply.this
   ]
