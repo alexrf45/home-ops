@@ -41,7 +41,7 @@ spec:
           "extends": ["config:recommended"],
           "labels": ["renovate", "dependencies"],
           "platform": "github",
-          "repositories": ["alexrf45/homeops"]
+          "repositories": ["alexrf45/home-ops"]
         }
       securityContext:
         runAsNonRoot: true
