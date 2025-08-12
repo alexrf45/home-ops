@@ -41,7 +41,25 @@ spec:
           "extends": ["config:recommended"],
           "labels": ["renovate", "dependencies"],
           "platform": "github",
-          "repositories": ["alexrf45/home-ops"]
+          "repositories": ["alexrf45/home-ops"],
+          
+          "includePaths": [
+            "controllers/**",
+            "clusters/**",
+            "infrastructure/**",
+            "**/kustomization.yaml",
+            "**/helmrelease.yaml"
+          ],
+           
+          "ignorePaths": [
+            "**/terraform/**",
+            "**/*.tf",
+            "**/*.tfvars",
+            "**/terraform.tfstate*",
+            "**/.terraform/**",
+            "**/terragrunt.hcl",
+            "**/*.hcl"
+          ]
         }
       securityContext:
         runAsNonRoot: true
