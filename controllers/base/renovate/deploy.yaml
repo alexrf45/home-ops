@@ -1,0 +1,60 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: renovate
+  labels:
+    app: "renovatebot"
+---
+apiVersion: source.toolkit.fluxcd.io/v1beta2
+kind: HelmRepository
+metadata:
+  name: renovate
+  namespace: renovate
+spec:
+  interval: 5m0s
+  url: https://docs.renovatebot.com/helm-charts
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
+kind: HelmRelease
+metadata:
+  name: renovate
+  namespace: renovate
+spec:
+  interval: 5m
+  chart:
+    spec:
+      chart: renovate
+      version: ">=37.0.0 <38.0.0"
+      sourceRef:
+        kind: HelmRepository
+        name: renovate
+        namespace: renovate
+      interval: 1m
+  targetNamespace: renovate
+  values:
+    cronjob:
+      schedule: "*/5 * * * *"
+    renovate:
+      config: |-
+        {
+          "extends": ["config:recommended"],
+          "labels": ["renovate", "dependencies"],
+          "platform": "github",
+          "repositories": ["alexrf45/homeops"]
+        }
+    envFrom:
+      - secretRef:
+          name: renovate-env
+    securityContext:
+      runAsNonRoot: true
+      allowPrivilegeEscalation: false
+      seccompProfile:
+        type: RuntimeDefault
+      capabilities:
+        drop:
+          - ALL
+    securityContext:
+      runAsUser: 1000
+      runAsGroup: 1000
+      fsGroup: 1000

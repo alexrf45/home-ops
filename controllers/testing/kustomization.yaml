@@ -11,3 +11,4 @@ resources:
   - ../base/cloudnativepg
   #- longhorn
   - kyverno
+  - ../base/renovate
