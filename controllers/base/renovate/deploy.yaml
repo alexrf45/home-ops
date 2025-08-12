@@ -44,9 +44,11 @@ spec:
           "repositories": ["alexrf45/home-ops"],
           
           "includePaths": [
-            "controllers/**",
-            "clusters/**",
-            "infrastructure/**",
+            "controllers/testing/.+\\.yaml$",
+            "clusters/testing/.+\\.yaml$",
+            "configs/testing/.+\\.yaml$",
+            "apps/testing/.+\\.yaml$",
+            "db/testing/.+\\.yaml$",
             "**/kustomization.yaml",
             "**/helmrelease.yaml"
           ],
