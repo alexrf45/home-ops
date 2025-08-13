@@ -51,7 +51,8 @@ spec:
             "apps/testing/.+\\.yaml$",
             "db/testing/.+\\.yaml$",
             "**/kustomization.yaml",
-            "**/helmrelease.yaml"
+            "**/release.yaml",
+            "**/deploy.yaml"
           ],
            
           "ignorePaths": [
