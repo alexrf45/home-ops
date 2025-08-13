@@ -30,7 +30,7 @@ spec:
         kind: HelmRepository
         name: external-secrets
         namespace: flux-system
-      version: v0.18.2
+      version: 0.19.2
 
   interval: 1m0s
   releaseName: external-secrets
