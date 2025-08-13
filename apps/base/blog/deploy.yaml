@@ -22,7 +22,7 @@ spec:
         kind: HelmRepository
         name: musings
         namespace: flux-system
-      version: 0.3.0
+      version: 0.4.0
   install:
     remediation:
       retries: 3
