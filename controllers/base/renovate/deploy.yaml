@@ -42,7 +42,7 @@ spec:
           "labels": ["renovate", "dependencies"],
           "platform": "github",
           "repositories": ["alexrf45/home-ops"],
-          "kubernetes": {"fileMatch": ["\\.yaml$"]},
+          "kubernetes": {"fileMatch": ["**/.+\\.yaml$"]},
           "flux": {"fileMatch": ["\\.yaml$"]},
           "includePaths": [
             "controllers/testing/.+\\.yaml$",
