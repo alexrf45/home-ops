@@ -20,6 +20,8 @@ spec:
     crds: CreateReplace
     remediation:
       retries: 4
+  upgrade:
+    crds: CreateReplace
   releaseName: kube-prometheus-stack
   targetNamespace: monitoring
   values:
@@ -40,7 +42,7 @@ spec:
         k8sContainerMemoryRss: true
         k8sContainerMemorySwap: true
         k8sContainerResource: true
-        k8sContainerMemoryWorkingSetBytes: true
+        k8sContainerMemoryWorkingSetBytes: false
         k8sPodOwner: true
         kubeApiserverAvailability: true
         kubeApiserverBurnrate: false
@@ -50,7 +52,7 @@ spec:
         kubelet: true
         kubeProxy: false
         kubePrometheusGeneral: true
-        kubePrometheusNodeRecording: false
+        kubePrometheusNodeRecording: true
         kubernetesApps: true
         kubernetesResources: true
         kubernetesStorage: true
@@ -61,7 +63,7 @@ spec:
         network: true
         node: true
         nodeExporterAlerting: true
-        nodeExporterRecording: false
+        nodeExporterRecording: true
         prometheus: true
         prometheusOperator: true
         windows: false
@@ -84,24 +86,24 @@ spec:
           cert-manager.io/cluster-issuer: letsencrypt-staging
         enabled: true
         hosts:
-        - dev.int.grafana.fr3d.dev
+        - test.int.grafana.fr3d.dev
         ingressClassName: cilium
         path: /
         tls:
         - hosts:
-          - dev.int.grafana.fr3d.dev
+          - test.int.grafana.fr3d.dev
           secretName: grafana-general-tls
       persistence:
         accessModes:
         - ReadWriteOnce
-        enabled: true
+        enabled: false
         finalizers:
         - kubernetes.io/pvc-protection
         size: 1Gi
-        storageClassName: longhorn
+        storageClassName: local-path
         #type: sts
     nodeExporter:
-      enabled: false
+      enabled: true
     kubeApiServer:
       serviceMonitor:
         selector:
@@ -132,10 +134,10 @@ spec:
           cert-manager.io/cluster-issuer: letsencrypt-staging
         tls:
         - hosts:
-          - dev.int.prom.fr3d.dev
+          - test.int.prom.fr3d.dev
           secretName: prometheus-general-tls
         hosts:
-        - dev.int.prom.fr3d.dev
+        - test.int.prom.fr3d.dev
 
       prometheusSpec:
         podMonitorSelectorNilUsesHelmValues: false
@@ -155,7 +157,7 @@ spec:
         storageSpec:
           volumeClaimTemplate:
             spec:
-              storageClassName: longhorn
+              storageClassName: local-path
               resources:
                 requests:
                   storage: 2Gi
