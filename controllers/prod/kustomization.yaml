@@ -9,6 +9,4 @@ resources:
   - ../base/tailscale
   - cloudnativepg
   - redis-operator
-  #- ../base/csi-driver-smb
-  #- ../base/longhorn
 
