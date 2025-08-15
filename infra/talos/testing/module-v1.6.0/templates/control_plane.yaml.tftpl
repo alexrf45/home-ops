@@ -1,4 +1,30 @@
 machine:
+  files:
+    - path: /etc/cri/conf.d/20-customization.part
+      op: create
+      content: |
+        [plugins."io.containerd.cri.v1.images"]
+          discard_unpacked_layers = false
+  time:
+    servers:
+      - /dev/ptp0
+  kubelet:
+    extraArgs:
+      rotate-server-certificates: true
+    clusterDNS:
+      - 10.43.0.10
+    extraMounts:
+      - destination: /var/data
+        type: bind
+        source: /var/data
+        options:
+          - rbind
+          - rshared
+          - rw
+  disks:
+    - device: /dev/vdb
+      partitions:
+        - mountpoint: /var/data
   install:
     disk: ${install_disk}
     image: ${install_image}
@@ -7,17 +33,17 @@ machine:
       - panic=10
       - cpufreq.default_governor=performance
       - intel_idle.max_cstate=0
-
   network:
-    hostname: ${hostname}
     interfaces:
     - interface: eth0
       dhcp: false
       vip:
         ip: ${vip_ip}
+    - interface: 
+    hostname: ${hostname}
     nameservers:
-      - ${primary}
-      - ${secondary}
+      - ${nameserver1}
+      - ${nameserver2}
 cluster:
   apiServer:
     auditPolicy:
@@ -55,7 +81,7 @@ cluster:
         kind: Namespace
         metadata:
           name: flux-system
-    - name: namespace-cilium
+    - name: namespace-networking
       contents: |-
         apiVersion: v1
         kind: Namespace

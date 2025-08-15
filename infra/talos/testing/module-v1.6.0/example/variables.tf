@@ -13,31 +13,6 @@ variable "environment" {
   }
 }
 
-variable "cluster_name" {
-  description = "name of talos cluster"
-  type        = string
-  validation {
-    condition     = can(regex("^[a-zA-Z0-9]+$", var.cluster_name)) && length(var.cluster_name) >= 4
-    error_message = "Cluster name must contain only alphanumeric characters and be at least 4 characters long."
-  }
-}
-
-variable "talos_config" {
-  description = "configuration options for talos config patches"
-  type = object({
-    talos_version            = string
-    control_plane_extensions = list(string)
-    worker_extensions        = list(string)
-    platform                 = string
-    allow_scheduling         = bool
-    tailscale_auth           = string
-    endpoint                 = string
-    vip_ip                   = string
-    install_disk             = string
-    storage_path             = string
-  })
-}
-
 variable "pve_config" {
   description = "Proxmox VE configuration options"
   type = object({
@@ -48,21 +23,52 @@ variable "pve_config" {
     password      = string
   })
 }
+variable "cluster" {
+  description = "Cluster configuration"
+  type = object({
+    name                     = string
+    endpoint                 = string
+    vip_ip                   = string
+    talos_version            = string
+    install_disk             = string
+    control_plane_extensions = list(string)
+    worker_extensions        = list(string)
+    platform                 = string
+    tailscale_auth           = string
+  })
+  validation {
+    condition     = can(regex("^[a-zA-Z0-9]+$", var.cluster.name)) && length(var.cluster.name) >= 4
+    error_message = "Cluster name must contain only alphanumeric characters and be at least 4 characters long."
+  }
+}
+
 
 variable "nodes" {
   description = "Configuration for cluster nodes"
   type = map(object({
-    machine_type = string
-    node         = string
-    ip           = string
-    storage_id   = string
-    cores        = number
-    memory       = number
-    size         = number
-    storage_size = number
+    machine_type     = string
+    allow_scheduling = optional(bool, true)
+    node             = string
+    ip               = string
+    cores            = number
+    memory           = number
+    datastore_id     = optional(string, "local-lvm")
+    storage_id       = string
+    size             = number
+    storage_size     = number
   }))
 }
-
+variable "dns_servers" {
+  description = "DNS servers for the nodes"
+  type = object({
+    primary   = string
+    secondary = string
+  })
+  default = {
+    primary   = "1.1.1.1"
+    secondary = "8.8.8.8"
+  }
+}
 variable "cilium_config" {
   description = "Configuration options for bootstrapping cilium"
   type = object({
@@ -96,16 +102,5 @@ variable "cilium_config" {
     load_balancer_ip           = "10.3.3.2"
     load_balancer_start        = 10
     load_balancer_stop         = 20
-  }
-}
-variable "dns_servers" {
-  description = "DNS servers for the nodes"
-  type = object({
-    primary   = string
-    secondary = string
-  })
-  default = {
-    primary   = "1.1.1.1"
-    secondary = "8.8.8.8"
   }
 }

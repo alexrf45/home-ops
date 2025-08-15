@@ -1,4 +1,3 @@
-# terraform.tf
 terraform {
   required_providers {
     proxmox = {
@@ -18,5 +17,8 @@ terraform {
       version = "3.7.2"
     }
   }
+  # backend "s3" {
+  #
+  # }
 }
 

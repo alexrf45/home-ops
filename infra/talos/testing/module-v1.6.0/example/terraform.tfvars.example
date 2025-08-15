@@ -1,0 +1,132 @@
+environment = "testing"
+
+cluster = {
+  name           = "horus"
+  talos_version  = "v1.10.6"
+  tailscale_auth = "tskey-auth-xxxxxxxxxxxxxxxxx-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+  platform       = "nocloud"
+  install_disk   = "/dev/vda"
+  endpoint       = "192.168.101.170"
+  vip_ip         = "192.168.101.169"
+  control_plane_extensions = [
+    "intel-ucode",
+    "glibc",
+    "iscsi-tools",
+    "util-linux-tools",
+    "qemu-guest-agent",
+    "i915",
+    "tailscale"
+  ]
+  worker_extensions = [
+    "intel-ucode",
+    "glibc",
+    "iscsi-tools",
+    "util-linux-tools",
+    "qemu-guest-agent",
+    "i915"
+  ]
+
+}
+
+pve_config = {
+  hosts         = ["pve-0", "pve-1", "pve-2", "pve-3", "pve-4", "pve-5"]
+  pve_endpoint  = "192.168.101.2"
+  iso_datastore = "local"
+  gateway       = "192.168.101.1"
+  password      = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+}
+
+nodes = {
+  "1" = {
+    machine_type     = "controlplane"
+    node             = "pve-0"
+    allow_scheduling = false
+    ip               = "192.168.101.170"
+    datastore_id     = "local-lvm"
+    storage_id       = "data"
+    cores            = 2
+    memory           = 4096
+    size             = 25
+    storage_size     = 50
+  },
+  "2" = {
+    machine_type     = "controlplane"
+    node             = "pve-1"
+    allow_scheduling = false
+    ip               = "192.168.101.171"
+    datastore_id     = "local-lvm"
+    storage_id       = "data"
+    cores            = 2
+    memory           = 4096
+    size             = 25
+    storage_size     = 100
+  },
+  "3" = {
+    machine_type     = "controlplane"
+    node             = "pve-2"
+    ip               = "192.168.101.172"
+    allow_scheduling = false
+    datastore_id     = "local-lvm"
+    storage_id       = "data"
+    cores            = 2
+    memory           = 4096
+    size             = 25
+    storage_size     = 100
+  },
+  "4" = {
+    machine_type = "worker"
+    node         = "pve-3"
+    ip           = "192.168.101.173"
+    datastore_id = "local-lvm"
+    storage_id   = "data"
+    cores        = 2
+    memory       = 8092
+    size         = 25
+    storage_size = 100
+  }
+  "5" = {
+    machine_type = "worker"
+    node         = "pve-4"
+    ip           = "192.168.101.174"
+    datastore_id = "local-lvm"
+    storage_id   = "data"
+    cores        = 2
+    memory       = 8092
+    size         = 25
+    storage_size = 100
+  }
+  "6" = {
+    machine_type = "worker"
+    node         = "pve-5"
+    ip           = "192.168.101.175"
+    datastore_id = "local-lvm"
+    storage_id   = "data"
+    cores        = 2
+    memory       = 8092
+    size         = 25
+    storage_size = 100
+  }
+}
+
+
+cilium_config = {
+  kube_version               = "1.33.3"
+  cilium_version             = "v1.18.0"
+  hubble_enabled             = false
+  hubble_ui_enabled          = false
+  relay_enabled              = false
+  relay_pods_rollout         = false
+  ingress_controller_enabled = true
+  ingress_default_controller = true
+  gateway_api_enabled        = true
+  load_balancer_mode         = "shared"
+  load_balancer_start        = 177
+  load_balancer_stop         = 187
+  load_balancer_ip           = "192.168.101.176"
+  node_network               = "192.168.101.0/24"
+}
+
+dns_servers = {
+  primary   = "1.1.1.1"
+  secondary = "192.168.101.11"
+}
