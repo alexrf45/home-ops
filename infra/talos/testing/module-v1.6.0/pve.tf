@@ -107,6 +107,17 @@ resource "proxmox_virtual_environment_vm" "talos_vm" {
     type = "l26"
   }
 
+  dynamic "hostpci" {
+    for_each = each.value.igpu ? [1] : []
+    content {
+      # Passthrough iGPU
+      device  = "hostpci0"
+      mapping = "iGPU"
+      pcie    = true
+      rombar  = true
+      xvga    = false
+    }
+  }
   lifecycle {
     ignore_changes = all
   }
