@@ -40,9 +40,6 @@ spec:
       imagePullPolicy: Always
       webhook: false
       automountServiceAccountToken: true
-      pprof:
-        enabled: true
-        bindAddress: ":6060"
       metrics:
         enabled: true
         bindAddress: ":8080"
