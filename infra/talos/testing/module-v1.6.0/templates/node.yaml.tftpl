@@ -20,17 +20,28 @@ machine:
     clusterDNS:
       - 10.43.0.10
     extraMounts:
-      - destination: /var/lib/longhorn
+      - destination: ${storage_disk}
         type: bind
-        source: /var/lib/longhorn
+        source: ${storage_disk}
         options:
           - rbind
           - rshared
           - rw
+      - destination: ${storage_disk_1}
+        type: bind
+        source: ${storage_disk_1}
+        options:
+          - rbind
+          - rshared
+          - rw
+
   disks:
     - device: /dev/vdb
       partitions:
-        - mountpoint: /var/lib/longhorn
+        - mountpoint: ${storage_disk}
+    - device: /dev/vdc
+      partitions:
+        - mountpoint: ${storage_disk_1}
   install:
     disk: ${install_disk}
     image: ${install_image}

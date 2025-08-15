@@ -18,11 +18,13 @@ variable "pve_config" {
   type = object({
     hosts         = list(string)
     pve_endpoint  = string
+    igpu          = optional(bool, true)
     iso_datastore = string
     gateway       = string
     password      = string
   })
 }
+
 variable "cluster" {
   description = "Cluster configuration"
   type = object({
@@ -31,6 +33,8 @@ variable "cluster" {
     vip_ip                   = string
     talos_version            = string
     install_disk             = string
+    storage_disk             = string
+    storage_disk_1           = string
     control_plane_extensions = list(string)
     worker_extensions        = list(string)
     platform                 = string

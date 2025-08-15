@@ -81,7 +81,16 @@ resource "proxmox_virtual_environment_vm" "talos_vm" {
     discard      = "on"
     size         = each.value.storage_size
   }
-
+  disk {
+    datastore_id = each.value.storage_id
+    interface    = "virtio2"
+    file_format  = "raw"
+    ssd          = true
+    iothread     = true
+    cache        = "writethrough"
+    discard      = "on"
+    size         = each.value.size
+  }
   initialization {
     datastore_id = each.value.datastore_id
     dns {
@@ -108,7 +117,7 @@ resource "proxmox_virtual_environment_vm" "talos_vm" {
   }
 
   dynamic "hostpci" {
-    for_each = each.value.igpu ? [1] : []
+    for_each = var.pve_config.igpu ? [1] : []
     content {
       # Passthrough iGPU
       device  = "hostpci0"

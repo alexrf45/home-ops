@@ -23,6 +23,8 @@ data "talos_machine_configuration" "this" {
     templatefile("${path.module}/templates/control_plane.yaml.tftpl", {
       install_disk     = var.cluster.install_disk
       install_image    = talos_image_factory_schematic.controlplane.id
+      storage_disk     = var.cluster.storage_disk
+      storage_disk_1   = var.cluster.storage_disk_1
       hostname         = format("${var.environment}-${var.cluster.name}-cp-${random_id.example[each.key].hex}")
       allow_scheduling = each.value.allow_scheduling
       node_name        = each.value.node
@@ -51,13 +53,15 @@ data "talos_machine_configuration" "this" {
     }),
     ] : [
     templatefile("${path.module}/templates/node.yaml.tftpl", {
-      install_disk  = var.cluster.install_disk
-      install_image = talos_image_factory_schematic.worker.id
-      hostname      = format("${var.environment}-${var.cluster.name}-node-${random_id.example[each.key].hex}")
-      node_name     = each.value.node
-      cluster_name  = var.cluster.name
-      nameserver1   = var.dns_servers.primary
-      nameserver2   = var.dns_servers.secondary
+      install_disk   = var.cluster.install_disk
+      storage_disk   = var.cluster.storage_disk
+      storage_disk_1 = var.cluster.storage_disk_1
+      install_image  = talos_image_factory_schematic.worker.id
+      hostname       = format("${var.environment}-${var.cluster.name}-node-${random_id.example[each.key].hex}")
+      node_name      = each.value.node
+      cluster_name   = var.cluster.name
+      nameserver1    = var.dns_servers.primary
+      nameserver2    = var.dns_servers.secondary
     }),
   ]
 }
