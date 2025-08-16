@@ -9,6 +9,12 @@ spec:
     developerConfiguration:
       featureGates:
         - LiveMigration
+        - HotplugVolumes
+        - HostDisk
+        - VMExport
+        - Snapshot
+        - ExpandDisks
+        - ExperimentalIgnitionSupport
     smbios:
       sku: "TalosCloud"
       version: "v0.1.0"
