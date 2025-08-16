@@ -9,7 +9,7 @@ deploy() {
 
   terraform apply --auto-approve
 
-  terraform output -raw kubeconfig >"$HOME/.kube/testing"
+  terraform output -raw kubeconfig >"$HOME/.kube/environments/testing"
 
   cp ~/.kube/config ~/.kube/config_bk && KUBECONFIG=~/.kube/environments/dev:~/.kube/environments/prod:~/.kube/environments/testing kubectl config view --flatten >~/.kube/config_tmp && mv ~/.kube/config_tmp ~/.kube/config
 
