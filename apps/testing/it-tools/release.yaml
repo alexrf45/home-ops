@@ -76,7 +76,7 @@ spec:
     persistence:
       config:
         enabled: true
-        storageClass: local-path
+        storageClass: longhorn
         retain: false
         type: persistentVolumeClaim
         accessMode: ReadWriteOnce
