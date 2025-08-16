@@ -17,4 +17,4 @@ spec:
       family: "ccio"
   workloadUpdateStrategy:
     workloadUpdateMethods:
-    - LiveMigrate
+      - LiveMigrate
