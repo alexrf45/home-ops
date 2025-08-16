@@ -73,9 +73,9 @@ spec:
       storage:
         resources:
           requests:
-            storage: 20Gi
+            storage: 15Gi
         accessModes:
-          - ReadWriteMany
+          - ReadWriteOnce
         storageClassName: "longhorn"
       source:
         http:
