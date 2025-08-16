@@ -6,7 +6,7 @@ metadata:
   namespace: cdi
 spec:
   config:
-    scratchSpaceStorageClass: longhorn
+    scratchSpaceStorageClass: local-path
     podResourceRequirements:
       requests:
         cpu: "100m"

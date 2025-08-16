@@ -10,5 +10,3 @@ resources:
   - redis-operator
   - ../base/local-path
   # - longhorn
-
-  

@@ -124,7 +124,7 @@ resource "proxmox_virtual_environment_vm" "talos_vm" {
       mapping = "iGPU"
       pcie    = true
       rombar  = true
-      xvga    = false
+      xvga    = true
     }
   }
   lifecycle {

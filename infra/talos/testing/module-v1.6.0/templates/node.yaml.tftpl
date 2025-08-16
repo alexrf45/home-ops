@@ -58,16 +58,3 @@ machine:
     interfaces:
     - interface: eth0
       dhcp: false
-      vip:
-        ip: ${vip_ip}
-    - interface: br0
-      bridge:
-        stp:
-          enabled: true
-        interfaces:
-          - eth0
-      routes:
-        - network: 0.0.0.0/0 # The route's network (destination).
-          gateway: 10.3.3.1 # The route's gateway (if empty, creates link scope route).
-          metric: 1024
-
