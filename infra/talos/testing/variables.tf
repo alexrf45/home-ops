@@ -108,3 +108,18 @@ variable "cilium_config" {
     load_balancer_stop         = 20
   }
 }
+
+variable "ssh_key_path" {
+  description = "ssh key path"
+  type        = string
+}
+
+variable "github_org" {
+  description = "git hub org name"
+  type        = string
+}
+
+variable "github_repository" {
+  description = "git hub repo for flux bootstrap"
+  type        = string
+}

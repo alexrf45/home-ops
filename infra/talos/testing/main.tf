@@ -10,6 +10,6 @@ module "testing" {
 }
 
 # module "bootstrap" {
-#   depends_on = [module.test]
+#   depends_on = [module.testing]
 #   source     = "./bootstrap"
 # }

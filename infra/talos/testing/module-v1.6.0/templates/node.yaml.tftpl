@@ -1,4 +1,7 @@
 machine:
+  nodeLabels:
+    node: "worker"
+    node-role.kubernetes.io/worker: true
   sysctls:
     vm.nr_hugepages: "1024"
   kernel:
