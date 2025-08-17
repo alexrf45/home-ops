@@ -10,17 +10,27 @@ spec:
     defaultSettings:
       deletingConfirmationFlag: false
       snapshotMaxCount: 3
+      storageMinimalAvailablePercentage: 10
+
     longhornUI:
-      replicas: 2
+      replicas: 1
     persistence:
       defaultClass: true
-      defaultClassReplicaCount: 3
+      defaultClassReplicaCount: 2
       defaultDataLocality: best-effort
       migratable: true
       reclaimPolicy: Delete
+      backingImage:
+        enable: true
+      dataEngine: v2
     preUpgradeChecker:
       jobEnabled: true
       upgradeVersionCheck: true
+    csi:
+      provisionerReplicaCount: 2
+      snapshotterReplicaCount: 2
+      resizerReplicaCount: 2
+      attacherReplicaCount: 2
     service:
       manager:
         type: ClusterIP
@@ -30,5 +40,5 @@ spec:
         externalTrafficPolicy: Cluster
     metrics:
       serviceMonitor:
-        enabled: false
+        enabled: true
 
