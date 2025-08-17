@@ -11,6 +11,7 @@ spec:
       deletingConfirmationFlag: false
       snapshotMaxCount: 3
       storageMinimalAvailablePercentage: 10
+      v2DataEngine: true
 
     longhornUI:
       replicas: 1
