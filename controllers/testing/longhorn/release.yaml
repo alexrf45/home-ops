@@ -11,7 +11,7 @@ spec:
       deletingConfirmationFlag: false
       snapshotMaxCount: 3
       storageMinimalAvailablePercentage: 10
-      v2DataEngine: true
+      v2DataEngine: false
 
     longhornUI:
       replicas: 1
@@ -23,7 +23,7 @@ spec:
       reclaimPolicy: Delete
       backingImage:
         enable: true
-      dataEngine: v2
+      dataEngine: v1
     preUpgradeChecker:
       jobEnabled: true
       upgradeVersionCheck: true
