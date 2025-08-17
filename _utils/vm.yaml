@@ -17,10 +17,10 @@ spec:
       evictionStrategy: LiveMigrate
       domain:
         cpu:
-          cores: 2
+          cores: 1
         resources:
           requests:
-            memory: 4G
+            memory: 2G
         devices:
           disks:
             - name: fedora-vm-pvc
@@ -79,4 +79,4 @@ spec:
         storageClassName: "longhorn"
       source:
         http:
-          url: "https://fedora.mirror.wearetriple.com/linux/releases/40/Cloud/x86_64/images/Fedora-Cloud-Base-Generic.x86_64-40-1.14.qcow2"
+          url: "https://fedora.mirror.wearetriple.com/linux/releases/42/Cloud/x86_64/images/Fedora-Cloud-Base-Generic-42-1.1.x86_64.qcow2"
