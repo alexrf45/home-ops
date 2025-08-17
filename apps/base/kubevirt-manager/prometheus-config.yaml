@@ -19,5 +19,5 @@ data:
        	client_max_body_size 5g;
        	proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection $connection_upgrade;
-        proxy_pass http://prometheus-service.prometheus-namespace.svc:9090;
+        proxy_pass http://kube-prometheus-stack-prometheus.monitoring.svc:9090;
     }
