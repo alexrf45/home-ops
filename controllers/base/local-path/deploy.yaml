@@ -71,23 +71,32 @@ spec:
       externalAttacher:
         enabled: false
       externalSnapshotter:
-        enabled: false
+        enabled: true
         extraArgs:
           - --leader-election=false
           - --node-deployment=true
+      externalHealthMonitorController:
+        enabled: true
     node:
       driver:
-        image: 
+        image:
           registry: ghcr.io/democratic-csi/democratic-csi
           tag: v1.9.3
         extraVolumeMounts:
           - name: local-hostpath
             mountPath: &path /var/data
             mountPropagation: Bidirectional
+          - name: local-app
+            mountPath: &app-path /var/app
+            mountPropagation: Bidirectional
         extraVolumes:
           - name: local-hostpath
             hostPath:
               path: *path
+              type: DirectoryOrCreate
+          - name: local-app
+            hostPath:
+              path: *app-path
               type: DirectoryOrCreate
     driver:
       config:
