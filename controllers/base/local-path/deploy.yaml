@@ -86,12 +86,12 @@ spec:
           - name: local-hostpath
             mountPath: &path /var/data
             mountPropagation: Bidirectional
-        extraVolumes:
-          - name: local-hostpath
-            hostPath:
-              path: *path
-              type: DirectoryOrCreate
-    driver:
+    #     extraVolumes:
+    #       - name: local-hostpath
+    #         hostPath:
+    #           path: *path
+    #           type: DirectoryOrCreate
+    # driver:
       config:
         driver: local-hostpath
         instance_id: k8s-local-hostpath
