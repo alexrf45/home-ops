@@ -91,13 +91,13 @@ spec:
             hostPath:
               path: *path
               type: DirectoryOrCreate
-    driver:
-      config:
-        driver: local-hostpath
-        instance_id: k8s-local-hostpath
-        local-hostpath:
-          shareBasePath: *path
-          controllerBasePath: *path
-          dirPermissionsMode: "0770"
-          dirPermissionsUser: 0
-          dirPermissionsGroup: 0
+    # driver:
+    #   config:
+    #     driver: local-hostpath
+    #     instance_id: k8s-local-hostpath
+    #     local-hostpath:
+    #       shareBasePath: *path
+    #       controllerBasePath: *path
+    #       dirPermissionsMode: "0770"
+    #       dirPermissionsUser: 0
+    #       dirPermissionsGroup: 0
