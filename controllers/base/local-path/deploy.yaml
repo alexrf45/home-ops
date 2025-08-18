@@ -86,17 +86,10 @@ spec:
           - name: local-hostpath
             mountPath: &path /var/data
             mountPropagation: Bidirectional
-          - name: local-app
-            mountPath: &app-path /var/app
-            mountPropagation: Bidirectional
         extraVolumes:
           - name: local-hostpath
             hostPath:
               path: *path
-              type: DirectoryOrCreate
-          - name: local-app
-            hostPath:
-              path: *app-path
               type: DirectoryOrCreate
     driver:
       config:
