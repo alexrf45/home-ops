@@ -29,42 +29,7 @@ spec:
         enabled: true
         forceConflicts: true
     defaultRules:
-      create: true
-      rules:
-        alertmanager: false
-        etcd: false
-        configReloaders: true
-        general: true
-        k8sContainerCpuUsageSecondsTotal: true
-        k8sContainerMemoryCache: true
-        k8sContainerMemoryRss: true
-        k8sContainerMemorySwap: true
-        k8sContainerResource: true
-        k8sContainerMemoryWorkingSetBytes: true
-        k8sPodOwner: true
-        kubeApiserverAvailability: true
-        kubeApiserverBurnrate: false
-        kubeApiserverHistogram: false
-        kubeApiserverSlos: false
-        kubeControllerManager: true
-        kubelet: true
-        kubeProxy: false
-        kubePrometheusGeneral: true
-        kubePrometheusNodeRecording: false
-        kubernetesApps: true
-        kubernetesResources: true
-        kubernetesStorage: true
-        kubernetesSystem: true
-        kubeSchedulerAlerting: false
-        kubeSchedulerRecording: false
-        kubeStateMetrics: true
-        network: true
-        node: true
-        nodeExporterAlerting: true
-        nodeExporterRecording: false
-        prometheus: true
-        prometheusOperator: true
-        windows: false
+      create: false
     cleanPrometheusOperatorObjectNames: true
     alertmanager:
       enabled: false
@@ -97,45 +62,24 @@ spec:
         enabled: true
         finalizers:
         - kubernetes.io/pvc-protection
-        size: 1Gi
+        size: 2Gi
         storageClassName: local-path
-        #type: sts
-    nodeExporter:
-      enabled: false
-    kubeApiServer:
-      serviceMonitor:
-        selector:
-          k8s-app: kube-apiserver
-    kubeScheduler:
-      service:
-        selector:
-          k8s-app: kube-scheduler
-    kubeControllerManager:
-      service:
-        selector:
-          k8s-app: kube-controller-manager
-    kube-state-metrics:
-      fullnameOverride: kube-state-metrics
       metricLabelsAllowlist:
         - pods=[*]
         - deployments=[*]
         - persistentvolumeclaims=[*]
     prometheus:
       enabled: true
-      thanosService:
-        enabled: false
       ingress:
         enabled: true
         pathType: Prefix
-        ingressClassName: cilium
-        annotations:
-          cert-manager.io/cluster-issuer: letsencrypt-staging
+        ingressClassName: tailscale
         tls:
         - hosts:
-          - dev.int.prom.fr3d.dev
+          - dev-int-prom
           secretName: prometheus-general-tls
         hosts:
-        - dev.int.prom.fr3d.dev
+        - dev-int-prom
 
       prometheusSpec:
         podMonitorSelectorNilUsesHelmValues: false
@@ -150,7 +94,7 @@ spec:
           whenDeleted: Delete
           whenScaled: Retain
         retention: 7d
-        retentionSize: 1GB
+        retentionSize: 2GB
         routePrefix: /
         storageSpec:
           volumeClaimTemplate:
@@ -160,8 +104,7 @@ spec:
                 requests:
                   storage: 2Gi
     prometheus-node-exporter:
-       enabled: true
-       fullnameOverride: node-exporter
+       enabled: false
        prometheus:
         monitor:
           enabled: true
