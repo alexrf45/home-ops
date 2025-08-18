@@ -1,0 +1,35 @@
+apiVersion: barmancloud.cnpg.io/v1
+kind: ObjectStore
+metadata:
+    name: wallabag-prod-cluster-backup
+    namespace: wallabag
+spec:
+    retentionPolicy: 7d
+    configuration:
+        destinationPath: ENC[AES256_GCM,data:Meqmhc3nsfhXXDy/F8sOKYB71MW21YGwFTpvzc1fF5j0E2vXVAYbJ/hIpT7gtbGsi133LWdnORiH+D/FfDYK,iv:QYrUg3PWQLvs0pHkd/EYZUtVB1eESYzKPxZ11zCiHBE=,tag:KViaqtN01v/swG5+WqWnkA==,type:str]
+        s3Credentials:
+            accessKeyId:
+                name: aws-creds
+                key: AWS_ACCESS_KEY_ID
+            secretAccessKey:
+                name: aws-creds
+                key: AWS_SECRET_ACCESS_KEY
+        wal:
+            compression: gzip
+        data:
+            compression: gzip
+sops:
+    age:
+        - recipient: age1vml3vk5uzyztj96qgz7n0a6w8ynvtmxfarkp0jdl0hvcj003895qcp6z09
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBSaFdOMnBMcjR4MmYrTU42
+            QklMSmF1VUZoTjNVUXdhaUNlbTZvOEF6QTJNCmF1UEQ5aFJXZ01vODZyd1FGZUs5
+            bCtleDJpTEQ0dU5YM3pSb0YxMGdnZ28KLS0tIEpGWUl5OXdVbXBkejBaZjh1RDhY
+            MmZ5R0pENXBrT1lDaHRZajcvV2s4OEUKs/pvtEu99NyPGom8iz362XKoZ2z8cREd
+            hriGhr3eSCrN0nmOw+RfgQeVMm4FBMSw2pOn02m0ZU07Z+A60yvuZQ==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2025-08-18T19:13:19Z"
+    mac: ENC[AES256_GCM,data:0D4zw4mEvBMdQ880QXTKhrxe1j1o/XR127KRU1FWcIHWoFu1PgL4UUrvYt1XrHExEJVmHj234lOSQhAbbzN6NJql0WSdkQDr3trSo/d62PCRnCE9bDMf8jlz5fWC1IxJ4j1nab46vAsjCk1dqexheZui0fqTc/+78BA1IjaxnC0=,iv:yBVRhXOS5lMHR2ckgqlUjz+YdudwhyMKAsaKf5Hr6Tc=,tag:d/ENOfQWz4/2/Aslp1Lg1g==,type:str]
+    encrypted_regex: ^(destinationPath)$
+    version: 3.10.2

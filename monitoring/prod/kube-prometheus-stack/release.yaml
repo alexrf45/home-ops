@@ -13,13 +13,13 @@ spec:
         kind: HelmRepository
         name: monitoring
         namespace: flux-system
-      version: 69.2.0
+      version: 70.9.0
   interval: 3m
-  maxHistory: 3
+  maxHistory: 5
   install:
     crds: CreateReplace
     remediation:
-      retries: 6
+      retries: 4
   releaseName: kube-prometheus-stack
   targetNamespace: monitoring
   values:
@@ -29,42 +29,7 @@ spec:
         enabled: true
         forceConflicts: true
     defaultRules:
-      create: true
-      rules:
-        alertmanager: false
-        etcd: false
-        configReloaders: true
-        general: true
-        k8sContainerCpuUsageSecondsTotal: true
-        k8sContainerMemoryCache: true
-        k8sContainerMemoryRss: true
-        k8sContainerMemorySwap: true
-        k8sContainerResource: true
-        k8sContainerMemoryWorkingSetBytes: true
-        k8sPodOwner: true
-        kubeApiserverAvailability: false
-        kubeApiserverBurnrate: false
-        kubeApiserverHistogram: false
-        kubeApiserverSlos: true
-        kubeControllerManager: true
-        kubelet: true
-        kubeProxy: false
-        kubePrometheusGeneral: true
-        kubePrometheusNodeRecording: false
-        kubernetesApps: true
-        kubernetesResources: true
-        kubernetesStorage: true
-        kubernetesSystem: true
-        kubeSchedulerAlerting: false
-        kubeSchedulerRecording: false
-        kubeStateMetrics: true
-        network: true
-        node: true
-        nodeExporterAlerting: false
-        nodeExporterRecording: false
-        prometheus: true
-        prometheusOperator: true
-        windows: true
+      create: false
     cleanPrometheusOperatorObjectNames: true
     alertmanager:
       enabled: false
@@ -101,13 +66,13 @@ spec:
         storageClassName: local-path
         type: sts
     nodeExporter:
-      enabled: true
+      enabled: false
     prometheus:
       enabled: true
       thanosService:
         enabled: false
       ingress:
-        enabled: false
+        enabled: true
         pathType: Prefix
         ingressClassName: cilium
         annotations:
@@ -139,7 +104,7 @@ spec:
                 requests:
                   storage: 10Gi
     prometheus-node-exporter:
-       enabled: true
+       enabled: false
        fullnameOverride: node-exporter
        prometheus:
         monitor:
