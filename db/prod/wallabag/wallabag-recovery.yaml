@@ -21,7 +21,6 @@ spec:
   walStorage:
     size: 5Gi
   bootstrap:
-    bootstrap:
     initdb:
       database: wallabag
       owner: wallabag
