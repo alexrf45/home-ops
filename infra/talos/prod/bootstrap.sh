@@ -3,7 +3,7 @@
 set -e
 
 deploy() {
-  terraform init -backend-config="remote.tfbackend" -upgrade -reconfigure
+  #terraform init -backend-config="remote.tfbackend" -upgrade -reconfigure
 
   terraform plan
 
@@ -37,13 +37,13 @@ destroy() {
 
   terraform destroy
 
-  rm ~/.kube/prod
+  rm ~/.kube/environments/prod
 
   rm ~/.talos/prod
 
-  mv ~/.kube/config_bk ~/.kube/config
+  #mv ~/.kube/config_bk ~/.kube/config
 }
 
-deploy
-#flux-deploy
+#deploy
+flux-deploy
 #destroy
