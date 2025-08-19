@@ -85,8 +85,6 @@ spec:
         - prod.int.prometheus.fr3d.dev
 
       prometheusSpec:
-        nodeSelector:
-          node: "worker"
         logFormat: logfmt
         logLevel: info
         replicas: 2
