@@ -21,12 +21,6 @@ spec:
   walStorage:
     size: 5Gi
   bootstrap:
-    initdb:
-      database: wallabag
-      owner: wallabag
-      dataChecksums: true
-      secret:
-        name: wallabag-prod-db-creds
     recovery:
       source: wallabag-prod-cluster-backup
       recoveryTarget:
@@ -43,7 +37,7 @@ spec:
       name: barman-cloud.cloudnative-pg.io
       parameters:
         barmanObjectName: wallabag-prod-cluster-backup
-          #serverName: wallabag-dev-cluster
+        serverName: wallabag-prod-cluster
 ---
 apiVersion: postgresql.cnpg.io/v1
 kind: ScheduledBackup
