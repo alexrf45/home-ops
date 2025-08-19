@@ -85,8 +85,8 @@ spec:
         - prod.int.prometheus.fr3d.dev
 
       prometheusSpec:
-        #nodeSelector:
-         # node-role.kubernetes.io/worker: "true"
+        nodeSelector:
+         node-role.kubernetes.io/worker: "true"
         logFormat: logfmt
         logLevel: info
         replicas: 2
