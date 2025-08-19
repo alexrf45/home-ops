@@ -4,16 +4,22 @@ kind: Cluster
 metadata:
   name: wallabag-prod-cluster
   namespace: wallabag
+  labels:
+    app: "wallabag"
+    node: "worker"
+    env: "prod"
 spec:
   postgresql:
     pg_hba:
-      - hostssl postgres wallabag 10.43.0.0/16 scram-sha-256
+      - hostssl wallabag wallabag 10.43.0.0/16 scram-sha-256
   instances: 3
+  superuserSecret:
+    name: wallabag-prod-db-creds
   storage:
-    size: 10Gi
+    size: 20Gi
     storageClass: local-path
   walStorage:
-    size: 2Gi
+    size: 5Gi
   bootstrap:
     recovery:
       source: wallabag-prod-cluster-backup
