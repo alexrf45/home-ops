@@ -86,7 +86,7 @@ spec:
 
       prometheusSpec:
         nodeSelector:
-         node-role.kubernetes.io/worker: "true"
+          node: "worker"
         logFormat: logfmt
         logLevel: info
         replicas: 2
