@@ -34,7 +34,7 @@ spec:
   targetNamespace: renovate
   values:
     cronjob:
-      schedule: "*/5 * * * *"
+      schedule: "0 12 * * *"
     renovate:
       config: |-
         {
