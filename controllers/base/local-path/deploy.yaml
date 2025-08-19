@@ -86,7 +86,7 @@ spec:
           - name: local-hostpath
             mountPath: &path /var/data
             mountPropagation: Bidirectional
-        extraVolumes:
+      extraVolumes:
           - name: local-hostpath
             hostPath:
               path: *path
