@@ -7,8 +7,6 @@ resources:
   - ../base/onepassword-connect
   - ../base/tailscale
   - ../base/renovate
-  - ../base/kubevirt
   - cloudnativepg
   - kyverno
-  #- longhorn
   - external-secrets
