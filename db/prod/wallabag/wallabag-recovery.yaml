@@ -25,7 +25,8 @@ spec:
       owner: wallabag
       database: wallabag
       source: wallabag-prod-cluster
-      secret: wallabag-prod-db-creds
+      secret:
+        - wallabag-prod-db-creds
       recoveryTarget:
         backupID: "20250818T190002"
         targetImmediate: true
