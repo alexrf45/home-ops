@@ -38,7 +38,7 @@ spec:
     plugin:
       name: barman-cloud.cloudnative-pg.io
       parameters:
-        barmanObjectName: wallabag-prod-cluster-backup
+        barmanObjectName: wallabag-prod-cluster
         serverName: wallabag-prod-cluster
 ---
 apiVersion: postgresql.cnpg.io/v1
