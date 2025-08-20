@@ -26,7 +26,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: onepassword-connect
-      version: "1.17.1"
+      version: "2.0.2"
   upgrade:
     cleanupOnFail: true
     remediation:
@@ -35,50 +35,31 @@ spec:
   targetNamespace: onepassword
   values:
     connect:
-      create: true
-      replicas: 1
       api:
         name: connect-api
         imageRepository: 1password/connect-api
-        resources:
-          limits:
-            memory: 128Mi
-          requests:
-            cpu: 0.2
-        httpPort: 8080
-        httpsPort: 8443
         logLevel: info
         serviceMonitor:
-          enabled: false
+          enabled: true
           interval: 30s
           path: "/metrics"
-      sync:
-        name: connect-sync
-        imageRepository: 1password/connect-sync
-        resources: {}
-        httpPort: 8081
-        logLevel: info
-      applicationName: onepassword-connect
-      host: onepassword-connect
-      serviceType: ClusterIP
       credentialsName: onepassword-connect-secret
       credentialsKey: 1password-credentials.json
-
-      # Determines if HTTPS Port if setup for the 1Password Connect
-      # Services for 1Password Connect API and Sync
       tls:
         # Denotes whether the Connect API is secured with TLS
         enabled: false
         # The name of the secret containing the TLS key (tls.key) and certificate (tls.crt)
         secret: op-connect-tls
+      nodeSelector:
+        node: "worker"
 
     operator:
       # Denotes whether the 1Password Operator will be deployed
       create: true
-      replicas: 1
       autoRestart: true
-      applicationName: onepassword-connect-operator
       pollingInterval: 600
+      nodeSelector:
+        worker: "true"
       # 1Password Operator Token Configuration
       token:
         # The name of Kubernetes Secret containing the 1Password Connect API token
