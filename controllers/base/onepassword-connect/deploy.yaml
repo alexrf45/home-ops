@@ -59,7 +59,7 @@ spec:
       autoRestart: true
       pollingInterval: 600
       nodeSelector:
-        worker: "true"
+        node: "worker"
       # 1Password Operator Token Configuration
       token:
         # The name of Kubernetes Secret containing the 1Password Connect API token
