@@ -22,7 +22,7 @@ spec:
     size: 5Gi
   bootstrap:
     recovery:
-      source: wallabag-prod-cluster-backup
+      source: wallabag-prod-cluster
       recoveryTarget:
         backupID: "20250818T190002"
         targetImmediate: true
