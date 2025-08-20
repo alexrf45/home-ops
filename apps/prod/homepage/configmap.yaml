@@ -23,18 +23,18 @@ data:
               href: https://github.com/alexrf45
   services.yaml: |
     - DNS:
-        - Pihole (PROD):
-           href: https://10.3.3.11:/admin/
-           description: home network DNS
+        - Pihole:
+            href: https://10.3.3.11:/admin/
+            description: home network DNS
     - Monitoring:
-        - Grafana (PROD):
+        - Grafana:
             href: https://prod-int-grafana.bun-dominant.ts.net
             description: Grafana
     - Apps:
         - My Blog:
             href: https://blog.fr3d.dev/
             description: Musings of Fr3d
-        - IT-Tools (PROD):
+        - IT-Tools:
             href: https://https://prod-it-tools.bun-dominant.ts.net
             description: IT-Tools
  
