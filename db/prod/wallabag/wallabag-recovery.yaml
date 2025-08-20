@@ -24,7 +24,8 @@ spec:
     recovery:
       owner: wallabag
       database: wallabag
-      source: wallabag-prod-cluster-backup
+      source: wallabag-prod-cluster
+      secret: wallabag-prod-db-creds
       recoveryTarget:
         backupID: "20250818T190002"
         targetImmediate: true
@@ -38,7 +39,7 @@ spec:
     plugin:
       name: barman-cloud.cloudnative-pg.io
       parameters:
-        barmanObjectName: wallabag-prod-cluster
+        barmanObjectName: wallabag-prod-cluster-backup
 ---
 apiVersion: postgresql.cnpg.io/v1
 kind: ScheduledBackup
