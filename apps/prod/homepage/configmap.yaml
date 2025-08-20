@@ -30,6 +30,9 @@ data:
         - Grafana:
             href: https://prod-int-grafana.bun-dominant.ts.net
             description: Grafana
+        - PVE:
+            href: https://home-0.bun-dominant.ts.net:8006/
+            description: Proxmox UI
     - Apps:
         - My Blog:
             href: https://blog.fr3d.dev/
