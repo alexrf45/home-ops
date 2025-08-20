@@ -4,7 +4,7 @@ metadata:
     name: wallabag-prod-cluster-backup
     namespace: wallabag
 spec:
-    retentionPolicy: 7d
+    retentionPolicy: "7d"
     configuration:
         destinationPath: ENC[AES256_GCM,data:Meqmhc3nsfhXXDy/F8sOKYB71MW21YGwFTpvzc1fF5j0E2vXVAYbJ/hIpT7gtbGsi133LWdnORiH+D/FfDYK,iv:QYrUg3PWQLvs0pHkd/EYZUtVB1eESYzKPxZ11zCiHBE=,tag:KViaqtN01v/swG5+WqWnkA==,type:str]
         s3Credentials:
