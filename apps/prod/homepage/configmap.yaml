@@ -24,7 +24,7 @@ data:
   services.yaml: |
     - DNS:
         - Pihole (PROD):
-    href: https://10.3.3.11:/admin/
+           href: https://10.3.3.11:/admin/
            description: home network DNS
     - Monitoring:
         - Grafana (PROD):
