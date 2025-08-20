@@ -1,0 +1,20 @@
+apiVersion: barmancloud.cnpg.io/v1
+kind: ObjectStore
+metadata:
+    name: wallabag-prod-cluster-august
+    namespace: wallabag
+spec:
+    retentionPolicy: 7d
+    configuration:
+        destinationPath: "s3://prod-wallabag-39887b45-9af2-4545-1974-e5a8670fa919/august-2025"
+        s3Credentials:
+            accessKeyId:
+                name: aws-creds
+                key: AWS_ACCESS_KEY_ID
+            secretAccessKey:
+                name: aws-creds
+                key: AWS_SECRET_ACCESS_KEY
+        wal:
+            compression: gzip
+        data:
+            compression: gzip

@@ -24,7 +24,7 @@ spec:
     recovery:
       owner: wallabag
       database: wallabag
-      source: wallabag-prod-cluster
+      source: wallabag-prod-cluster-backup
       recoveryTarget:
         backupID: "20250818T190002"
         targetImmediate: true
@@ -32,7 +32,7 @@ spec:
   - name: barman-cloud.cloudnative-pg.io
     isWALArchiver: true
     parameters:
-      barmanObjectName: wallabag-prod-cluster-backup
+      barmanObjectName: wallabag-prod-cluster-august
   externalClusters:
   - name: wallabag-prod-cluster
     plugin:
