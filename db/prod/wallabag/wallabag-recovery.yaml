@@ -22,10 +22,10 @@ spec:
     size: 5Gi
   bootstrap:
     recovery:
-      owner: wallabag
-      database: wallabag
       source: wallabag-prod-cluster
-      secret: "wallabag-prod-db-creds"
+      database: wallabag`
+      owner: wallabag
+      secret: wallabag-prod-db-creds
       recoveryTarget:
         backupID: "20250818T190002"
         targetImmediate: true
