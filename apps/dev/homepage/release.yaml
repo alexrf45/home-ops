@@ -1,0 +1,61 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: homepage
+  namespace: flux-system
+spec:
+  interval: 10m
+  releaseName: homepage
+  chartRef:
+    kind: OCIRepository
+    name: homepage
+  targetNamespace: homepage
+  values:
+    replicaCount: 1
+    ingress:
+      enabled: true
+      ingressClassName: tailscale
+      hosts:
+        - host: dev-homepage
+          paths:
+            - path: /
+              pathType: Prefix
+      tls:
+        - secretName: dev-homepage-tls
+          hosts:
+            - dev-homepage
+    nodeSelector:
+      node: "worker"
+    extraEnv:
+      - name: HOMEPAGE_ALLOWED_HOSTS
+        value: dev-homepage.bun-dominant.ts.net
+    volumes:
+      - name: homepage-config
+        configMap:
+          name: homepage
+    volumeMounts:
+      - mountPath: /app/config/custom.js
+        name: homepage-config
+        subPath: custom.js
+      - mountPath: /app/config/custom.css
+        name: homepage-config
+        subPath: custom.css
+      - mountPath: /app/config/bookmarks.yaml
+        name: homepage-config
+        subPath: bookmarks.yaml
+      - mountPath: /app/config/docker.yaml
+        name: homepage-config
+        subPath: docker.yaml
+      - mountPath: /app/config/kubernetes.yaml
+        name: homepage-config
+        subPath: kubernetes.yaml
+      - mountPath: /app/config/services.yaml
+        name: homepage-config
+        subPath: services.yaml
+      - mountPath: /app/config/settings.yaml
+        name: homepage-config
+        subPath: settings.yaml
+      - mountPath: /app/config/widgets.yaml
+        name: homepage-config
+        subPath: widgets.yaml
