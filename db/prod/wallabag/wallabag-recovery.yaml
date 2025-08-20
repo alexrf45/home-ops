@@ -22,6 +22,8 @@ spec:
     size: 5Gi
   bootstrap:
     recovery:
+      owner: wallabag
+      database: wallabag
       source: wallabag-prod-cluster
       recoveryTarget:
         backupID: "20250818T190002"
