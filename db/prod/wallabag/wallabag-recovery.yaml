@@ -37,7 +37,7 @@ spec:
       name: barman-cloud.cloudnative-pg.io
       parameters:
         barmanObjectName: wallabag-prod-cluster-backup
-        serverName: wallabag-prod-cluster
+          #serverName: wallabag-prod-cluster
 ---
 apiVersion: postgresql.cnpg.io/v1
 kind: ScheduledBackup
