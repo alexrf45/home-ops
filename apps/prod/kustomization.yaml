@@ -4,7 +4,7 @@ resources:
   #- argo-cd
    #- vaultwarden
   #  - blog
-  #- homepage
-  - wallabag
+  - homepage
+  #  - wallabag
   - it-tools
   #- nextcloud

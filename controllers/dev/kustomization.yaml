@@ -9,6 +9,4 @@ resources:
   - ../base/cloudnativepg
   - redis-operator
   - ../base/local-path
-
-
-  
+  # - longhorn

@@ -32,41 +32,6 @@ spec:
         forceConflicts: true
     defaultRules:
       create: true
-      rules:
-        alertmanager: false
-        etcd: false
-        configReloaders: true
-        general: true
-        k8sContainerCpuUsageSecondsTotal: true
-        k8sContainerMemoryCache: true
-        k8sContainerMemoryRss: true
-        k8sContainerMemorySwap: true
-        k8sContainerResource: true
-        k8sContainerMemoryWorkingSetBytes: false
-        k8sPodOwner: true
-        kubeApiserverAvailability: true
-        kubeApiserverBurnrate: false
-        kubeApiserverHistogram: false
-        kubeApiserverSlos: false
-        kubeControllerManager: true
-        kubelet: true
-        kubeProxy: false
-        kubePrometheusGeneral: true
-        kubePrometheusNodeRecording: true
-        kubernetesApps: true
-        kubernetesResources: true
-        kubernetesStorage: true
-        kubernetesSystem: true
-        kubeSchedulerAlerting: false
-        kubeSchedulerRecording: false
-        kubeStateMetrics: true
-        network: true
-        node: true
-        nodeExporterAlerting: true
-        nodeExporterRecording: true
-        prometheus: true
-        prometheusOperator: true
-        windows: false
     cleanPrometheusOperatorObjectNames: true
     alertmanager:
       enabled: false
@@ -101,9 +66,8 @@ spec:
         - kubernetes.io/pvc-protection
         size: 1Gi
         storageClassName: local-path
-        #type: sts
     nodeExporter:
-      enabled: true
+      enabled: false
     kubeApiServer:
       serviceMonitor:
         selector:
@@ -124,8 +88,6 @@ spec:
         - persistentvolumeclaims=[*]
     prometheus:
       enabled: true
-      thanosService:
-        enabled: false
       ingress:
         enabled: true
         pathType: Prefix
@@ -162,7 +124,7 @@ spec:
                 requests:
                   storage: 2Gi
     prometheus-node-exporter:
-       enabled: true
+       enabled: false
        fullnameOverride: node-exporter
        prometheus:
         monitor:

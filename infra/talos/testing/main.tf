@@ -1,6 +1,6 @@
 module "testing" {
-  #source = "./module-testing"
-  source        = "git@github.com:alexrf45/lab.git//talos-pve-v1.5.1"
+  #source = "./module-v1.6.0"
+  source        = "git@github.com:alexrf45/lab.git//talos-pve-v1.6.1-alpha?ref=v1.6.1-alpha"
   environment   = var.environment
   cluster       = var.cluster
   pve_config    = var.pve_config
@@ -10,6 +10,6 @@ module "testing" {
 }
 
 # module "bootstrap" {
-#   depends_on = [module.test]
+#   depends_on = [module.testing]
 #   source     = "./bootstrap"
 # }

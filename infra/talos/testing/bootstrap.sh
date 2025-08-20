@@ -3,17 +3,19 @@
 set -e
 
 deploy() {
-  terraform init -backend-config="remote.tfbackend" -upgrade
+  #terraform init -backend-config="remote.tfbackend" -upgrade
 
   terraform plan
 
   terraform apply --auto-approve
 
-  terraform output -raw kubeconfig >"$HOME/.kube/testing"
+  terraform output -raw kubeconfig >"$HOME/.kube/environments/testing"
 
-  cp ~/.kube/config ~/.kube/config_bk && KUBECONFIG=~/.kube/dev:~/.kube/prod:~/.kube/testing kubectl config view --flatten >~/.kube/config_tmp && mv ~/.kube/config_tmp ~/.kube/config
+  terraform output -raw client_configuration >"$HOME/.talos/testing"
 
-  kubectl label nodes --selector=node-role.kubernetes.io/worker node=worker
+  cp ~/.kube/config ~/.kube/config_bk && KUBECONFIG=~/.kube/environments/dev:~/.kube/environments/prod:~/.kube/environments/testing kubectl config view --flatten >~/.kube/config_tmp && mv ~/.kube/config_tmp ~/.kube/config
+
+  #kubectl label nodes --selector=node-role.kubernetes.io/worker node=worker
   #kubectl label node dev-node-1 dev-node-2 dev-node-3 node-role.kubernetes.io/worker=true
 }
 

@@ -18,7 +18,7 @@ spec:
   chart:
     spec:
       chart: democratic-csi
-      version: 0.14.7
+      version: 0.15.0
       sourceRef:
         name: democratic-csi
         kind: HelmRepository
@@ -55,7 +55,9 @@ spec:
       enabled: true
       strategy: node
       externalProvisioner:
-        image: registry.k8s.io/sig-storage/csi-provisioner:v5.2.0
+        image:
+          registry: registry.k8s.io/sig-storage/csi-provisioner
+          tag: v5.2.0
         extraArgs:
           - --leader-election=false
           - --node-deployment=true
@@ -69,22 +71,24 @@ spec:
       externalAttacher:
         enabled: false
       externalSnapshotter:
-        enabled: false
+        enabled: true
         extraArgs:
           - --leader-election=false
           - --node-deployment=true
     node:
       driver:
-        image: ghcr.io/democratic-csi/democratic-csi:v1.9.3
+        image:
+          registry: ghcr.io/democratic-csi/democratic-csi
+          tag: v1.9.3
         extraVolumeMounts:
           - name: local-hostpath
             mountPath: &path /var/data
             mountPropagation: Bidirectional
       extraVolumes:
-        - name: local-hostpath
-          hostPath:
-            path: *path
-            type: DirectoryOrCreate
+          - name: local-hostpath
+            hostPath:
+              path: *path
+              type: DirectoryOrCreate
     driver:
       config:
         driver: local-hostpath

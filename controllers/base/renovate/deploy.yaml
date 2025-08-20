@@ -25,7 +25,7 @@ spec:
   chart:
     spec:
       chart: renovate
-      version: ">=37.0.0 <38.0.0"
+      version: "<44.0.0"
       sourceRef:
         kind: HelmRepository
         name: renovate
@@ -34,7 +34,7 @@ spec:
   targetNamespace: renovate
   values:
     cronjob:
-      schedule: "*/5 * * * *"
+      schedule: "0 12 * * *"
     renovate:
       config: |-
         {

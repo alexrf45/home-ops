@@ -32,6 +32,7 @@ spec:
         name: argo
         namespace: flux-system
       version: 8.3.0
+
   install:
     remediation:
       retries: 3

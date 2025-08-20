@@ -1,0 +1,18 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1beta2
+kind: OCIRepository
+metadata:
+  name: homepage
+  namespace: flux-system
+spec:
+  interval: 5m0s
+  url: oci://ghcr.io/m0nsterrr/helm-charts/homepage
+  ref:
+    semver: ">=3.3.0"
+  verify:
+    provider: cosign
+    matchOIDCIdentity:
+      - issuer: "^https://token.actions.githubusercontent.com$"
+        subject: "https://github.com/M0NsTeRRR/helm-charts/.github/workflows/releases.yml@refs/heads/main"
+---
+

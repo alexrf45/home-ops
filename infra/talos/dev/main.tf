@@ -1,6 +1,6 @@
 module "dev" {
   # source = "./module-testing"
-  source        = "git@github.com:alexrf45/lab.git//talos-pve-v1.5.1?ref=dev"
+  source        = "git@github.com:alexrf45/lab.git//talos-pve-v1.6.1-alpha?ref=v1.6.1-alpha"
   environment   = var.environment
   cluster       = var.cluster
   pve_config    = var.pve_config

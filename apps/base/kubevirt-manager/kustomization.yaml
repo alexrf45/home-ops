@@ -1,0 +1,14 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ns.yaml
+  - crd.yaml
+  - rbac.yaml
+  - deployment.yaml
+  - ingress.yaml
+  - pc.yaml
+  - prometheus-config.yaml
+  - service.yaml
+  - servicemonitor.yaml
+  - auth-secret.yaml

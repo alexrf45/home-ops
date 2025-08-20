@@ -74,5 +74,10 @@ spec:
             hosts:
               - prod-it-tools
     persistence:
-      tmp:
-        type: local-path
+      config:
+        enabled: true
+        storageClass: local-path
+        retain: true
+        type: persistentVolumeClaim
+        accessMode: ReadWriteOnce
+        size: 1Gi
