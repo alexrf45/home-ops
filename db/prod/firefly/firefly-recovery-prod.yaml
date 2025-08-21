@@ -1,0 +1,58 @@
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: firefly-dev-cluster
+  namespace: firefly
+  labels:
+    app: "firefly"
+    node: "worker"
+    env: "dev"
+spec:
+  postgresql:
+    pg_hba:
+      - hostssl firefly firefly 10.43.0.0/16 scram-sha-256
+  instances: 3
+  superuserSecret:
+    name: firefly-dev-db-creds
+  storage:
+    size: 40Gi
+    storageClass: local-path
+  walStorage:
+    size: 5Gi
+  bootstrap:
+    recovery:
+      source: firefly-dev-cluster
+      database: firefly
+      owner: firefly
+      secret:
+        name: firefly-dev-db-creds
+      recoveryTarget:
+        backupID: "20250XXXXXX"
+        targetImmediate: true
+  plugins:
+  - name: barman-cloud.cloudnative-pg.io
+    isWALArchiver: true
+    parameters:
+      barmanObjectName: firefly-dev-cluster-main
+  externalClusters:
+  - name: firefly-dev-cluster
+    plugin:
+      name: barman-cloud.cloudnative-pg.io
+      parameters:
+        barmanObjectName: firefly-dev-cluster-backup
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: ScheduledBackup
+metadata:
+  name: firefly-dev-backup
+  namespace: firefly
+spec:
+  schedule: "0 0 * * *"
+  cluster:
+    name: firefly-dev-cluster
+  backupOwnerReference: self
+  method: plugin
+  pluginConfiguration:
+    name: barman-cloud.cloudnative-pg.io
+  immediate: true

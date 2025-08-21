@@ -1,0 +1,33 @@
+apiVersion: barmancloud.cnpg.io/v1
+kind: ObjectStore
+metadata:
+    name: firefly-dev-cluster
+    namespace: firefly
+spec:
+    retentionPolicy: 7d
+    configuration:
+        destinationPath: ENC[AES256_GCM,data:VmxNBC1Tukp9ZlV9lanQq64kQHJmkax4irHkacx/8cBqXCMYGr1UFnqzF5B3MikqRRBmyPxcobBx,iv:CA0Qoc4SEs2CKebUkG7/Ds8Ics3fowY62gX3IJEh3Nc=,tag:fdsjDLwgZx0p6Uy10nMhBg==,type:str]
+        s3Credentials:
+            accessKeyId:
+                name: aws-creds
+                key: AWS_ACCESS_KEY_ID
+            secretAccessKey:
+                name: aws-creds
+                key: AWS_SECRET_ACCESS_KEY
+        wal:
+            compression: gzip
+sops:
+    age:
+        - recipient: age1vml3vk5uzyztj96qgz7n0a6w8ynvtmxfarkp0jdl0hvcj003895qcp6z09
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBjQ1EvNloyZHZpNHlaSnlD
+            T0U5MEdVYXk2NjQya3hqMndMbzhud090VHdnCnFMdCt4bFdKZncxNGN5ZThtaW9G
+            cDlLNXBlWFpsdkRQaktEWThZZVdlZ0EKLS0tIHk1QXd6RExsMGF6QUJnOVlHVFd2
+            Z0VBMHNIbDVWYnRRRlVLZVZKcFNqNXcK78KRvAdEVHzEOt0RQOVT30YdFm6Z0VtU
+            SwAtybS2QTmWbwIx0yfS/aLtq8qNrRyWKPU8oOoNf5GMTs0czZEhQQ==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2025-08-21T14:43:28Z"
+    mac: ENC[AES256_GCM,data:3D/0j8D+nHTSlWeoNHWzLZcCZnQQAF3i825heNZhwOCjUsc7PQNBz0DlWItA9O3fEIqj1ct+p10ciCjruIfDrnApg+Qt3hxDednQVnkvWio/zO+M7ZBXKOA0t5eBvkIvx197wghaCVLFElvlMNzOJhGE/6w9bfuG1ws2SO+19rw=,iv:n7TlCDizggfHvDQtm50QbJF/pVwDed57bIEsHKLSWn4=,tag:12Y+fYb7gSPWGyK4kQO6gQ==,type:str]
+    encrypted_regex: ^(destinationPath)$
+    version: 3.10.2
