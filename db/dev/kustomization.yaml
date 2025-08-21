@@ -4,5 +4,5 @@ resources:
   #- vaultwarden
   #  - ../base/wallabag
   #- pgadmin
-  #- firefly
+  - firefly
 
