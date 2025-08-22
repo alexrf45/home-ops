@@ -1,0 +1,105 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: firefly
+  namespace: flux-system
+spec:
+  interval: 1h
+  chart:
+    spec:
+      chart: firefly-iii
+      version: 1.9.11
+      interval: 30m
+      sourceRef:
+        kind: HelmRepository
+        name: firefly-iii
+        namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  targetNamespace: firefly
+  values:
+    replicaCount: 1
+    deploymentStrategyType: RollingUpdate
+    image:
+      registry: "docker.io"
+      repository: "fireflyiii/core"
+      pullPolicy: IfNotPresent
+      tag: ""
+    nameOverride: ""
+    fullnameOverride: ""
+    persistence:
+      enabled: true
+      storageClassName: "local-path"
+      accessModes: ReadWriteOnce
+      # volumeName: your-pv-name
+      # selector:
+      #   matchLabels:
+      #     app: my-app
+      storage: 3Gi
+      existingClaim: ""
+    config:
+      existingSecret: "firefly-dev-creds"
+      envValueFrom: {}
+      env:
+        DB_HOST:
+        DB_CONNECTION: pgsql
+        DB_PORT: "5432"
+        DB_DATABASE: firefly
+        DB_USERNAME: firefly
+        DEFAULT_LANGUAGE: "en_US"
+        DEFAULT_LOCALE: "equal"
+        TZ: "America/New_York"
+        TRUSTED_PROXIES: "**"
+        ALLOW_WEBHOOKS: "true"
+        ENABLE_EXCHANGE_RATES: "true"
+        ENABLE_EXTERNAL_RATES: "false"
+
+    cronjob:
+      enabled: true
+      auth:
+        existingSecret: "firefly-dev-creds"
+        secretKey: "token"
+      schedule: "0 3 * * *"
+      successfulJobsHistoryLimit: 3
+      failedJobsHistoryLimit: 1
+      restartPolicy: OnFailure
+
+      image:
+        registry: docker.io
+        repository: curlimages/curl
+        pullPolicy: IfNotPresent
+        tag: 8.12.0
+
+    service:
+      type: ClusterIP
+      port: 80
+
+    ingress:
+      enabled: true
+      className: "tailscale"
+      annotations:
+        #tailscale.com/funnel: "true"
+      hosts:
+        - firefly-dev
+      tls:
+       - secretName: firefly-dev-tls
+         hosts:
+           - firefly-dev
+
+    resources:
+      limits:
+        cpu: 100m
+        memory: 300Mi
+      requests:
+        cpu: 100m
+        memory: 128Mi
+
+    nodeSelector:
+      node: "worker"
