@@ -49,12 +49,12 @@ spec:
           cert-manager.io/cluster-issuer: letsencrypt-staging
         enabled: true
         hosts:
-        - dev.int.grafana.fr3d.dev
+        - dev.int.grafana.home-0ps.com
         ingressClassName: cilium
         path: /
         tls:
         - hosts:
-          - dev.int.grafana.fr3d.dev
+          - dev.int.grafana.home-0ps.com
           secretName: grafana-general-tls
       persistence:
         accessModes:
