@@ -6,6 +6,7 @@ resources:
   - ../base/external-dns
   - ../base/onepassword-connect
   - ../base/tailscale
+  - ../base/kyverno
   - ../base/cloudnativepg
   - redis-operator
   - ../base/local-path
