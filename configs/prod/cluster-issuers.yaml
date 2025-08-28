@@ -15,11 +15,12 @@ spec:
           cloudflare:
             email: cloudflare@fr3d.dev
             apiTokenSecretRef:
-              name: "cloudflare-token-secret"
+              name: "cf-token"
               key: cloudflare-token
         selector:
           dnsZones:
-            - "fr3d.dev"
+            - "home-0ps.com"
+            - "cilium.io"
 ---
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
@@ -37,11 +38,11 @@ spec:
           cloudflare:
             email: cloudflare@fr3d.dev
             apiTokenSecretRef:
-              name: "cloudflare-token-secret"
+              name: "cf-token"
               key: cloudflare-token
         selector:
           dnsZones:
-            - "fr3d.dev"
+            - "home-0ps.com"
             - "cilium.io"
 ---
 

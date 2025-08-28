@@ -79,10 +79,10 @@ spec:
           cert-manager.io/cluster-issuer: letsencrypt-production
         tls:
         - hosts:
-          - prod.int.prometheus.fr3d.dev
+          - prod.int.prom.home-0ps.com
           secretName: prometheus-general-tls
         hosts:
-        - prod.int.prometheus.fr3d.dev
+        - prod.int.prom.home-0ps.com
 
       prometheusSpec:
         logFormat: logfmt
