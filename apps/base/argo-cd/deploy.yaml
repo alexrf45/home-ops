@@ -31,7 +31,7 @@ spec:
         kind: HelmRepository
         name: argo
         namespace: flux-system
-      version: 8.3.0
+      version: 8.3.1
 
   install:
     remediation:
