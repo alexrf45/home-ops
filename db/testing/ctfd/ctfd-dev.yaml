@@ -1,0 +1,29 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: ctfd-cluster
+  namespace: ctfd
+  labels:
+    app: "ctfd"
+    node: "worker"
+    env: "badgernet"
+spec:
+  postgresql:
+    pg_hba:
+      - hostssl ctfd ctfd 10.43.0.0/16 scram-sha-256
+  instances: 3
+  superuserSecret:
+    name: ctfd-db-creds
+
+  storage:
+    storageClass: local-path
+    size: 10Gi
+  walStorage:
+    size: 2Gi
+  bootstrap:
+    initdb:
+      database: ctfd
+      owner: ctfd
+      dataChecksums: true
+      secret:
+        name: ctfd-db-creds
