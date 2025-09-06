@@ -73,7 +73,7 @@ spec:
         tls:
           - secretName: testing-it-tools-tls
             hosts:
-              - badgernet.it-tools.home-0ps.com
+              - badgernet-it-tools.home-0ps.com
     persistence:
       config:
         enabled: true
