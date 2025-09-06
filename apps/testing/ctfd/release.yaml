@@ -45,7 +45,7 @@ spec:
       existingSecret: "ctfd-creds"
       existingSecretMappings:
         #SECRET_KEY: "SECRET_KEY"
-        DATABASE_URL: "DATABASE_URL"
+        #DATABASE_URL: "DATABASE_URL"
         REDIS_PASSWORD: "REDIS_PASSWORD"
         MARIADB_ROOT_PASSWORD: "MARIADB_ROOT_PASSWORD"
         MARIADB_USER: "MARIADB_USER"
