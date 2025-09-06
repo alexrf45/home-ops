@@ -9,3 +9,4 @@ resources:
   - it-tools
   #- nextcloud
   #- ../base/kubevirt-manager
+  - ctfd
