@@ -98,7 +98,6 @@ spec:
       repository: bitnami/mysqld-exporter
       tag: 0.12.1-debian-10-r27
       pullPolicy: IfNotPresent
-    resources:
     annotations:
       prometheus.io/scrape: "true"
       prometheus.io/port: "9104"
