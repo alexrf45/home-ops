@@ -60,10 +60,11 @@ spec:
 
     ingress:
       app:
-        className: tailscale
+        className: cilium
         annotations:
+          cert-manager.io/cluster-issuer: letsencrypt-staging
         hosts:
-          - host: testing-it-tools
+          - host: badgernet.it-tools.home0ps.com
             paths:
               - path: /
                 service:
@@ -72,7 +73,7 @@ spec:
         tls:
           - secretName: testing-it-tools-tls
             hosts:
-              - testing-it-tools
+              - badgernet.it-tools.home0ps.com
     persistence:
       config:
         enabled: true

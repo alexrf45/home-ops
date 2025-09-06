@@ -96,10 +96,10 @@ spec:
           cert-manager.io/cluster-issuer: letsencrypt-staging
         tls:
         - hosts:
-          - test.int.prom.fr3d.dev
+          - test.int.prom.home0ps.com
           secretName: prometheus-general-tls
         hosts:
-        - test.int.prom.fr3d.dev
+        - test.int.prom.home0ps.com
 
       prometheusSpec:
         podMonitorSelectorNilUsesHelmValues: false

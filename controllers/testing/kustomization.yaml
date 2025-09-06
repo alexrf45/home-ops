@@ -6,7 +6,7 @@ resources:
   - ../base/external-dns
   - ../base/onepassword-connect
   - ../base/tailscale
-  - ../base/renovate
-  - cloudnativepg
-  - kyverno
+  #- ../base/renovate
+  #- cloudnativepg
+  #- kyverno
   - external-secrets
