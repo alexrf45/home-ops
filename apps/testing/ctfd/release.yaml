@@ -13,99 +13,99 @@ spec:
   targetNamespace: ctfd
   values:
     replicaCount: 1
-  image:
-    repository: ctfd/ctfd
-    tag: 3.5.0
-    pullPolicy: IfNotPresent
-  redis:
-    enabled: True
-    auth:
-      enabled: true
-    architecture: standalone
-
-  mariadb:
-    enabled: True
-    galera:
-      name: ctfd
-      mariabackup:
-        user: "mariabackup"
-        password: "CTFd2025!"
-    persistence:
-      enabled: false
-      storageClass: ""
-      accessModes:
-        - ReadWriteOnce
-      size: 15Gi
-
-  env:
-    open:
-      WORKERS: 5
-      REVERSE_PROXY: True
-    existingSecret: "ctfd-creds"
-    existingSecretMappings:
-      SECRET_KEY: "SECRET_KEY"
-      DATABASE_URL: "DATABASE_URL"
-      REDIS_PASSWORD: "REDIS_PASSWORD"
-      MARIADB_ROOT_PASSWORD: "MARIADB_ROOT_PASSWORD"
-      MARIADB_USER: "MARIADB_USER"
-
-  persistence:
-    uploads:
-      enabled: true
-      storageClass: local-path
-      accessMode: ReadWriteOnce
-      size: 10Gi
-  service:
-    type: ClusterIP
-    port: 80
-    targetPort: 8000
-  probes:
-    liveness:
-      initialDelaySeconds: 15
-      periodSeconds: 10
-      timeoutSeconds: 1
-      successThreshold: 1
-      failureThreshold: 3
-    readiness:
-      initialDelaySeconds: 15
-      periodSeconds: 10
-      timeoutSeconds: 1
-      successThreshold: 1
-      failureThreshold: 3
-  ingress:
-    class: tailscale
-    enabled: true
-    annotations:
-      tailscale.com/funnel: "true"
-    hosts:
-      - host: ctfd
-        path: "/"
-    tls:
-      - secretName: ctfd-tls
-        hosts:
-          - ctfd
-  resources:
-    limits:
-      cpu: 500m
-      memory: 700Mi
-    requests:
-      cpu: 300m
-      memory: 300Mi
-  metrics:
-    enabled: true
     image:
-      registry: docker.io
-      repository: bitnami/mysqld-exporter
-      tag: 0.12.1-debian-10-r27
+      repository: ctfd/ctfd
+      tag: 3.5.0
       pullPolicy: IfNotPresent
-    annotations:
-      prometheus.io/scrape: "true"
-      prometheus.io/port: "9104"
+    redis:
+      enabled: True
+      auth:
+        enabled: true
+      architecture: standalone
 
-    serviceMonitor:
+    mariadb:
+      enabled: True
+      galera:
+        name: ctfd
+        mariabackup:
+          user: "mariabackup"
+          password: "CTFd2025!"
+      persistence:
+        enabled: false
+        storageClass: ""
+        accessModes:
+          - ReadWriteOnce
+        size: 15Gi
+
+    env:
+      open:
+        WORKERS: 5
+        REVERSE_PROXY: True
+      existingSecret: "ctfd-creds"
+      existingSecretMappings:
+        SECRET_KEY: "SECRET_KEY"
+        DATABASE_URL: "DATABASE_URL"
+        REDIS_PASSWORD: "REDIS_PASSWORD"
+        MARIADB_ROOT_PASSWORD: "MARIADB_ROOT_PASSWORD"
+        MARIADB_USER: "MARIADB_USER"
+
+    persistence:
+      uploads:
+        enabled: true
+        storageClass: local-path
+        accessMode: ReadWriteOnce
+        size: 10Gi
+    service:
+      type: ClusterIP
+      port: 80
+      targetPort: 8000
+    probes:
+      liveness:
+        initialDelaySeconds: 15
+        periodSeconds: 10
+        timeoutSeconds: 1
+        successThreshold: 1
+        failureThreshold: 3
+      readiness:
+        initialDelaySeconds: 15
+        periodSeconds: 10
+        timeoutSeconds: 1
+        successThreshold: 1
+        failureThreshold: 3
+    ingress:
+      class: tailscale
       enabled: true
-      namespace: monitoring
-      interval: 10s
-      scrapeTimeout: 10s
-      selector:
-        prometheus: kube-prometheus
+      annotations:
+        tailscale.com/funnel: "true"
+      hosts:
+        - host: ctfd
+          path: "/"
+      tls:
+        - secretName: ctfd-tls
+          hosts:
+            - ctfd
+    resources:
+      limits:
+        cpu: 500m
+        memory: 700Mi
+      requests:
+        cpu: 300m
+        memory: 300Mi
+    metrics:
+      enabled: true
+      image:
+        registry: docker.io
+        repository: bitnami/mysqld-exporter
+        tag: 0.12.1-debian-10-r27
+        pullPolicy: IfNotPresent
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9104"
+
+      serviceMonitor:
+        enabled: true
+        namespace: monitoring
+        interval: 10s
+        scrapeTimeout: 10s
+        selector:
+          prometheus: kube-prometheus
