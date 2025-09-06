@@ -39,6 +39,7 @@ spec:
 
     env:
       open:
+        SECRET_KEY: "SECRET_KEY"
         WORKERS: 5
         REVERSE_PROXY: True
       existingSecret: "ctfd-creds"
