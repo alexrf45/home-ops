@@ -64,7 +64,7 @@ spec:
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-staging
         hosts:
-          - host: badgernet.it-tools.home-0ps.com
+          - host: it-tools.home-0ps.com
             paths:
               - path: /
                 service:
@@ -73,7 +73,7 @@ spec:
         tls:
           - secretName: testing-it-tools-tls
             hosts:
-              - badgernet-it-tools.home-0ps.com
+              - it-tools.home-0ps.com
     persistence:
       config:
         enabled: true
