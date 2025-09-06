@@ -51,12 +51,12 @@ spec:
           cert-manager.io/cluster-issuer: letsencrypt-staging
         enabled: true
         hosts:
-        - test.int.grafana.home0ps.com
+        - test.int.grafana.home-0ps.com
         ingressClassName: cilium
         path: /
         tls:
         - hosts:
-          - test.int.grafana.home0ps.com
+          - test.int.grafana.home-0ps.com
           secretName: grafana-general-tls
       persistence:
         accessModes:
@@ -96,10 +96,10 @@ spec:
           cert-manager.io/cluster-issuer: letsencrypt-staging
         tls:
         - hosts:
-          - test.int.prom.home0ps.com
+          - test.int.prom.home-0ps.com
           secretName: prometheus-general-tls
         hosts:
-        - test.int.prom.home0ps.com
+        - test.int.prom.home-0ps.com
 
       prometheusSpec:
         podMonitorSelectorNilUsesHelmValues: false
