@@ -24,12 +24,7 @@ spec:
       architecture: standalone
 
     mariadb:
-      enabled: false
-      galera:
-        name: ctfd
-        mariabackup:
-          user: "mariabackup"
-          password: "CTFd2025!"
+      enabled: False
       persistence:
         enabled: false
         storageClass: ""
