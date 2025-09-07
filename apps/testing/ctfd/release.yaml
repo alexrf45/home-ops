@@ -15,7 +15,7 @@ spec:
     replicaCount: 1
     image:
       repository: ctfd/ctfd
-      #tag: 3.8.0
+      tag: 3.7.0
       pullPolicy: IfNotPresent
     redis:
       enabled: True
