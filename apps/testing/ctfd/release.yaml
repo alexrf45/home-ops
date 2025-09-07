@@ -14,8 +14,8 @@ spec:
   values:
     replicaCount: 1
     image:
-      repository: fonalex45/ctfd
-      tag: v0.0.2
+      repository: ctfd/ctfd
+      tag: 3.8.0
       pullPolicy: IfNotPresent
     redis:
       enabled: True
