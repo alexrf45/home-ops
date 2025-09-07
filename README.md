@@ -6,48 +6,11 @@
 
 This repository automates the deployment of Kubernetes & Talos Linux on Proxmox with Terraform & Flux.
 
-## Infrastructure Services
-
-| Service            | Status      | Environment        | Notes                               |
-| ------------------ | ----------- | ------------------ | ----------------------------------- |
-| Cert-Manager       | Active      | All                | SSL certificate management          |
-| Cilium             | Active      | All                | CNI networking                      |
-| Cloudflare         | Coming Soon | N/A                | DNS and security                    |
-| External-Secrets   | Active      | All                | Secret management                   |
-| Grafana            | Active      | Dev                | Monitoring dashboards               |
-| Prometheus         | Active      | Dev                | Metrics collection                  |
-| Longhorn           | Testing     | Testing,Dev        | Distributed storage                 |
-| Tailscale          | Active      | Testing, Dev, Prod | VPN mesh networking                 |
-| OnePassword        | Active      | All                | Password management                 |
-| BarmanCloud Plugin | Active      | Dev                | PostgreSQL backup for CloudnativePG |
-| CloudnativePG      | Active      | Dev                | PostgreSQL operator                 |
-
-### Removed Services
-
-| Service                | Reason                     |
-| ---------------------- | -------------------------- |
-| Argo-CD                | Replaced with Flux         |
-| External-DNS           | No longer needed           |
-| Pi-Hole                | Consolidated DNS solution  |
-| Local-Path Provisioner | Removed in dev environment |
-| CSI-Driver-SMB         | Removed in dev environment |
-
 ## Applications
 
-| Application   | Status | Environment | URL                                    |
-| ------------- | ------ | ----------- | -------------------------------------- |
-| Personal Blog | Active | Prod        | [blog.fr3d.dev](https://blog.fr3d.dev) |
-| Wallabag      | Active | Dev         | Read-later service                     |
-
-## Updates & Changelog
-
-| Date       | Update                                                                                                 |
-| ---------- | ------------------------------------------------------------------------------------------------------ |
-| 2025-07-26 | Testing cluster added for CloudnativePG database disaster recovery                                     |
-| 2025-07-26 | Disaster recovery testing successful. Planning NAS investment and local block storage backups for 2026 |
-| 2025-05-11 | Personal blog launched at blog.fr3d.dev                                                                |
-| 2025-05-05 | Terraform code stabilized, production environment scaled successfully                                  |
-| 2025-02-02 | Terraform code refactoring for optimized Talos Linux bootstrap process                                 |
+| Application | Status | Environment | URL                |
+| ----------- | ------ | ----------- | ------------------ |
+| Wallabag    | Active | Prod        | Read-later service |
 
 ## Architecture
 
@@ -57,5 +20,4 @@ This homelab setup provides:
 - **GitOps**: Flux for Kubernetes application deployment
 - **Consolidated Networking**: Cilium for ingress & network security
 - **Monitoring**: Prometheus + Grafana stack
-- **Storage**: Longhorn for distributed persistent volumes
 - **Security**: Cert-Manager for TLS, External-Secrets & OnePassword for secret management
