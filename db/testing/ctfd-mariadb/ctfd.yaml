@@ -84,6 +84,6 @@ spec:
 
   tls:
     enabled: true
-    required: true
+    required: false
 
   suspend: false
