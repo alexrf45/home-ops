@@ -73,7 +73,6 @@ metadata:
     kompose.version: 1.37.0 (fb0539e64)
   labels:
     io.kompose.service: ctfd
-  name: ctfd
 spec:
   ports:
     - name: "8000"
