@@ -110,4 +110,4 @@ spec:
   tls:
   - hosts:
     - badgernet.ctfd.home-0ps.com
-    secretName: badgernt-ctfd-tls
+    secretName: badgernet-ctfd-tls
