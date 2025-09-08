@@ -1,0 +1,114 @@
+apiVersion: k8s.mariadb.com/v1alpha1
+kind: MariaDB
+metadata:
+  name: ctfd-cluster
+  namespace:  ctfd
+spec:
+  rootPasswordSecretKeyRef:
+    name: ctfd-db-creds
+    key: password
+    generate: false
+  username: ctfd
+  passwordSecretKeyRef:
+    name: ctfd-db-creds
+    key: password
+  database: ctfd
+  storage:
+    size: 10Gi
+    storageClassName: local-path
+    resizeInUseVolumes: true
+    waitForVolumeResize: true
+    volumeClaimTemplate:
+      accessModes:
+      - ReadWriteOnce
+      resources:
+        requests:
+          storage: 1Gi
+      storageClassName: local-path
+  replicas: 3
+  replicasAllowEvenNumber: false
+
+  # provision a MaxScale instance and set 'spec.maxScaleRef' automatically.
+  maxScale:
+    enabled: false
+  galera:
+    enabled: true
+    agent:
+      kubernetesAuth:
+        enabled: true
+  replication:
+    enabled: true
+    primary:
+      podIndex: 0
+      automaticFailover: true
+    replica:
+      waitPoint: AfterSync
+      gtid: CurrentPos
+      replPasswordSecretKeyRef:
+        name: ctfd-db-creds
+        key: replication-password
+      connectionTimeout: 30s
+      connectionRetries: 10
+      syncTimeout: 30s
+    syncBinlog: true
+    probesEnabled: true
+
+  service:
+    type: ClusterIP
+    metadata:
+  connection:
+    secretName: ctfd-db-creds
+
+  primaryService:
+    type: ClusterIP
+    metadata:
+      annotations:
+  primaryConnection:
+    secretName: ctfd-db-creds
+
+  secondaryService:
+    type: ClusterIP
+    metadata:
+      annotations:
+  secondaryConnection:
+    secretName: ctfd-db-creds
+  podDisruptionBudget:
+    maxUnavailable: 33%
+
+  updateStrategy:
+    type: ReplicasFirstPrimaryLast
+
+  myCnf: |
+    [mariadb]
+    bind-address=*
+    default_storage_engine=InnoDB
+    binlog_format=row
+    innodb_autoinc_lock_mode=2
+    innodb_buffer_pool_size=1024M
+    max_allowed_packet=256M
+
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      memory: 1Gi
+
+  livenessProbe:
+    initialDelaySeconds: 20
+    periodSeconds: 20
+    timeoutSeconds: 20
+
+  readinessProbe:
+    initialDelaySeconds: 20
+    periodSeconds: 30
+    timeoutSeconds: 30
+
+  metrics:
+    enabled: true
+
+  tls:
+    enabled: true
+    required: true
+
+  suspend: false
