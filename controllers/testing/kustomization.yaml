@@ -5,7 +5,7 @@ resources:
   - ../base/cert-manager
   # - ../base/external-dns
   - ../base/onepassword-connect
-  - ../base/tailscale
+  #- ../base/tailscale
   #- ../base/renovate
   - ../base/mariadb-operator
   - cloudnativepg
