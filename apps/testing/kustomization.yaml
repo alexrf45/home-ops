@@ -6,7 +6,7 @@ resources:
   #- blog
   #- homepage
   #- wallabag
-  - it-tools
+  #- it-tools
   #- nextcloud
   #- ../base/kubevirt-manager
   #- ctfd
