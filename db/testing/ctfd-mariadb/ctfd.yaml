@@ -31,11 +31,6 @@ spec:
   # provision a MaxScale instance and set 'spec.maxScaleRef' automatically.
   maxScale:
     enabled: false
-  galera:
-    enabled: true
-    agent:
-      kubernetesAuth:
-        enabled: true
   replication:
     enabled: true
     primary:
