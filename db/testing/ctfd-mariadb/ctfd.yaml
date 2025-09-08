@@ -16,8 +16,6 @@ spec:
   storage:
     size: 10Gi
     storageClassName: local-path
-    resizeInUseVolumes: true
-    waitForVolumeResize: true
     volumeClaimTemplate:
       accessModes:
       - ReadWriteOnce
