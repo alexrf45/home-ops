@@ -41,7 +41,7 @@ spec:
               value: /var/uploads
             - name: WORKERS
               value: "3"
-          image: ctfd
+          image: fonalex45/ctfd:v0.0.2
           name: ctfd
           envFrom:
           - secretRef:
