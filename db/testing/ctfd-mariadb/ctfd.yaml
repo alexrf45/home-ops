@@ -55,13 +55,43 @@ spec:
 
   myCnf: |
     [mariadb]
-    bind-address=0.0.0.0
+    bind-address=*
     default_storage_engine=InnoDB
+    innodb_autoinc_lock_mode=2
     binlog_format=row
     innodb_buffer_pool_size=1024M
     max_allowed_packet=256M
+  podSecurityContext:
+    runAsUser: 0
   securityContext:
-    readOnlyRootFilesystem: false
+    allowPrivilegeEscalation: false
+  livenessProbe:
+    exec:
+      command:
+        - bash
+        - -c
+        - mariadb -u root -p"${MARIADB_ROOT_PASSWORD}" -e "SELECT 1;"
+    periodSeconds: 5
+    timeoutSeconds: 5
+
+  readinessProbe:
+    exec:
+      command:
+        - bash
+        - -c
+        - mariadb -u root -p"${MARIADB_ROOT_PASSWORD}" -e "SELECT 1;"
+    periodSeconds: 5
+    timeoutSeconds: 5
+
+  startupProbe:
+    exec:
+      command:
+        - bash
+        - -c
+        - mariadb -u root -p"${MARIADB_ROOT_PASSWORD}" -e "SELECT 1;"
+    failureThreshold: 10
+    periodSeconds: 5
+    timeoutSeconds: 5
   resources:
     requests:
       cpu: 100m
