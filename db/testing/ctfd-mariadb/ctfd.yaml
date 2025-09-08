@@ -54,7 +54,6 @@ spec:
 
   service:
     type: ClusterIP
-    metadata:
   connection:
     secretName: ctfd-db-creds
 
