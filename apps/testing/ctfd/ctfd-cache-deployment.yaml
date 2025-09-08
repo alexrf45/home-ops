@@ -1,12 +1,13 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  name: cache
+  namespace: ctfd
   annotations:
     kompose.cmd: kompose -f docker-compose.yml convert
     kompose.version: 1.37.0 (fb0539e64)
   labels:
     io.kompose.service: cache
-  name: cache
 spec:
   replicas: 1
   selector:
