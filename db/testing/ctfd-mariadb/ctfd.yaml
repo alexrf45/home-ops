@@ -61,10 +61,11 @@ spec:
       emptyDir: {}
   myCnf: |
     [mariadb]
+    innodb_use_native_aio=0
     bind-address=0.0.0.0
     default_storage_engine=InnoDB
     binlog_format=row
-    innodb_autoinc_lock_mode=2
+    innodb_autoinc_lock_mode=0
     innodb_buffer_pool_size=1024M
     max_allowed_packet=256M
     tmpdir=/mnt/tmp
