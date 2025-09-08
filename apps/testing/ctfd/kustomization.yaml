@@ -3,7 +3,6 @@ kind: Kustomization
 resources:
   - ctfd-claim0-pvc.yaml
   - ctfd-claim1-pvc.yaml
-  - ctfd-claim2-pvc.yaml
   - ctfd-cache-claim0-pvc.yaml
   - ctfd-deployment.yaml
   - ctfd-cache-deployment.yaml

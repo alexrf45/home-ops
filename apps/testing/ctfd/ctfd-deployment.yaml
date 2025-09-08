@@ -24,8 +24,6 @@ spec:
     spec:
       containers:
         - env:
-            - name: ACCESS_LOG
-              value: /var/log/CTFd/access
             - name: DATABASE_URL
               valueFrom:
                 secretKeyRef:
@@ -55,8 +53,6 @@ spec:
             - containerPort: 8000
               protocol: TCP
           volumeMounts:
-            - mountPath: /var/log/CTFd/access
-              name: ctfd-claim2
             - mountPath: /var/log/CTFd
               name: ctfd-claim0
             - mountPath: /var/uploads
