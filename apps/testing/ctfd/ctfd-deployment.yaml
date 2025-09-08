@@ -65,9 +65,6 @@ spec:
         - name: ctfd-claim1
           persistentVolumeClaim:
             claimName: ctfd-claim1
-        - name: ctfd-claim2
-          persistentVolumeClaim:
-            claimName: ctfd-claim2
 ---
 apiVersion: v1
 kind: Service
