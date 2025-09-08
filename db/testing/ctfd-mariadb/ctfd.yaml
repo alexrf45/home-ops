@@ -53,37 +53,54 @@ spec:
   updateStrategy:
     type: ReplicasFirstPrimaryLast
 
+  volumeMounts:
+    - mountPath: /mnt/tmp
+      name: tmp-volume
+  volumes:
+    - name: tmp-volume
+      emptyDir: {}
   myCnf: |
     [mariadb]
-    bind-address=*
+    bind-address=0.0.0.0
     default_storage_engine=InnoDB
     binlog_format=row
     innodb_autoinc_lock_mode=2
     innodb_buffer_pool_size=1024M
     max_allowed_packet=256M
-
-  resources:
+    tmpdir=/mnt/tmp
+    socket=/mnt/tmp/mysqld.sock
+    pid-file=/mnt/tmp/mysqld.pid
+  securityContext:
+    readOnlyRootFilesystem: true
+    resources:
     requests:
       cpu: 100m
       memory: 128Mi
     limits:
       memory: 1Gi
+  startupProbe:
+    exec:
+      command:
+        - bash
+        - -c
+        - 'mariadb -u root -p"${MARIADB_ROOT_PASSWORD}" -e "SELECT 1;" --socket=/mnt/tmp/mysqld.sock'
 
   livenessProbe:
-    initialDelaySeconds: 20
-    periodSeconds: 20
-    timeoutSeconds: 20
+    exec:
+      command:
+        - bash
+        - -c
+        - 'mariadb -u root -p"${MARIADB_ROOT_PASSWORD}" -e "SELECT 1;" --socket=/mnt/tmp/mysqld.sock'
 
   readinessProbe:
-    initialDelaySeconds: 20
-    periodSeconds: 30
-    timeoutSeconds: 30
-
+    exec:
+      command:
+        - bash
+        - -c
+        - 'mariadb -u root -p"${MARIADB_ROOT_PASSWORD}" -e "SELECT 1;" --socket=/mnt/tmp/mysqld.sock'
   metrics:
     enabled: true
-
   tls:
     enabled: true
     required: false
-
   suspend: false
