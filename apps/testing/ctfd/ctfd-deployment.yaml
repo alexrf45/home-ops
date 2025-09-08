@@ -37,6 +37,11 @@ spec:
               value: redis://cache:6379
             - name: REVERSE_PROXY
               value: "true"
+            - name: SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: ctfd-creds
+                  key: SECRET_KEY
             - name: UPLOAD_FOLDER
               value: /var/uploads
             - name: WORKERS
