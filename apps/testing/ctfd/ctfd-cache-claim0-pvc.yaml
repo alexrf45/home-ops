@@ -4,6 +4,7 @@ metadata:
   labels:
     io.kompose.service: ctfd-cache-claim0
   name: ctfd-cache-claim0
+  namespace: ctfd
 spec:
   accessModes:
     - ReadWriteOnce

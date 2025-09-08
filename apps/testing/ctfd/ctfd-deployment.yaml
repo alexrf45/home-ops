@@ -2,12 +2,12 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  name: ctfd
   namespace: ctfd
   annotations:
     kompose.version: 1.37.0 (fb0539e64)
   labels:
     io.kompose.service: ctfd
-  name: ctfd
 spec:
   replicas: 1
   selector:
