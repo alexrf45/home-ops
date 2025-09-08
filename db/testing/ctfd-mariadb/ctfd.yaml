@@ -58,22 +58,6 @@ spec:
   connection:
     secretName: ctfd-db-creds
 
-  primaryService:
-    type: ClusterIP
-    metadata:
-      annotations:
-  primaryConnection:
-    secretName: ctfd-db-creds
-
-  secondaryService:
-    type: ClusterIP
-    metadata:
-      annotations:
-  secondaryConnection:
-    secretName: ctfd-db-creds
-  podDisruptionBudget:
-    maxUnavailable: 33%
-
   updateStrategy:
     type: ReplicasFirstPrimaryLast
 
