@@ -55,6 +55,8 @@ spec:
             - containerPort: 8000
               protocol: TCP
           volumeMounts:
+            - mountPath: /var/log/CTFd/access
+              name: ctfd-claim0
             - mountPath: /var/log/CTFd
               name: ctfd-claim0
             - mountPath: /var/uploads
