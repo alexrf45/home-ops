@@ -50,7 +50,6 @@ spec:
       connectionTimeout: 30s
       connectionRetries: 10
       syncTimeout: 30s
-    syncBinlog: true
     probesEnabled: true
 
   service:
