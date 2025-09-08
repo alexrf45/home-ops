@@ -53,12 +53,6 @@ spec:
   updateStrategy:
     type: ReplicasFirstPrimaryLast
 
-  volumeMounts:
-    - mountPath: /mnt/tmp
-      name: tmp-volume
-  volumes:
-    - name: tmp-volume
-      emptyDir: {}
   myCnf: |
     [mariadb]
     bind-address=0.0.0.0
