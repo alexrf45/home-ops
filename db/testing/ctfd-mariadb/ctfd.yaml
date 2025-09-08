@@ -61,7 +61,6 @@ spec:
       emptyDir: {}
   myCnf: |
     [mariadb]
-    innodb_use_native_aio=0
     bind-address=0.0.0.0
     default_storage_engine=InnoDB
     binlog_format=row
@@ -71,7 +70,7 @@ spec:
     socket=/mnt/tmp/mysqld.sock
     pid-file=/mnt/tmp/mysqld.pid
   securityContext:
-    readOnlyRootFilesystem: true
+    readOnlyRootFilesystem: false
   resources:
     requests:
       cpu: 100m
