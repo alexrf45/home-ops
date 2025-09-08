@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose -f docker-compose.yml convert
+    kompose.version: 1.37.0 (fb0539e64)
+  labels:
+    io.kompose.service: cache
+  name: cache
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: cache
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose -f docker-compose.yml convert
+        kompose.version: 1.37.0 (fb0539e64)
+      labels:
+        io.kompose.service: cache
+    spec:
+      containers:
+        - image: redis:4
+          name: cache
+          volumeMounts:
+            - mountPath: /data
+              name: ctfd-cache-claim0
+      restartPolicy: Always
+      volumes:
+        - name: ctfd-cache-claim0
+          persistentVolumeClaim:
+            claimName: ctfd-cache-claim0

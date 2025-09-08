@@ -1,0 +1,111 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: ctfd
+  annotations:
+    kompose.version: 1.37.0 (fb0539e64)
+  labels:
+    io.kompose.service: ctfd
+  name: ctfd
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: ctfd
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.version: 1.37.0 (fb0539e64)
+      labels:
+        io.kompose.service: ctfd
+    spec:
+      containers:
+        - env:
+            - name: ACCESS_LOG
+              value: /var/log/CTFd/access
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: ctfd-creds
+                  key: DATABASE_URL
+            - name: LOG_FOLDER
+              value: /var/log/CTFd
+            - name: REDIS_URL
+              value: redis://cache:6379
+            - name: REVERSE_PROXY
+              value: "true"
+            - name: UPLOAD_FOLDER
+              value: /var/uploads
+            - name: WORKERS
+              value: "3"
+          image: ctfd
+          name: ctfd
+          envFrom:
+          - secretRef:
+               name: ctfd-creds
+          ports:
+            - containerPort: 8000
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /var/log/CTFd
+              name: ctfd-claim0
+            - mountPath: /var/uploads
+              name: ctfd-claim1
+      restartPolicy: Always
+      volumes:
+        - name: ctfd-claim0
+          persistentVolumeClaim:
+            claimName: ctfd-claim0
+        - name: ctfd-claim1
+          persistentVolumeClaim:
+            claimName: ctfd-claim1
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ctfd
+  namespace: ctfd
+  annotations:
+    kompose.cmd: kompose -f docker-compose.yml convert
+    kompose.version: 1.37.0 (fb0539e64)
+  labels:
+    io.kompose.service: ctfd
+  name: ctfd
+spec:
+  ports:
+    - name: "8000"
+      port: 8000
+      targetPort: 8000
+  selector:
+    io.kompose.service: ctfd
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ctfd-ingress
+  namespace: ctfd
+  labels:
+    app.kubernetes.io/name: ctfd
+  annotations:
+    #tailscale.com/funnel: "true"
+    cert-manager.io/cluster-issuer: "letsencrypt-staging"
+spec:
+  ingressClassName: cilium
+  rules:
+  - host: badgernet.ctfd.home-0ps.com
+    http:
+      paths:
+      - backend:
+          service:
+            name: ctfd
+            port:
+              number: 8000
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - badgernet.ctfd.home-0ps.com
+    secretName: badgernt-ctfd-tls
