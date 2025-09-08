@@ -29,8 +29,31 @@ spec:
           volumeMounts:
             - mountPath: /data
               name: ctfd-cache-claim0
+          ports:
+            - containerPort: 6379
+              protocol: TCP
       restartPolicy: Always
       volumes:
         - name: ctfd-cache-claim0
           persistentVolumeClaim:
             claimName: ctfd-cache-claim0
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cache
+  namespace: ctfd
+  annotations:
+    kompose.cmd: kompose -f docker-compose.yml convert
+    kompose.version: 1.37.0 (fb0539e64)
+  labels:
+    io.kompose.service: cache
+spec:
+  type: ClusterIP
+  selector:
+    io.kompose.service: cache
+  ports:
+    - name: redis
+      protocol: TCP
+      port: 6379
+      targetPort: 6379
