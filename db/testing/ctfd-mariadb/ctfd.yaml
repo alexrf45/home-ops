@@ -61,7 +61,7 @@ spec:
     binlog_format=row
     innodb_buffer_pool_size=1024M
     max_allowed_packet=500M
-    global_read_only=off
+    read_only=0
   podSecurityContext:
     runAsUser: 0
   securityContext:
