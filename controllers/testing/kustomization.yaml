@@ -11,3 +11,4 @@ resources:
   - cloudnativepg
   #- kyverno
   - external-secrets
+  - ../base/crowdsec
