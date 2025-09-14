@@ -8,7 +8,7 @@ resources:
   #- ../base/tailscale
   #- ../base/renovate
   - ../base/mariadb-operator
-  - cloudnativepg
+  #  - cloudnativepg
   #- kyverno
   - external-secrets
   - ../base/crowdsec
