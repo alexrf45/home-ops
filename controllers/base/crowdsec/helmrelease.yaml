@@ -44,15 +44,16 @@ spec:
   values:
     container_runtime: containerd
     lapi:
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-              - matchExpressions:
-                  - key: beta.kubernetes.io/arch
-                    operator: In
-                    values:
-                      - amd64
+      ingress:
+        ingressClassName: cilium
+        host: crowdsec.ctfd.home-0ps.com
+        tls:
+          - secretName: crowdsec-tls
+            hosts:
+              - crowdsec.ctfd.home-0ps.com
+        enabled: true
+        annotations:
+          cert-manager.io/cluster-issuer: "letsencrypt-staging"
       dashboard:
         enabled: false
       metrics:
