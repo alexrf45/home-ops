@@ -12,7 +12,7 @@ metadata:
   name: mariadb-operator
   namespace: flux-system
 spec:
-  interval: 24h
+  interval: 12h
   url: https://helm.mariadb.com/mariadb-operator
 ---
 apiVersion: helm.toolkit.fluxcd.io/v2
@@ -25,6 +25,7 @@ spec:
   chart:
     spec:
       chart: mariadb-operator-crds
+      version: "25.8.3"
       sourceRef:
         kind: HelmRepository
         name: mariadb-operator
@@ -53,7 +54,7 @@ spec:
   targetNamespace: mariadb
   values:
     crds:
-      enabled: false
+      enabled: true
     image:
       repository: docker-registry3.mariadb.com/mariadb-operator/mariadb-operator
       pullPolicy: IfNotPresent
