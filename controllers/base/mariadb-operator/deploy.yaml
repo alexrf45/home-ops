@@ -1,4 +1,11 @@
 ---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: mariadb
+  labels:
+    app: "database_operations"
+---
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
 metadata:
@@ -23,7 +30,7 @@ spec:
         name: mariadb-operator
         namespace: flux-system
       interval: 12h
-  targetNamespace: database
+  targetNamespace: mariadb
   values:
 
 ---
@@ -43,7 +50,7 @@ spec:
         name: mariadb-operator
         namespace: flux-system
       interval: 12h
-  targetNamespace: database
+  targetNamespace: mariadb
   values:
     crds:
       enabled: false
