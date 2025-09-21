@@ -1,0 +1,121 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: gitea
+  namespace: flux-system
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: gitea
+      version: 12.3.0
+      interval: 30m
+      sourceRef:
+        kind: HelmRepository
+        name: gitea-charts
+        namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  targetNamespace: gitea
+  values:
+    global:
+      storageClass: "local-path"
+    replicaCount: 2
+    strategy:
+      type: "RollingUpdate"
+      rollingUpdate:
+        maxSurge: "100%"
+        maxUnavailable: 0
+    image:
+      registry: "docker.gitea.com"
+      repository: gitea
+      tag: "1.24.6"
+      pullPolicy: Always
+      rootless: true
+    containerSecurityContext:
+      capabilities:
+        add:
+          - SYS_CHROOT
+    service:
+      http:
+        type: ClusterIP
+        port: 3000
+      ssh:
+        type: LoadBalancer
+        port: 22
+    ingress:
+      enabled: true
+      className: ""
+      pathType: Prefix
+      annotations:
+        cert-manager.io/cluster-issuer: "letsencrypt-staging"
+      hosts:
+        - host: git.ctfd.home-0ps.com
+          paths:
+            - path: /
+      tls:
+        - secretName: gitea-tls
+          hosts:
+            - git.ctfd.home-0ps.com
+
+    deployment:
+      env:
+        []
+        # - name: VARIABLE
+        #   value: my-value
+
+    serviceAccount:
+      create: true
+      name: "gitea-svc-acct"
+      automountServiceAccountToken: false
+
+    persistence:
+      enabled: true
+      create: true
+      mount: true
+      claimName: gitea-shared-storage
+      size: 1Gi
+      accessModes:
+        - ReadWriteOnce
+      storageClass: "local-path"
+      annotations:
+        helm.sh/resource-policy: keep
+
+    gitea:
+      admin:
+        existingSecret: gitea-creds
+        email: "gitea@local.domain"
+        passwordMode: keepUpdated
+      config:
+        APP_NAME: "Gitea: Where real devs store their code"
+        RUN_MODE: dev
+        server:
+          SSH_LISTEN_PORT: 2222 # rootless image
+
+    valkey-cluster:
+      enabled: false
+    valkey:
+      enabled: false
+    postgresql-ha:
+      enabled: false
+
+    postgresql:
+      enabled: false
+      global:
+        postgresql:
+          auth:
+            password: gitea
+            database: gitea
+            username: gitea
+          service:
+            ports:
+              postgresql: 5432
+      primary:
+        persistence:
+          size: 1Gi
