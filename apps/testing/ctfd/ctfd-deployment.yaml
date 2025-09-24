@@ -48,7 +48,7 @@ spec:
               value: /var/uploads
             - name: WORKERS
               value: "3"
-          image: ctfd/ctfd:3.8.0 
+          image: ctfd/ctfd:3.8.0
           name: ctfd
           envFrom:
           - secretRef:
@@ -82,7 +82,7 @@ metadata:
     io.kompose.service: ctfd
 spec:
   ports:
-    - name: "8000"
+    - name: "ctfd"
       port: 8000
       targetPort: 8000
   selector:
