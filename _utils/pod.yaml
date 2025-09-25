@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: peirates
+  namespace: storage
+spec:
+  containers:
+  - name: peirates
+    image: bustakube/alpine-peirates:1.1.16
+    command: ["/bin/sh"]
+    stdin: true
+    tty: true
+  restartPolicy: Never
