@@ -23,7 +23,7 @@ spec:
         kind: HelmRepository
         name: external-dns
         namespace: flux-system
-      version: 1.18.0
+      version: 1.19.0
   interval: 30m
   maxHistory: 3
   install:
