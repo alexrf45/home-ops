@@ -1,8 +1,0 @@
-10.3.3.120 prod.internal.argo.fr3d.dev
-10.3.3.120 prod.internal.grafana.fr3d.dev
-10.3.3.120 prod.internal.prometheus.fr3d.dev
-10.3.3.120 prod.internal.pihole.fr3d.dev
-10.3.3.70 staging.internal.prometheus.fr3d.dev
-10.3.3.70 staging.internal.pihole.fr3d.dev
-10.3.3.70 staging.internal.argo.fr3d.dev
-10.3.3.70 staging.internal.grafana.fr3d.dev
