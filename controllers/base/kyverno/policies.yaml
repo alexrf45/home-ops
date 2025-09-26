@@ -1,0 +1,331 @@
+---
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: disallow-privileged-containers
+  annotations:
+    policies.kyverno.io/title: Disallow Privileged Containers
+    policies.kyverno.io/category: Pod Security Standards (Baseline)
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/description: >-
+      Privileged containers share namespaces with the host system and do not offer any security isolation.
+spec:
+  validationFailureAction: Enforce
+  background: true
+  rules:
+    - name: check-privileged
+      match:
+        any:
+        - resources:
+            kinds:
+            - Pod
+      validate:
+        message: "Privileged containers are not allowed"
+        pattern:
+          spec:
+            =(securityContext):
+              =(privileged): "false"
+            containers:
+            - securityContext:
+                =(privileged): "false"
+
+---
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: require-non-root-user
+  annotations:
+    policies.kyverno.io/title: Require Non-Root User
+    policies.kyverno.io/category: Pod Security Standards (Restricted)
+    policies.kyverno.io/severity: medium
+spec:
+  validationFailureAction: Enforce
+  background: true
+  rules:
+    - name: check-containers
+      match:
+        any:
+        - resources:
+            kinds:
+            - Pod
+      validate:
+        message: "Containers must run as non-root user"
+        pattern:
+          spec:
+            =(securityContext):
+              =(runAsNonRoot): "true"
+            containers:
+            - securityContext:
+                =(runAsNonRoot): "true"
+
+---
+# Disallow host namespaces
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: disallow-host-namespaces
+  annotations:
+    policies.kyverno.io/title: Disallow Host Namespaces
+    policies.kyverno.io/category: Pod Security Standards (Baseline)
+    policies.kyverno.io/severity: medium
+spec:
+  validationFailureAction: Enforce
+  background: true
+  rules:
+    - name: check-host-namespaces
+      match:
+        any:
+        - resources:
+            kinds:
+            - Pod
+      validate:
+        message: "Sharing the host namespaces is not allowed"
+        pattern:
+          spec:
+            =(hostNetwork): "false"
+            =(hostIPC): "false"
+            =(hostPID): "false"
+
+---
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: require-pod-resources
+  annotations:
+    policies.kyverno.io/title: Require Pod Resources
+    policies.kyverno.io/category: Other
+    policies.kyverno.io/severity: medium
+spec:
+  validationFailureAction: Enforce
+  background: true
+  rules:
+    - name: validate-resources
+      match:
+        any:
+        - resources:
+            kinds:
+            - Pod
+      exclude:
+        any:
+        - resources:
+            namespaces:
+            - kube-system
+            - kyverno
+            - flux-system
+      validate:
+        message: "Resource requests and limits are required"
+        pattern:
+          spec:
+            containers:
+            - name: "*"
+              resources:
+                requests:
+                  memory: "?*"
+                  cpu: "?*"
+                limits:
+                  memory: "?*"
+                  cpu: "?*"
+
+---
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: require-image-pull-policy
+  annotations:
+    policies.kyverno.io/title: Require imagePullPolicy Always
+    policies.kyverno.io/category: Sample
+    policies.kyverno.io/severity: medium
+spec:
+  validationFailureAction: Enforce
+  background: true
+  rules:
+    - name: validate-imagePullPolicy
+      match:
+        any:
+        - resources:
+            kinds:
+            - Pod
+      validate:
+        message: "imagePullPolicy must be Always"
+        pattern:
+          spec:
+            containers:
+            - name: "*"
+              imagePullPolicy: "Always"
+
+---
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: disallow-latest-tag
+  annotations:
+    policies.kyverno.io/title: Disallow Latest Tag
+    policies.kyverno.io/category: Best Practices
+    policies.kyverno.io/severity: medium
+spec:
+  validationFailureAction: Enforce
+  background: true
+  rules:
+    - name: require-image-tag
+      match:
+        any:
+        - resources:
+            kinds:
+            - Pod
+      validate:
+        message: "Using a mutable image tag e.g. 'latest' is not allowed"
+        pattern:
+          spec:
+            containers:
+            - name: "*"
+              image: "!*:latest"
+    - name: require-image-tag-initcontainers
+      match:
+        any:
+        - resources:
+            kinds:
+            - Pod
+      preconditions:
+        all:
+        - key: "{{ request.object.spec.initContainers[] | length(@) }}"
+          operator: GreaterThanOrEquals
+          value: 1
+      validate:
+        message: "Using a mutable image tag e.g. 'latest' is not allowed"
+        pattern:
+          spec:
+            initContainers:
+            - name: "*"
+              image: "!*:latest"
+
+---
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: require-labels
+  annotations:
+    policies.kyverno.io/title: Require Labels
+    policies.kyverno.io/category: Sample
+    policies.kyverno.io/severity: medium
+spec:
+  validationFailureAction: Enforce
+  background: true
+  rules:
+    - name: check-for-labels
+      match:
+        any:
+        - resources:
+            kinds:
+            - Pod
+            - Service
+            - Deployment
+            - StatefulSet
+            - DaemonSet
+      exclude:
+        any:
+        - resources:
+            namespaces:
+            - kube-system
+            - kyverno
+            - flux-system
+      validate:
+        message: "Required labels missing"
+        pattern:
+          metadata:
+            labels:
+              app.kubernetes.io/name: "?*"
+              app.kubernetes.io/version: "?*"
+
+---
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: add-safe-to-evict
+  annotations:
+    policies.kyverno.io/title: Add safe-to-evict
+    policies.kyverno.io/category: Sample
+    policies.kyverno.io/severity: medium
+spec:
+  rules:
+    - name: annotate-empty-dir
+      match:
+        any:
+        - resources:
+            kinds:
+            - Pod
+      mutate:
+        patchStrategicMerge:
+          metadata:
+            annotations:
+              +(cluster-autoscaler.kubernetes.io/safe-to-evict): "true"
+          spec:
+            volumes:
+            - (name): "?*"
+              (emptyDir): {}
+
+---
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: add-default-securitycontext
+  annotations:
+    policies.kyverno.io/title: Add Default securityContext
+    policies.kyverno.io/category: Sample
+    policies.kyverno.io/severity: medium
+spec:
+  rules:
+    - name: set-container-security-context
+      match:
+        any:
+        - resources:
+            kinds:
+            - Pod
+      exclude:
+        any:
+        - resources:
+            namespaces:
+            - kube-system
+            - kyverno
+            - flux-system
+      mutate:
+        patchStrategicMerge:
+          spec:
+            containers:
+            - (name): "*"
+              securityContext:
+                +(allowPrivilegeEscalation): false
+                +(capabilities):
+                  drop:
+                  - ALL
+                +(readOnlyRootFilesystem): true
+                +(runAsNonRoot): true
+                +(runAsUser): 65534
+                +(seccompProfile):
+                  type: RuntimeDefault
+
+---
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: restrict-ingress-classes
+  annotations:
+    policies.kyverno.io/title: Restrict Ingress Classes
+    policies.kyverno.io/category: Sample
+    policies.kyverno.io/severity: medium
+spec:
+  validationFailureAction: Enforce
+  background: true
+  rules:
+    - name: check-ingress-class
+      match:
+        any:
+        - resources:
+            kinds:
+            - Ingress
+      validate:
+        message: "Only approved ingress classes are allowed"
+        pattern:
+          spec:
+            ingressClassName: "nginx|traefik|istio|cilium"
+
+---

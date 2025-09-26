@@ -8,8 +8,3 @@ module "testing" {
   cilium_config = var.cilium_config
   dns_servers   = var.dns_servers
 }
-
-# module "bootstrap" {
-#   depends_on = [module.testing]
-#   source     = "./bootstrap"
-# }
