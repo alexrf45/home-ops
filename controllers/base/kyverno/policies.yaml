@@ -179,25 +179,6 @@ spec:
             containers:
             - name: "*"
               image: "!*:latest"
-    - name: require-image-tag-initcontainers
-      match:
-        any:
-        - resources:
-            kinds:
-            - Pod
-      preconditions:
-        all:
-        - key: "{{ request.object.spec.initContainers[] | length(@) }}"
-          operator: GreaterThanOrEquals
-          value: 1
-      validate:
-        message: "Using a mutable image tag e.g. 'latest' is not allowed"
-        pattern:
-          spec:
-            initContainers:
-            - name: "*"
-              image: "!*:latest"
-
 ---
 apiVersion: kyverno.io/v1
 kind: ClusterPolicy
