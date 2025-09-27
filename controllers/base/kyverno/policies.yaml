@@ -303,6 +303,13 @@ spec:
         - resources:
             kinds:
             - Ingress
+      exclude:
+        any:
+        - resources:
+            namespaces:
+            - kube-system
+            - kyverno
+            - flux-system
       validate:
         message: "Only approved ingress classes are allowed"
         pattern:
