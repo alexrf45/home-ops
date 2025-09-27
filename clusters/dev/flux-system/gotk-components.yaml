@@ -5303,7 +5303,7 @@ spec:
               containerName: manager
               resource: limits.memory
         image: ghcr.io/fluxcd/source-controller:v1.6.2
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         livenessProbe:
           httpGet:
             path: /healthz
@@ -7204,7 +7204,7 @@ spec:
               containerName: manager
               resource: limits.memory
         image: ghcr.io/fluxcd/kustomize-controller:v1.6.1
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         livenessProbe:
           httpGet:
             path: /healthz
@@ -11006,7 +11006,7 @@ spec:
               containerName: manager
               resource: limits.memory
         image: ghcr.io/fluxcd/helm-controller:v1.3.0
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         livenessProbe:
           httpGet:
             path: /healthz
@@ -12979,7 +12979,7 @@ spec:
               containerName: manager
               resource: limits.memory
         image: ghcr.io/fluxcd/notification-controller:v1.6.0
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         livenessProbe:
           httpGet:
             path: /healthz
