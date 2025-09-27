@@ -310,3 +310,26 @@ spec:
             ingressClassName: "nginx|traefik|istio|cilium"
 
 ---
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: require-gateway-labels
+spec:
+  validationFailureAction: enforce
+  rules:
+  - name: check-required-labels
+    match:
+      any:
+      - resources:
+          kinds:
+          - Gateway
+          - HTTPRoute
+          - GatewayClass
+    validate:
+      message: "Required labels missing"
+      pattern:
+        metadata:
+          labels:
+            app.kubernetes.io/name: "?*"
+            app.kubernetes.io/instance: "?*"
+            environment: "?*"
