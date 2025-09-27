@@ -209,6 +209,7 @@ spec:
             - kube-system
             - kyverno
             - flux-system
+            - networking
             - database
       validate:
         message: "Required labels missing"
@@ -333,6 +334,15 @@ spec:
           - Gateway
           - HTTPRoute
           - GatewayClass
+    exclude:
+        any:
+        - resources:
+            namespaces:
+            - kube-system
+            - kyverno
+            - flux-system
+            - networking
+            - database
     validate:
       message: "Required labels missing"
       pattern:
