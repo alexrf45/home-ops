@@ -209,6 +209,7 @@ spec:
             - kube-system
             - kyverno
             - flux-system
+            - database
       validate:
         message: "Required labels missing"
         pattern:
