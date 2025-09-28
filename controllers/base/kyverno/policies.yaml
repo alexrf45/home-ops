@@ -54,6 +54,11 @@ spec:
         - resources:
             kinds:
             - Pod
+      exclude:
+        any:
+        - resources:
+            namespaces:
+            - storage
       validate:
         message: "Containers must run as non-root user"
         pattern:
@@ -278,6 +283,7 @@ spec:
             - kube-system
             - kyverno
             - flux-system
+            - storage
       mutate:
         patchStrategicMerge:
           spec:
