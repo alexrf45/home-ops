@@ -112,6 +112,7 @@ spec:
             - kube-system
             - kyverno
             - flux-system
+            - storage
       validate:
         message: "Resource requests and limits are required"
         pattern:
@@ -211,6 +212,7 @@ spec:
             - flux-system
             - networking
             - database
+            - storage
       validate:
         message: "Required labels missing"
         pattern:

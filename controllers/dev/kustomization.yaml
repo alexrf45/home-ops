@@ -11,3 +11,4 @@ resources:
   - redis-operator
   - ../base/local-path
   # - longhorn
+  - ../base/csi-driver-smb
