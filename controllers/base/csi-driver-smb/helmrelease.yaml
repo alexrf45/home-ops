@@ -159,8 +159,6 @@ spec:
 
     windows:
       enabled: false
-    customLabels:
-      app: csi-smb
     priorityClassName: system-cluster-critical
     securityContext:
       runAsUser: 1001
