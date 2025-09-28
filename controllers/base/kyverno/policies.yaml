@@ -94,6 +94,7 @@ spec:
         - resources:
             namespaces:
             - storage
+            - flux-system
       validate:
         message: "Sharing the host namespaces is not allowed"
         pattern:
