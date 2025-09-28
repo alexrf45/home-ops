@@ -89,6 +89,11 @@ spec:
         - resources:
             kinds:
             - Pod
+      exclude:
+        any:
+        - resources:
+            namespaces:
+            - storage
       validate:
         message: "Sharing the host namespaces is not allowed"
         pattern:
@@ -184,6 +189,12 @@ spec:
         - resources:
             kinds:
             - Pod
+      exclude:
+        any:
+        - resources:
+            namespaces:
+            - storage
+
       validate:
         message: "Using a mutable image tag e.g. 'latest' is not allowed"
         pattern:
