@@ -19,6 +19,12 @@ spec:
         - resources:
             kinds:
             - Pod
+      exclude:
+        any:
+        - resources:
+            namespaces:
+            - storage
+
       validate:
         message: "Privileged containers are not allowed"
         pattern:
