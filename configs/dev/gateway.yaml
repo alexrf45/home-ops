@@ -1,0 +1,86 @@
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: GatewayClass
+metadata:
+  name: external-gw
+  namespace: networking
+  labels:
+    app.kubernetes.io/name: cilium-gateway
+    app.kubernetes.io/instance: external-gw
+    app.kubernetes.io/version: "1.18.2"
+    app.kubernetes.io/component: gatewayclass
+    app.kubernetes.io/managed-by: kubectl
+    environment: dev
+spec:
+  controllerName: io.cilium/gateway-controller
+  description: The default Cilium GatewayClass
+  parametersRef:
+    group: cilium.io
+    kind: CiliumGatewayClassConfig
+    name: loadbalancer-gateway-config
+    namespace: networking
+---
+apiVersion: cilium.io/v2alpha1
+kind: CiliumGatewayClassConfig
+metadata:
+  name: loadbalancer-gateway-config
+  namespace: networking
+  labels:
+    app.kubernetes.io/name: cilium-gateway
+    app.kubernetes.io/instance: external-gw
+    app.kubernetes.io/version: "1.33.4"
+    app.kubernetes.io/component: gatewayclass
+    app.kubernetes.io/managed-by: kubectl
+    environment: dev
+
+spec:
+  service:
+    type: LoadBalancer
+    allocateLoadBalancerNodePorts: true
+    loadBalancerSourceRanges:
+      - "10.3.3.0/24"
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: test-gateway
+  namespace: networking
+  labels:
+    app.kubernetes.io/version: "v1.33.4"
+    app.kubernetes.io/name: test-gateway
+    app.kubernetes.io/component: gateway
+    app.kubernetes.io/managed-by: kubectl
+    environment: dev
+spec:
+  gatewayClassName: external-gw
+  listeners:
+  - protocol: HTTP
+    port: 80
+    name: web-gw
+    allowedRoutes:
+      namespaces:
+        from: Same
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: http-test
+  namespace: networking
+  labels:
+    app.kubernetes.io/version: "v1.33.4"
+    app.kubernetes.io/name: test-gateway
+    app.kubernetes.io/component: gateway
+    app.kubernetes.io/managed-by: kubectl
+    environment: dev
+spec:
+  parentRefs:
+  - name: test-gateway
+    namespace: networking
+  rules:
+  - matches:
+    - path:
+        type: PathPrefix
+        value: /
+    backendRefs:
+    - name: hubble-ui
+      port: 80
