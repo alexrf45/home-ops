@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: csi-driver-smb
-      version: v1.17.0
+      version: v1.18.0
       sourceRef:
         name: csi-driver-smb
         kind: HelmRepository
@@ -25,5 +25,142 @@ spec:
     keepHistory: false
   targetNamespace: storage
   values:
+    image:
+      baseRepo: registry.k8s.io/sig-storage
+      smb:
+        repository: gcr.io/k8s-staging-sig-storage/smbplugin
+        tag: canary
+        pullPolicy: Always
+      csiProvisioner:
+        repository: /csi-provisioner
+        tag: v5.3.0
+        pullPolicy: Always
+      csiResizer:
+        repository: registry.k8s.io/sig-storage/csi-resizer
+        tag: v1.14.0
+        pullPolicy: Always
+      livenessProbe:
+        repository: /livenessprobe
+        tag: v2.17.0
+        pullPolicy: Always
+      nodeDriverRegistrar:
+        repository: /csi-node-driver-registrar
+        tag: v2.15.0
+        pullPolicy: Always
+      csiproxy:
+        repository: ghcr.io/kubernetes-sigs/sig-windows/csi-proxy
+        tag: v1.1.2
+        pullPolicy: Always
+
+    serviceAccount:
+      create: true # When true, service accounts will be created for you. Set to false if you want to use your own.
+      controller: csi-smb-controller-sa
+      node: csi-smb-node-sa
+
+    rbac:
+      create: true
+      name: smb
+
+    driver:
+      name: smb.csi.k8s.io
+
+    feature:
+      enableGetVolumeStats: true
+      enableInlineVolume: true
+
+    controller:
+      name: csi-smb-controller
+      replicas: 1
+      dnsPolicy: ClusterFirstWithHostNet  # available values: Default, ClusterFirstWithHostNet, ClusterFirst
+      metricsPort: 29644
+      livenessProbe:
+        healthPort: 29642
+      runOnMaster: false
+      runOnControlPlane: false
+      logLevel: 5
+      workingMountDir: "/tmp"
+      resources:
+        csiProvisioner:
+          limits:
+            memory: 400Mi
+          requests:
+            cpu: 10m
+            memory: 20Mi
+        csiResizer:
+          limits:
+            memory: 400Mi
+          requests:
+            cpu: 10m
+            memory: 20Mi
+        livenessProbe:
+          limits:
+            memory: 100Mi
+          requests:
+            cpu: 10m
+            memory: 20Mi
+        smb:
+          limits:
+            memory: 200Mi
+          requests:
+            cpu: 10m
+            memory: 20Mi
+      affinity: {}
+      nodeSelector: {}
+      tolerations:
+        - key: "node-role.kubernetes.io/master"
+          operator: "Exists"
+          effect: "NoSchedule"
+        - key: "node-role.kubernetes.io/controlplane"
+          operator: "Exists"
+          effect: "NoSchedule"
+        - key: "node-role.kubernetes.io/control-plane"
+          operator: "Exists"
+          effect: "NoSchedule"
+        - key: "CriticalAddonsOnly"
+          operator: "Exists"
+          effect: "NoSchedule"
+
+    node:
+      maxUnavailable: 1
+      logLevel: 5
+      livenessProbe:
+        healthPort: 29643
+      affinity: {}
+      nodeSelector: {}
+
+    linux:
+      enabled: true
+      dsName: csi-smb-node # daemonset name
+      dnsPolicy: ClusterFirstWithHostNet  # available values: Default, ClusterFirstWithHostNet, ClusterFirst
+      kubelet: /var/lib/kubelet
+      krb5CacheDirectory: "" # directory for kerberos credential cache, empty string means default(/var/lib/kubelet/kerberos/)
+      krb5Prefix: "" # prefix for kerberos credential cache, empty string means default(krb5cc_)
+      tolerations:
+        - operator: "Exists"
+      resources:
+        livenessProbe:
+          limits:
+            memory: 100Mi
+          requests:
+            cpu: 10m
+            memory: 20Mi
+        nodeDriverRegistrar:
+          limits:
+            memory: 100Mi
+          requests:
+            cpu: 10m
+            memory: 20Mi
+        smb:
+          limits:
+            memory: 200Mi
+          requests:
+            cpu: 10m
+            memory: 20Mi
+
     windows:
       enabled: false
+    customLabels:
+      app: csi-smb
+    priorityClassName: system-cluster-critical
+    securityContext:
+      runAsUser: 1001
