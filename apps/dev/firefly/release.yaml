@@ -8,8 +8,8 @@ spec:
   interval: 1h
   chart:
     spec:
-      chart: firefly-iii-stack
-      version: 4.2.0
+      chart: firefly-iii
+      version: 1.9.11
       interval: 30m
       sourceRef:
         kind: HelmRepository
