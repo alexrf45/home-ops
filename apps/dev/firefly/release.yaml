@@ -8,8 +8,8 @@ spec:
   interval: 1h
   chart:
     spec:
-      chart: firefly-iii
-      version: 1.9.11
+      chart: firefly-iii-stack
+      version: 4.2.0
       interval: 30m
       sourceRef:
         kind: HelmRepository
@@ -17,12 +17,12 @@ spec:
         namespace: flux-system
   install:
     remediation:
-      retries: 3
+      retries: 5
   upgrade:
     cleanupOnFail: true
     remediation:
       strategy: rollback
-      retries: 3
+      retries: 7
   targetNamespace: firefly
   values:
     replicaCount: 1
@@ -36,7 +36,7 @@ spec:
     fullnameOverride: ""
     persistence:
       enabled: true
-      storageClassName: "local-path"
+      storageClassName: "smb"
       accessModes: ReadWriteOnce
       # volumeName: your-pv-name
       # selector:
@@ -48,7 +48,7 @@ spec:
       existingSecret: "firefly-dev-creds"
       envValueFrom: {}
       env:
-        DB_HOST:
+        DB_HOST: firefly-dev-cluster-rw
         DB_CONNECTION: pgsql
         DB_PORT: "5432"
         DB_DATABASE: firefly
