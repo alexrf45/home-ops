@@ -355,7 +355,7 @@ kind: ClusterPolicy
 metadata:
   name: require-gateway-labels
 spec:
-  validationFailureAction: enforce
+  validationFailureAction: Enforce
   rules:
   - name: check-required-labels
     match:
