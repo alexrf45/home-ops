@@ -31,6 +31,15 @@ spec:
         name: ot-helm
         namespace: flux-system
       interval: 6h
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: -1
+  uninstall:
+    keepHistory: false
   targetNamespace: redis
   values:
     redisOperator:
