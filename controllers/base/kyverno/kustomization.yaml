@@ -3,4 +3,5 @@ kind: Kustomization
 resources:
   - namespace.yaml
   - deploy.yaml
-  - policies.yaml
+  # - policies.yaml
+  # - exception.yaml
