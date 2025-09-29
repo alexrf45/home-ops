@@ -93,6 +93,10 @@ spec:
       exclude:
         any:
         - resources:
+            kinds:
+              - Pods
+              - DaemonSet
+              - StatefulSet
             namespaces:
             - storage
             - flux-system
