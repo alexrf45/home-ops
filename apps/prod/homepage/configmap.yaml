@@ -40,6 +40,9 @@ data:
         - Wallabag:
             href: https://prod-wallabag.bun-dominant.ts.net
             description: Wallabag Bookmark keeper
+        - FireFly III:
+            href: https://firefly-dev.bun-dominant.ts.net/login
+            description: Personal Finance/Budget Manager
         - IT-Tools:
             href: https://prod-it-tools.bun-dominant.ts.net
             description: IT-Tools
