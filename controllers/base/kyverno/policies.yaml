@@ -89,6 +89,7 @@ spec:
         - resources:
             kinds:
             - Pod
+            - DaemonSet
       exclude:
         any:
         - resources:
