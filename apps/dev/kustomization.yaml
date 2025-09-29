@@ -8,3 +8,4 @@ resources:
   #- wallabag
   #  - it-tools
   #  - nextcloud
+   - firefly
