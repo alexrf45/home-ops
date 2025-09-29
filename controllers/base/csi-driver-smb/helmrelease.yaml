@@ -60,14 +60,11 @@ spec:
     rbac:
       create: true
       name: smb
-
     driver:
       name: smb.csi.k8s.io
-
     feature:
       enableGetVolumeStats: true
       enableInlineVolume: true
-
     controller:
       name: csi-smb-controller
       replicas: 1
@@ -76,7 +73,7 @@ spec:
       livenessProbe:
         healthPort: 29642
       runOnMaster: false
-      runOnControlPlane: false
+      runOnControlPlane: true
       logLevel: 5
       workingMountDir: "/tmp"
       resources:
@@ -131,11 +128,6 @@ spec:
       enabled: true
       dsName: csi-smb-node # daemonset name
       dnsPolicy: ClusterFirst  # available values: Default, ClusterFirstWithHostNet, ClusterFirst
-      kubelet: /var/lib/kubelet
-      krb5CacheDirectory: "" # directory for kerberos credential cache, empty string means default(/var/lib/kubelet/kerberos/)
-      krb5Prefix: "" # prefix for kerberos credential cache, empty string means default(krb5cc_)
-      tolerations:
-        - operator: "Exists"
       resources:
         livenessProbe:
           limits:
