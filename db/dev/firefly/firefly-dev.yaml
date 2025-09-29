@@ -16,10 +16,10 @@ spec:
     name: firefly-dev-db-creds
 
   storage:
-    storageClass: local-path
-    size: 10Gi
+    storageClass: smb
+    size: 5Gi
   walStorage:
-    size: 2Gi
+    size: 1Gi
   bootstrap:
     initdb:
       database: firefly
