@@ -16,6 +16,9 @@ spec:
     name: firefly-dev-db-creds
 
   storage:
+    pvcTemplate:
+      accessModes:
+        - ReadWriteMany
     storageClass: smb
     size: 5Gi
   walStorage:
