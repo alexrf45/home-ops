@@ -68,7 +68,7 @@ spec:
     controller:
       name: csi-smb-controller
       replicas: 1
-      dnsPolicy: ClusterFirst  # available values: Default, ClusterFirstWithHostNet, ClusterFirst
+      dnsPolicy: ClusterFirstWithHostNet  # available values: Default, ClusterFirstWithHostNet, ClusterFirst
       metricsPort: 29644
       livenessProbe:
         healthPort: 29642
@@ -127,7 +127,7 @@ spec:
     linux:
       enabled: true
       dsName: csi-smb-node # daemonset name
-      dnsPolicy: ClusterFirst  # available values: Default, ClusterFirstWithHostNet, ClusterFirst
+      dnsPolicy: ClusterFirstWithHostNet  # available values: Default, ClusterFirstWithHostNet, ClusterFirst
       resources:
         livenessProbe:
           limits:
