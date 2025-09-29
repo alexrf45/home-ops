@@ -8,7 +8,6 @@ metadata:
     environment: dev
 provisioner: smb.csi.k8s.io
 parameters:
-  # On Windows, "*.default.svc.cluster.local" could not be recognized by csi-proxy
   source: //10.3.3.11/k8s-share
   csi.storage.k8s.io/provisioner-secret-name: k8s-smb-secret
   csi.storage.k8s.io/provisioner-secret-namespace: storage

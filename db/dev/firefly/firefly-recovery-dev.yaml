@@ -16,10 +16,10 @@ spec:
   superuserSecret:
     name: firefly-dev-db-creds
   storage:
-    size: 10Gi
-    storageClass: local-path
+    size: 5Gi
+    storageClass: smb
   walStorage:
-    size: 2Gi
+    size: 1Gi
   bootstrap:
     recovery:
       source: firefly-dev-cluster
