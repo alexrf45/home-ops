@@ -31,7 +31,7 @@ spec:
       # -- The URL at which Firefly III is available. If you change this value, click the "Reauthenticate" button on the importer after opening it!
       url: "http://firefly-firefly-firefly-iii:80"
       # -- The URL at which you access Firefly III. Check https://docs.firefly-iii.org/data-importer/install/configure/#configure-fidi to find out if you should set this.
-      vanityUrl: ""
+      vanityUrl: "https://firefly-dev.bun-dominant.ts.net"
       auth:
         existingSecret: "firefly-dev-creds"
 
@@ -42,6 +42,7 @@ spec:
       env:
         IGNORE_DUPLICATE_ERRORS: "false"
         TZ: "America/New_York"
+        ENABLE_MAIL_REPORT: true
       files:
         - mountPath: /var/www/html/storage/configurations
           name: test.txt
@@ -68,5 +69,3 @@ spec:
         - secretName: firefly-importer-dev-tls
           hosts:
             - dev.int.firefly-importer.home-0ps.com
-
-    nodeSelector: {}
