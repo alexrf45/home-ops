@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: firefly
+  name: firefly-importer
   namespace: flux-system
 spec:
   interval: 1h
@@ -29,7 +29,7 @@ spec:
     trustedProxies: "**"
     fireflyiii:
       # -- The URL at which Firefly III is available. If you change this value, click the "Reauthenticate" button on the importer after opening it!
-      url: "http://firefly-firefly-iii:80"
+      url: "http://firefly-firefly-firefly-iii:80"
       # -- The URL at which you access Firefly III. Check https://docs.firefly-iii.org/data-importer/install/configure/#configure-fidi to find out if you should set this.
       vanityUrl: ""
       auth:
