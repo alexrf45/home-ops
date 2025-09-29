@@ -94,7 +94,7 @@ spec:
         any:
         - resources:
             kinds:
-              - Pods
+              - Pod
               - DaemonSet
               - StatefulSet
             namespaces:
