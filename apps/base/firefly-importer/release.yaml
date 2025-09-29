@@ -8,8 +8,8 @@ spec:
   interval: 1h
   chart:
     spec:
-      chart: firefly-iii-stack
-      version: 4.2.0
+      chart: importer
+      version: 1.5.0
       interval: 30m
       sourceRef:
         kind: HelmRepository
@@ -22,84 +22,36 @@ spec:
     cleanupOnFail: true
     remediation:
       strategy: rollback
-      retries: 3
+      retries: 7
   targetNamespace: firefly
   values:
     replicaCount: 1
-    deploymentStrategyType: RollingUpdate
+    trustedProxies: "**"
+    fireflyiii:
+      # -- The URL at which Firefly III is available. If you change this value, click the "Reauthenticate" button on the importer after opening it!
+      url: "http://firefly-firefly-iii:80"
+      # -- The URL at which you access Firefly III. Check https://docs.firefly-iii.org/data-importer/install/configure/#configure-fidi to find out if you should set this.
+      vanityUrl: ""
+      auth:
+        existingSecret: "firefly-dev-creds"
+
+    # -- Environment variables for the importer. See docs at: https://github.com/firefly-iii/data-importer/blob/main/.env.example
+    config:
+      existingSecret: "firefly-dev-creds"
+      envValueFrom: {}
+      env:
+        IGNORE_DUPLICATE_ERRORS: "false"
+        TZ: "America/New_York"
+      files:
+        - mountPath: /var/www/html/storage/configurations
+          name: test.txt
+          content: |
+            This is a test file with some content
 
     image:
-      registry: "docker.io"
-      repository: "fireflyiii/core"
-      pullPolicy: IfNotPresent
-      # -- Overrides the image tag whose default is the chart appVersion.
-      tag: ""
-
-    nameOverride: ""
-    fullnameOverride: ""
-
-    persistence:
-      # -- If you set this to false, uploaded attachments are not stored persistently and will be lost with every restart of the pod
-      enabled: false
-      storageClassName: "local-path"
-      accessModes: ReadWriteOnce
-      # volumeName: your-pv-name
-      # selector:
-      #   matchLabels:
-      #     app: my-app
-      storage: 3Gi
-      existingClaim: ""
-
-    # -- Environment variables for Firefly III. See docs at: https://github.com/firefly-iii/firefly-iii/blob/main/.env.example
-    config:
-      existingSecret: "firefly-dev-db-creds"
-
-      # -- Set environment variables from configMaps or Secrets
-      envValueFrom: {}
-
-      # -- Directly defined environment variables. Use this for non-secret configuration values.
-      env:
-        DB_HOST:
-        DB_CONNECTION: pgsql
-        DB_PORT: "5432"
-        DB_DATABASE: firefly
-        DB_USERNAME: firefly
-        DEFAULT_LANGUAGE: "en_US"
-        DEFAULT_LOCALE: "equal"
-        TZ: "Europe/Amsterdam"
-        TRUSTED_PROXIES: "**"
-
-    # -- Create a new Secret from values file to store sensitive environment variables. Make sure to keep your secrets encrypted in the repository! For example, you can use the 'helm secrets' plugin (https://github.com/jkroepke/helm-secrets) to encrypt and manage secrets. If the 'config.existingSecret' value is set, a new Secret will not be created.
-    secrets:
-      env:
-        APP_PASSWORD: "CHANGE_ENCRYPT_ME"
-        DB_PASSWORD: "CHANGE_ENCRYPT_ME"
-      # -- Statically set the APP_KEY in case this is desired over the autogeneration. Should be a random 32-character string.
-      # -- Can be generated using: `cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1`
-      # appKey: "CHANGE_ME"
-
-    # -- A cronjob for [recurring Firefly III tasks](https://docs.firefly-iii.org/firefly-iii/advanced-installation/cron/).
-    cronjob:
-      # -- Set to true to enable the CronJob. Note that you need to specify either cronjob.auth.existingSecret or cronjob.auth.token for it to actually be deployed.
-      enabled: true
-
-      # -- Authorization for the CronJob. See https://docs.firefly-iii.org/firefly-iii/advanced-installation/cron/#request-a-page-over-the-web
-      auth:
-        # -- The name of a secret containing a data.token field with the cronjob token
-        existingSecret: "firefly-dev-db-creds"
-
-        # -- The name of the key in the existing secret to get the cronjob token from
-        secretKey: "token"
-      schedule: "0 3 * * *"
-      successfulJobsHistoryLimit: 3
-      failedJobsHistoryLimit: 1
-      restartPolicy: OnFailure
-
-      image:
-        registry: docker.io
-        repository: curlimages/curl
-        pullPolicy: IfNotPresent
-        tag: 8.16.0
+      repository: fireflyiii/data-importer
+      pullPolicy: Always
+      tag: "version-1.7.8"
 
     service:
       type: ClusterIP
@@ -107,23 +59,14 @@ spec:
 
     ingress:
       enabled: true
-      className: "tailscale"
+      className: "cilium"
       annotations:
-        #tailscale.com/funnel: "true"
+        cert-manager.io/cluster-issuer: letsencrypt-staging
       hosts:
-        - firefly-dev
+        - dev.int.firefly-importer.home-0ps.com
       tls:
-       - secretName: firefly-dev-tls
-         hosts:
-           - firefly-dev
+        - secretName: firefly-importer-dev-tls
+          hosts:
+            - dev.int.firefly-importer.home-0ps.com
 
-    resources:
-      limits:
-        cpu: 100m
-        memory: 300Mi
-      requests:
-        cpu: 100m
-        memory: 128Mi
-
-    nodeSelector:
-      node: "worker"
+    nodeSelector: {}
