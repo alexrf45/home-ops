@@ -68,7 +68,7 @@ spec:
         secretKey: "token"
       schedule: "0 3 * * *"
       successfulJobsHistoryLimit: 3
-      failedJobsHistoryLimit: 1
+      failedJobsHistoryLimit: 3
       restartPolicy: OnFailure
 
       image:
