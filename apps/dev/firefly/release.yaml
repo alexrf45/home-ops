@@ -60,6 +60,7 @@ spec:
         ALLOW_WEBHOOKS: "true"
         ENABLE_EXCHANGE_RATES: "true"
         ENABLE_EXTERNAL_RATES: "false"
+        MAILGUN_ENDPOINT: "api.mailgun.net"
 
     cronjob:
       enabled: true
