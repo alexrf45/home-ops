@@ -35,10 +35,10 @@ spec:
     config:
       existingSecret: "firefly-dev-creds"
       envValueFrom:
-        FIREFLY_III_ACCESS_TOKEN:
+        accessToken:
           secretKeyRef:
             name: firefly-dev-creds
-            key: FIREFLY_III_ACCESS_TOKEN
+            key:  accessToken
         DB_PASSWORD:
           secretKeyRef:
             name: firefly-dev-creds
