@@ -9,3 +9,4 @@ resources:
   #  - it-tools
   #  - nextcloud
    - firefly
+   - ../base/firefly-importer

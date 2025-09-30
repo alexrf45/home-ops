@@ -2,7 +2,7 @@
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
 metadata:
-  name: firefly-iii
+  name: firefly-iii-importer
   namespace: flux-system
 spec:
   interval: 1h

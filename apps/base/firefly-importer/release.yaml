@@ -13,7 +13,7 @@ spec:
       interval: 30m
       sourceRef:
         kind: HelmRepository
-        name: firefly-iii
+        name: firefly-iii-importer
         namespace: flux-system
   install:
     remediation:
@@ -28,21 +28,43 @@ spec:
     replicaCount: 1
     trustedProxies: "**"
     fireflyiii:
-      # -- The URL at which Firefly III is available. If you change this value, click the "Reauthenticate" button on the importer after opening it!
       url: "http://firefly-firefly-firefly-iii:80"
-      # -- The URL at which you access Firefly III. Check https://docs.firefly-iii.org/data-importer/install/configure/#configure-fidi to find out if you should set this.
       vanityUrl: "https://firefly-dev.bun-dominant.ts.net"
       auth:
         existingSecret: "firefly-dev-creds"
-
-    # -- Environment variables for the importer. See docs at: https://github.com/firefly-iii/data-importer/blob/main/.env.example
     config:
       existingSecret: "firefly-dev-creds"
-      envValueFrom: {}
+      envValueFrom:
+        DB_PASSWORD:
+          secretKeyRef:
+            name: firefly-dev-creds
+            key: DB_PASSWORD
+        SIMPLEFIN_TOKEN:
+          secretKeyRef:
+            name: firefly-dev-creds
+            key: SIMPLEFIN_TOKEN
+        MAIL_MAILER:
+          secretKeyRef:
+            name: firefly-dev-creds
+            key: MAIL_MAILER
+        MAIL_DESTINATION:
+          secretKeyRef:
+            name: firefly-dev-creds
+            key: SITE_OWNER
+        MAILGUN_DOMAIN:
+          secretKeyRef:
+            name: firefly-dev-creds
+            key: MAILGUN_DOMAIN
+        MAILGUN_SECRET:
+          secretKeyRef:
+            name: firefly-dev-creds
+            key: MAILGUN_SECRET
       env:
         IGNORE_DUPLICATE_ERRORS: "false"
         TZ: "America/New_York"
+        FIREFLY_III_CLIENT_ID: 1
         ENABLE_MAIL_REPORT: true
+        MAILGUN_ENDPOINT: "api.mailgun.net"
       files:
         - mountPath: /var/www/html/storage/configurations
           name: test.txt
