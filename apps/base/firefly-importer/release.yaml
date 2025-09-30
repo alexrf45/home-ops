@@ -66,7 +66,6 @@ spec:
       env:
         IGNORE_DUPLICATE_ERRORS: "false"
         TZ: "America/New_York"
-        FIREFLY_III_CLIENT_ID: 1
         ENABLE_MAIL_REPORT: true
         MAILGUN_ENDPOINT: "api.mailgun.net"
       files:
