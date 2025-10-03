@@ -107,7 +107,7 @@ spec:
        enabled: false
        prometheus:
         monitor:
-          enabled: true
+          enabled: false
           relabelings:
             - action: replace
               regex: (.*)
