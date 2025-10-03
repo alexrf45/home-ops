@@ -44,7 +44,7 @@ spec:
   values:
     redisOperator:
       name: redis-operator
-      imageName: ghcr.io/ot-container-kit/redis-operator/redis-operator
+      imageName: quay.io/opstree/redis-operator
       imageTag: "v0.22.1"
       imagePullPolicy: Always
       webhook: false
