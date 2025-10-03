@@ -48,7 +48,7 @@ spec:
       imageTag: "v0.22.1"
       imagePullPolicy: Always
       webhook: false
-      automountServiceAccountToken: false
+      automountServiceAccountToken: true
       metrics:
         enabled: true
         bindAddress: ":8080"
