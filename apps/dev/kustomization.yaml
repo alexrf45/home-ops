@@ -8,5 +8,5 @@ resources:
   #- wallabag
   #  - it-tools
   #  - nextcloud
-   - firefly
-   - ../base/firefly-importer
+ #  - firefly
+#   - ../base/firefly-importer
