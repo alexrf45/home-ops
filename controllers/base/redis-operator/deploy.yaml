@@ -45,10 +45,10 @@ spec:
     redisOperator:
       name: redis-operator
       imageName: ghcr.io/ot-container-kit/redis-operator/redis-operator
-      imageTag: "v0.21.0"
+      imageTag: "v0.22.1"
       imagePullPolicy: Always
       webhook: false
-      automountServiceAccountToken: true
+      automountServiceAccountToken: false
       metrics:
         enabled: true
         bindAddress: ":8080"
@@ -65,3 +65,7 @@ spec:
       namespace: redis
     certmanager:
       enabled: false
+    manager:
+      config:
+        kubeClientTimeout: 60s
+        kubeClientQPS: 0.0
