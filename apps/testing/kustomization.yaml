@@ -9,5 +9,5 @@ resources:
   #- it-tools
   #- nextcloud
   #- ../base/kubevirt-manager
-  - ctfd
+#  - ctfd
  # - gitea
