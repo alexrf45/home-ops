@@ -1,0 +1,108 @@
+environment = "test"
+
+worker_disk_count = 2
+
+encryption = {
+  enabled    = true
+  tpm_based  = true # Set to false if your hardware doesn't support TPM
+  static_key = ""   # Only used if tpm_based = false
+}
+
+
+cluster = {
+  name           = "abydos"
+  talos_version  = "v1.11.5"
+  platform       = "nocloud"
+  install_disk   = "/dev/vda"
+  storage_disk   = "/var/data"
+  storage_disk_1 = "/var/data"
+  storage_disk_2 = "/var/data"
+  endpoint       = "192.168.20.230"
+  vip_ip         = "192.168.20.229"
+  control_plane_extensions = [
+    "intel-ucode",
+    "glibc",
+    "iscsi-tools",
+    "util-linux-tools",
+    "qemu-guest-agent",
+    "i915"
+  ]
+  worker_extensions = [
+    "intel-ucode",
+    "glibc",
+    "iscsi-tools",
+    "util-linux-tools",
+    "qemu-guest-agent",
+    "i915"
+  ]
+
+}
+
+pve_hosts = {
+  hosts         = ["pve01"]
+  endpoint      = "192.168.20.6"
+  iso_datastore = "local"
+  gateway       = "192.168.20.1"
+  password      = "nqr5xez.yqg!brm5KPJ"
+}
+
+nodes = {
+  "1" = {
+    machine_type     = "controlplane"
+    node             = "pve01"
+    allow_scheduling = false
+    ip               = "192.168.20.230"
+    datastore_id     = "local-lvm"
+    storage_id       = "pve01"
+    cores            = 2
+    memory           = 8092
+    size             = 25
+    storage_size     = 50
+  },
+  "2" = {
+    machine_type = "worker"
+    node         = "pve01"
+    ip           = "192.168.20.231"
+    datastore_id = "local-lvm"
+    storage_id   = "pve01"
+    cores        = 2
+    memory       = 8092
+    size         = 25
+    storage_size = 50
+  },
+  "3" = {
+    machine_type = "worker"
+    node         = "pve01"
+    ip           = "192.168.20.233"
+    datastore_id = "local-lvm"
+    storage_id   = "pve01"
+    cores        = 2
+    memory       = 8092
+    size         = 25
+    storage_size = 50
+  },
+}
+
+
+cilium_config = {
+  namespace                  = "networking"
+  kube_version               = "1.33.0"
+  cilium_version             = "1.18.4"
+  hubble_enabled             = true
+  hubble_ui_enabled          = true
+  relay_enabled              = true
+  relay_pods_rollout         = true
+  ingress_controller_enabled = false
+  ingress_default_controller = false
+  gateway_api_enabled        = true
+  load_balancer_mode         = "shared"
+  load_balancer_start        = 234
+  load_balancer_stop         = 240
+  load_balancer_ip           = "192.168.20.234"
+  node_network               = "192.168.20.0/24"
+}
+
+dns_servers = {
+  primary   = "1.1.1.1"
+  secondary = "10.3.3.1"
+}

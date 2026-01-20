@@ -1,4 +1,4 @@
-# terraform.tf
+# versions.tf - Provider requirements and configuration
 terraform {
   required_version = ">= 1.5.0"
 
@@ -32,8 +32,15 @@ terraform {
       version = "~> 3.2.0"
     }
   }
-  backend "s3" {
 
-  }
+  # Uncomment and configure for remote state
+  # backend "s3" {
+  #   bucket         = "terraform-state"
+  #   key            = "talos-cluster/terraform.tfstate"
+  #   region         = "us-east-1"
+  #   encrypt        = true
+  #   dynamodb_table = "terraform-locks"
+  # }
 }
+
 

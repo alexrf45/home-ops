@@ -1,15 +1,24 @@
+# cilium.tf - Optional Cilium CNI deployment
+# Set deploy_cilium = false if using GitOps (Flux) for CNI management
+
+#------------------------------------------------------------------------------
+# Cilium Helm Release
+#------------------------------------------------------------------------------
 resource "helm_release" "cilium" {
+  count = var.deploy_cilium ? 1 : 0
+
   depends_on = [
     talos_machine_bootstrap.this,
     talos_cluster_kubeconfig.this
   ]
+
   name             = "cilium"
   repository       = "https://helm.cilium.io/"
   chart            = "cilium"
   namespace        = var.cilium_config.namespace
   create_namespace = true
   wait             = false
-  timeout          = 150
+  timeout          = 300
   version          = var.cilium_config.cilium_version
 
   values = [
@@ -55,9 +64,9 @@ resource "helm_release" "cilium" {
 
       hubble = {
         enabled           = var.cilium_config.hubble_enabled
-        enableOpenMetrics = false
+        enableOpenMetrics = var.cilium_config.hubble_enabled
         metrics = {
-          enabled = ["dns:query", "drop", "tcp", "flow", "port-distribution", "icmp", "http"]
+          enabled = var.cilium_config.hubble_enabled ? ["dns:query", "drop", "tcp", "flow", "port-distribution", "icmp", "http"] : []
         }
         relay = {
           enabled     = var.cilium_config.relay_enabled
@@ -117,8 +126,12 @@ resource "helm_release" "cilium" {
   ]
 }
 
-# Deploy L2 announcement policy and load balancer IP pool
+#------------------------------------------------------------------------------
+# Cilium L2 Announcement Policy
+#------------------------------------------------------------------------------
 resource "kubectl_manifest" "cilium_l2_announcement" {
+  count = var.deploy_cilium ? 1 : 0
+
   depends_on = [helm_release.cilium]
 
   yaml_body = yamlencode({
@@ -130,22 +143,25 @@ resource "kubectl_manifest" "cilium_l2_announcement" {
     }
     spec = {
       loadBalancerIPs = true
-      interfaces = [
-        "eth0",
-      ]
+      interfaces      = ["eth0"]
       nodeSelector = {
         matchExpressions = [
           {
             key      = "node-role.kubernetes.io/control-plane"
             operator = "DoesNotExist"
-          },
+          }
         ]
       }
     }
   })
 }
 
+#------------------------------------------------------------------------------
+# Cilium Load Balancer IP Pool
+#------------------------------------------------------------------------------
 resource "kubectl_manifest" "cilium_lb_pool" {
+  count = var.deploy_cilium ? 1 : 0
+
   depends_on = [helm_release.cilium]
 
   yaml_body = yamlencode({
@@ -158,10 +174,35 @@ resource "kubectl_manifest" "cilium_lb_pool" {
     spec = {
       blocks = [
         {
-          start = cidrhost(var.cilium_config.node_network, var.cilium_config.load_balancer_start)
-          stop  = cidrhost(var.cilium_config.node_network, var.cilium_config.load_balancer_stop)
-        },
+          start = local.cilium_lb_pool_start
+          stop  = local.cilium_lb_pool_stop
+        }
       ]
     }
   })
+}
+
+#------------------------------------------------------------------------------
+# Cilium Helm Template (for GitOps export)
+#------------------------------------------------------------------------------
+data "helm_template" "cilium" {
+  count = var.deploy_cilium ? 0 : 1 # Only generate when NOT deploying via Terraform
+
+  name         = "cilium"
+  namespace    = var.cilium_config.namespace
+  repository   = "https://helm.cilium.io/"
+  chart        = "cilium"
+  version      = var.cilium_config.cilium_version
+  kube_version = var.cilium_config.kube_version
+  include_crds = true
+
+  values = [
+    yamlencode({
+      # Same values as helm_release above
+      ipam                 = { mode = "kubernetes" }
+      kubeProxyReplacement = true
+      k8sServiceHost       = "localhost"
+      k8sServicePort       = "7445"
+    })
+  ]
 }
