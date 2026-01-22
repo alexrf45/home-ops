@@ -23,17 +23,17 @@ data "talos_machine_configuration" "controlplane" {
   machine_secrets  = talos_machine_secrets.this.machine_secrets
   config_patches = [
     templatefile("${path.module}/templates/control_plane.yaml.tftpl", {
-      install_disk     = var.talos.install_disk
-      install_image    = talos_image_factory_schematic.controlplane.id
-      storage_disk     = var.talos.storage_disk
-      hostname         = format("${var.env}-${var.talos.name}-cp-${random_id.this[each.key].hex}")
+      install_disk  = var.talos.install_disk
+      install_image = talos_image_factory_schematic.controlplane.id
+      storage_disk  = var.talos.storage_disk
+      #hostname         = format("${var.env}-${var.talos.name}-cp-${random_id.this[each.key].hex}")
       allow_scheduling = each.value.allow_scheduling
-      node_name        = each.value.node
-      talos_name       = var.talos.name
-      endpoint         = var.pve.endpoint
-      vip_ip           = var.talos.vip_ip
-      nameserver1      = var.nameservers.primary
-      nameserver2      = var.nameservers.secondary
+      #node_name        = each.value.node
+      talos_name  = var.talos.name
+      endpoint    = var.pve.endpoint
+      vip_ip      = var.talos.vip_ip
+      nameserver1 = var.nameservers.primary
+      nameserver2 = var.nameservers.secondary
     }),
     yamlencode({
       talos = {
@@ -67,11 +67,11 @@ data "talos_machine_configuration" "worker" {
       install_disk  = var.talos.install_disk
       storage_disk  = var.talos.storage_disk
       install_image = talos_image_factory_schematic.worker.id
-      hostname      = format("${var.env}-${var.talos.name}-node-${random_id.this[each.key].hex}")
-      node_name     = each.value.node
-      talos_name    = var.talos.name
-      nameserver1   = var.nameservers.primary
-      nameserver2   = var.nameservers.secondary
+      #hostname      = format("${var.env}-${var.talos.name}-node-${random_id.this[each.key].hex}")
+      #node_name     = each.value.node
+      talos_name  = var.talos.name
+      nameserver1 = var.nameservers.primary
+      nameserver2 = var.nameservers.secondary
     }),
   ]
 }
