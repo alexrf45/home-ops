@@ -43,7 +43,7 @@ spec:
       interval: 12h
   targetNamespace: database
   values:
-    replicaCount: 2
+    replicaCount: 1
     crds:
       create: true
     monitoring:

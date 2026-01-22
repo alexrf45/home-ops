@@ -32,28 +32,13 @@ locals {
 
   dns_servers_list = [var.dns_servers.primary, var.dns_servers.secondary]
 
-  storage_encryption_config = var.encryption.enabled ? (
-    var.encryption.tpm_based ? {
-      provider = "luks2"
-      keys = [
-        {
-          slot = 0
-          tpm  = {}
-        }
-      ]
-      } : {
-      provider = "luks2"
-      keys = [
-        {
-          slot = 0
-          static = {
-            passphrase = var.encryption.static_key != "" ? var.encryption.static_key : random_password.encryption_key[0].result
-          }
-        }
-      ]
-    }
-  ) : null
-
+  #----------------------------------------------------------------------------
+  # Encryption Passphrase (for static key mode)
+  #----------------------------------------------------------------------------
+  encryption_passphrase = try(
+    var.encryption.static_key != "" ? var.encryption.static_key : random_password.encryption_key[0].result,
+    ""
+  )
 
   #----------------------------------------------------------------------------
   # Base Machine Configurations
@@ -90,10 +75,14 @@ locals {
   }
 
   #----------------------------------------------------------------------------
-  # Control Plane Machine Configuration
+  # Control Plane Machine Configuration (base - no encryption)
   #----------------------------------------------------------------------------
   controlplane_machine_config = {
-    machine = merge(local.base_machine_config, {
+    machine = {
+      sysctls = local.base_machine_config.sysctls
+      kernel  = local.base_machine_config.kernel
+      files   = local.base_machine_config.files
+      time    = local.base_machine_config.time
       kubelet = merge(local.base_kubelet_config, {
         extraMounts = [
           {
@@ -104,29 +93,13 @@ locals {
           }
         ]
       })
-      systemDiskEncryption = var.encryption.enabled && var.encryption.tpm_based ? {
-        ephemeral = {
-          provider = "luks2"
-          keys = [
-            {
-              slot = 0
-              tpm  = {}
-            }
-          ]
-        }
-      } : null
       disks = [
         {
           device = "/dev/vdb"
           partitions = [
-            merge(
-              {
-                mountpoint = var.cluster.storage_disk
-              },
-              var.encryption.enabled ? {
-                encryption = local.storage_encryption_config
-              } : {}
-            )
+            {
+              mountpoint = var.cluster.storage_disk
+            }
           ]
         }
       ]
@@ -135,7 +108,7 @@ locals {
         image           = talos_image_factory_schematic.controlplane.id
         extraKernelArgs = var.talos_config.extra_kernel_args
       }
-    })
+    }
   }
 
   #----------------------------------------------------------------------------
@@ -172,21 +145,6 @@ locals {
       ]
       inlineManifests = [
         {
-          name = "cilium-namespace"
-          contents = yamlencode({
-            apiVersion = "v1"
-            kind       = "Namespace"
-            metadata = {
-              name = var.cilium_config.namespace
-              labels = {
-                "pod-security.kubernetes.io/enforce" = "privileged"
-                "pod-security.kubernetes.io/audit"   = "privileged"
-                "pod-security.kubernetes.io/warn"    = "privileged"
-              }
-            }
-          })
-        },
-        {
           name = "namespace-flux"
           contents = yamlencode({
             apiVersion = "v1"
@@ -215,9 +173,11 @@ locals {
             apiVersion = "v1"
             kind       = "Namespace"
             metadata = {
-              name = "networking"
+              name = var.cilium_config.namespace
               labels = {
                 "pod-security.kubernetes.io/enforce" = "privileged"
+                "pod-security.kubernetes.io/audit"   = "privileged"
+                "pod-security.kubernetes.io/warn"    = "privileged"
                 "app"                                = "networking"
               }
             }
@@ -237,16 +197,19 @@ locals {
             }
           })
         }
-
       ]
     })
   }
 
   #----------------------------------------------------------------------------
-  # Worker Machine Configuration
+  # Worker Machine Configuration (base - no encryption)
   #----------------------------------------------------------------------------
   worker_machine_config = {
-    machine = merge(local.base_machine_config, {
+    machine = {
+      sysctls = local.base_machine_config.sysctls
+      kernel  = local.base_machine_config.kernel
+      files   = local.base_machine_config.files
+      time    = local.base_machine_config.time
       kubelet = merge(local.base_kubelet_config, {
         extraMounts = [
           {
@@ -263,34 +226,21 @@ locals {
           }
         ]
       })
-      systemDiskEncryption = var.encryption.enabled && var.encryption.tpm_based ? {
-        ephemeral = {
-          provider = "luks2"
-          keys = [
-            {
-              slot = 0
-              tpm  = {}
-            }
-          ]
-        }
-      } : null
       disks = [
         {
           device = "/dev/vdb"
           partitions = [
-            merge(
-              { mountpoint = var.cluster.storage_disk_1 },
-              var.encryption.enabled ? { encryption = local.storage_encryption_config } : {}
-            )
+            {
+              mountpoint = var.cluster.storage_disk_1
+            }
           ]
         },
         {
           device = "/dev/vdc"
           partitions = [
-            merge(
-              { mountpoint = var.cluster.storage_disk_2 },
-              var.encryption.enabled ? { encryption = local.storage_encryption_config } : {}
-            )
+            {
+              mountpoint = var.cluster.storage_disk_2
+            }
           ]
         }
       ]
@@ -299,8 +249,143 @@ locals {
         image           = talos_image_factory_schematic.worker.id
         extraKernelArgs = var.talos_config.extra_kernel_args
       }
-    })
+    }
   }
+
+  #----------------------------------------------------------------------------
+  # Encryption Config Patches (separate YAML patches for encryption)
+  # These are applied as additional config patches when encryption is enabled
+  #----------------------------------------------------------------------------
+  
+  # TPM encryption patch for control plane
+  controlplane_encryption_patch_tpm = yamlencode({
+    machine = {
+      systemDiskEncryption = {
+        ephemeral = {
+          provider = "luks2"
+          keys = [{
+            slot = 0
+            tpm  = {}
+          }]
+        }
+      }
+      disks = [{
+        device = "/dev/vdb"
+        partitions = [{
+          mountpoint = var.cluster.storage_disk
+          encryption = {
+            provider = "luks2"
+            keys = [{
+              slot = 0
+              tpm  = {}
+            }]
+          }
+        }]
+      }]
+    }
+  })
+
+  # Static key encryption patch for control plane
+  controlplane_encryption_patch_static = yamlencode({
+    machine = {
+      disks = [{
+        device = "/dev/vdb"
+        partitions = [{
+          mountpoint = var.cluster.storage_disk
+          encryption = {
+            provider = "luks2"
+            keys = [{
+              slot = 0
+              static = {
+                passphrase = local.encryption_passphrase
+              }
+            }]
+          }
+        }]
+      }]
+    }
+  })
+
+  # TPM encryption patch for workers
+  worker_encryption_patch_tpm = yamlencode({
+    machine = {
+      systemDiskEncryption = {
+        ephemeral = {
+          provider = "luks2"
+          keys = [{
+            slot = 0
+            tpm  = {}
+          }]
+        }
+      }
+      disks = [
+        {
+          device = "/dev/vdb"
+          partitions = [{
+            mountpoint = var.cluster.storage_disk_1
+            encryption = {
+              provider = "luks2"
+              keys = [{
+                slot = 0
+                tpm  = {}
+              }]
+            }
+          }]
+        },
+        {
+          device = "/dev/vdc"
+          partitions = [{
+            mountpoint = var.cluster.storage_disk_2
+            encryption = {
+              provider = "luks2"
+              keys = [{
+                slot = 0
+                tpm  = {}
+              }]
+            }
+          }]
+        }
+      ]
+    }
+  })
+
+  # Static key encryption patch for workers
+  worker_encryption_patch_static = yamlencode({
+    machine = {
+      disks = [
+        {
+          device = "/dev/vdb"
+          partitions = [{
+            mountpoint = var.cluster.storage_disk_1
+            encryption = {
+              provider = "luks2"
+              keys = [{
+                slot = 0
+                static = {
+                  passphrase = local.encryption_passphrase
+                }
+              }]
+            }
+          }]
+        },
+        {
+          device = "/dev/vdc"
+          partitions = [{
+            mountpoint = var.cluster.storage_disk_2
+            encryption = {
+              provider = "luks2"
+              keys = [{
+                slot = 0
+                static = {
+                  passphrase = local.encryption_passphrase
+                }
+              }]
+            }
+          }]
+        }
+      ]
+    }
+  })
 
   #----------------------------------------------------------------------------
   # Per-Node Control Plane Configs

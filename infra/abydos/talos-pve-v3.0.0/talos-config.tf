@@ -12,9 +12,12 @@ data "talos_machine_configuration" "controlplane" {
   machine_type     = "controlplane"
   machine_secrets  = talos_machine_secrets.this.machine_secrets
 
-  config_patches = [
-    yamlencode(local.controlplane_configs[each.key])
-  ]
+  # Base config + optional encryption patch
+  config_patches = concat(
+    [yamlencode(local.controlplane_configs[each.key])],
+    var.encryption.enabled && var.encryption.tpm_based ? [local.controlplane_encryption_patch_tpm] : [],
+    var.encryption.enabled && !var.encryption.tpm_based ? [local.controlplane_encryption_patch_static] : []
+  )
 }
 
 resource "talos_machine_configuration_apply" "controlplane" {
@@ -51,9 +54,12 @@ data "talos_machine_configuration" "worker" {
   machine_type     = "worker"
   machine_secrets  = talos_machine_secrets.this.machine_secrets
 
-  config_patches = [
-    yamlencode(local.worker_configs[each.key])
-  ]
+  # Base config + optional encryption patch
+  config_patches = concat(
+    [yamlencode(local.worker_configs[each.key])],
+    var.encryption.enabled && var.encryption.tpm_based ? [local.worker_encryption_patch_tpm] : [],
+    var.encryption.enabled && !var.encryption.tpm_based ? [local.worker_encryption_patch_static] : []
+  )
 }
 
 resource "talos_machine_configuration_apply" "worker" {
