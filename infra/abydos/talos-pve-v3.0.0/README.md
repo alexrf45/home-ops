@@ -1,248 +1,65 @@
-# Talos Linux on Proxmox - Terraform Module v3.0.0
-
-A Terraform module for deploying Talos Linux Kubernetes clusters on Proxmox VE with **independent worker node scaling**.
-
-## Key Features
-
-- **Independent Worker Scaling**: Add or remove worker nodes without affecting control plane
-- **Protected Control Plane**: `prevent_destroy` lifecycle prevents accidental deletion
-- **Conditional Bootstrap**: Set `bootstrap_cluster = false` after initial deployment
-- **Optional Cilium**: Deploy via Terraform or GitOps (Flux)
-- **Comprehensive Outputs**: Ready for monitoring and GitOps integration
-
-## Quick Start
-
-```bash
-# Copy example configuration
-cp terraform.tfvars.example terraform.tfvars
-
-# Edit configuration
-vim terraform.tfvars
-
-# Initialize and apply
-terraform init
-terraform plan
-terraform apply
-
-# Save credentials
-terraform output -raw kubeconfig > ~/.kube/prod
-terraform output -raw talos_config > ~/.talos/prod
-
-# IMPORTANT: After successful deployment, set bootstrap_cluster = false
-# This prevents bootstrap failures on subsequent applies
-```
-
-## Adding Workers (Day 2 Operations)
-
-Simply add a new entry to `worker_nodes` and apply:
-
-```hcl
-worker_nodes = {
-  # ... existing workers ...
-  
-  "wk-new" = {
-    proxmox_host       = "home-6"
-    ip                 = "10.3.3.130"
-    cores              = 4
-    memory             = 16384
-    storage_id         = "data"
-    storage_disk_count = 2
-    node_labels = {
-      "node.kubernetes.io/workload" = "database"
-    }
-  }
-}
-```
-
-```bash
-terraform plan   # Shows only new worker being created
-terraform apply  # Control plane and existing workers unchanged
-```
-
-## Removing Workers
-
-Remove the entry from `worker_nodes` and apply:
-
-```bash
-terraform plan   # Shows only that worker being destroyed
-terraform apply  # Other nodes unchanged
-```
-
-## Migration from v2.0.0
-
-### Step 1: Backup State
-
-```bash
-terraform state pull > backup.tfstate
-cp terraform.tfvars terraform.tfvars.bak
-```
-
-### Step 2: Update Variables
-
-The main changes:
-- `nodes` map split into `controlplane_nodes` and `worker_nodes`
-- `pve_config` renamed to `pve_hosts`
-- New `bootstrap_cluster` variable (set to `false` for existing clusters)
-- New `deploy_cilium` variable
-
-```hcl
-# OLD (v2.0.0)
-nodes = {
-  "1" = { machine_type = "controlplane", ... }
-  "4" = { machine_type = "worker", ... }
-}
-
-# NEW (v3.0.0)
-controlplane_nodes = {
-  "cp-1" = { ... }  # No machine_type needed
-}
-worker_nodes = {
-  "wk-1" = { ... }  # No machine_type needed
-}
-```
-
-### Step 3: Move State (Critical!)
-
-```bash
-# Move control plane VM state
-terraform state mv \
-  'proxmox_virtual_environment_vm.talos_vm["1"]' \
-  'proxmox_virtual_environment_vm.controlplane["cp-1"]'
-
-# Move worker VM state  
-terraform state mv \
-  'proxmox_virtual_environment_vm.talos_vm["4"]' \
-  'proxmox_virtual_environment_vm.worker["wk-1"]'
-
-# Move random IDs
-terraform state mv \
-  'random_id.example["1"]' \
-  'random_id.controlplane["cp-1"]'
-
-terraform state mv \
-  'random_id.example["4"]' \
-  'random_id.worker["wk-1"]'
-
-# Move Talos configuration apply resources
-terraform state mv \
-  'talos_machine_configuration_apply.this["1"]' \
-  'talos_machine_configuration_apply.controlplane["cp-1"]'
-
-terraform state mv \
-  'talos_machine_configuration_apply.this["4"]' \
-  'talos_machine_configuration_apply.worker["wk-1"]'
-```
-
-### Step 4: Set Bootstrap to False
-
-Since your cluster is already running:
-
-```hcl
-bootstrap_cluster = false  # Prevents re-bootstrap attempts
-```
-
-### Step 5: Plan and Verify
-
-```bash
-terraform plan
-# Should show minimal or no changes for existing resources
-# May show changes to lifecycle/tags which are safe
-```
-
-## File Structure
-
-```
-talos-pve-v3.0.0/
-├── versions.tf              # Provider requirements
-├── variables.tf             # All variable definitions
-├── locals.tf                # Computed values
-├── outputs.tf               # All outputs
-├── talos-images.tf          # Image factory resources
-├── talos-secrets.tf         # Machine secrets
-├── talos-config.tf          # Machine configuration
-├── talos-bootstrap.tf       # Cluster bootstrap
-├── pve-images.tf            # Proxmox image downloads
-├── pve-controlplane.tf      # Control plane VMs (protected)
-├── pve-workers.tf           # Worker VMs (scalable)
-├── cilium.tf                # Optional CNI deployment
-└── terraform.tfvars.example # Example configuration
-```
-
-## Variables Reference
-
-### Required Variables
-
-| Variable | Description |
-|----------|-------------|
-| `environment` | Environment name (dev, test, prod) |
-| `pve_hosts` | Proxmox VE configuration |
-| `cluster` | Cluster configuration (name, endpoint, etc.) |
-| `controlplane_nodes` | Control plane node definitions |
-| `cilium_config` | Cilium CNI configuration |
-
-### Optional Variables
-
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `worker_nodes` | `{}` | Worker node definitions |
-| `bootstrap_cluster` | `true` | Bootstrap on first apply |
-| `deploy_cilium` | `true` | Deploy Cilium via Terraform |
-| `encryption` | disabled | Disk encryption config |
-| `talos_config` | defaults | Advanced Talos settings |
-| `security_config` | defaults | Security settings |
-
-## Outputs Reference
-
-| Output | Description |
-|--------|-------------|
-| `kubeconfig` | Raw kubeconfig (sensitive) |
-| `talos_config` | Talos client config (sensitive) |
-| `controlplane_nodes` | Control plane details |
-| `worker_nodes` | Worker node details |
-| `monitoring_config` | Values for monitoring setup |
-| `cilium_manifests` | Cilium manifests for GitOps |
-
-## GitOps Integration
-
-To use Flux for Cilium management instead of Terraform:
-
-```hcl
-deploy_cilium = false
-```
-
-Then use the `cilium_manifests` output or configure Flux HelmRelease.
-
-## Troubleshooting
-
-### "Cluster already bootstrapped" Error
-
-Set `bootstrap_cluster = false` in your tfvars.
-
-### Workers Not Joining
-
-1. Verify control plane is healthy: `talosctl health`
-2. Check worker can reach API: `ping 10.3.3.120`
-3. Check Talos config applied: `talosctl -n <worker-ip> get members`
-
-### Want to Force Recreate a Worker
-
-```bash
-terraform taint 'proxmox_virtual_environment_vm.worker["wk-1"]'
-terraform apply
-```
-
-### Control Plane Protected from Destroy
-
-This is intentional. To actually destroy control plane (dangerous!):
-1. Comment out `prevent_destroy = true` in pve-controlplane.tf
-2. Run `terraform apply` then `terraform destroy`
-
 ## Requirements
 
 | Name | Version |
 |------|---------|
-| terraform | >= 1.5.0 |
-| proxmox | ~> 0.80.0 |
-| talos | ~> 0.9.0 |
-| helm | ~> 3.0.0 |
-| kubectl | ~> 1.14 |
+| <a name="requirement_helm"></a> [helm](#requirement\_helm) | 3.0.2 |
+| <a name="requirement_proxmox"></a> [proxmox](#requirement\_proxmox) | 0.80.0 |
+| <a name="requirement_random"></a> [random](#requirement\_random) | 3.7.2 |
+| <a name="requirement_talos"></a> [talos](#requirement\_talos) | 0.9.0-alpha.0 |
+
+## Providers
+
+| Name | Version |
+|------|---------|
+| <a name="provider_helm"></a> [helm](#provider\_helm) | 3.0.2 |
+| <a name="provider_proxmox"></a> [proxmox](#provider\_proxmox) | 0.80.0 |
+| <a name="provider_random"></a> [random](#provider\_random) | 3.7.2 |
+| <a name="provider_talos"></a> [talos](#provider\_talos) | 0.9.0-alpha.0 |
+| <a name="provider_time"></a> [time](#provider\_time) | n/a |
+
+## Modules
+
+No modules.
+
+## Resources
+
+| Name | Type |
+|------|------|
+| [proxmox_virtual_environment_download_file.talos_control_plane_image](https://registry.terraform.io/providers/bpg/proxmox/0.80.0/docs/resources/virtual_environment_download_file) | resource |
+| [proxmox_virtual_environment_download_file.talos_worker_image](https://registry.terraform.io/providers/bpg/proxmox/0.80.0/docs/resources/virtual_environment_download_file) | resource |
+| [proxmox_virtual_environment_vm.talos_vm](https://registry.terraform.io/providers/bpg/proxmox/0.80.0/docs/resources/virtual_environment_vm) | resource |
+| [random_id.example](https://registry.terraform.io/providers/hashicorp/random/3.7.2/docs/resources/id) | resource |
+| [talos_cluster_kubeconfig.this](https://registry.terraform.io/providers/siderolabs/talos/0.9.0-alpha.0/docs/resources/cluster_kubeconfig) | resource |
+| [talos_image_factory_schematic.controlplane](https://registry.terraform.io/providers/siderolabs/talos/0.9.0-alpha.0/docs/resources/image_factory_schematic) | resource |
+| [talos_image_factory_schematic.worker](https://registry.terraform.io/providers/siderolabs/talos/0.9.0-alpha.0/docs/resources/image_factory_schematic) | resource |
+| [talos_machine_bootstrap.this](https://registry.terraform.io/providers/siderolabs/talos/0.9.0-alpha.0/docs/resources/machine_bootstrap) | resource |
+| [talos_machine_configuration_apply.this](https://registry.terraform.io/providers/siderolabs/talos/0.9.0-alpha.0/docs/resources/machine_configuration_apply) | resource |
+| [talos_machine_secrets.this](https://registry.terraform.io/providers/siderolabs/talos/0.9.0-alpha.0/docs/resources/machine_secrets) | resource |
+| [time_sleep.wait_until_apply](https://registry.terraform.io/providers/hashicorp/time/latest/docs/resources/sleep) | resource |
+| [time_sleep.wait_until_bootstrap](https://registry.terraform.io/providers/hashicorp/time/latest/docs/resources/sleep) | resource |
+| [helm_template.this](https://registry.terraform.io/providers/hashicorp/helm/3.0.2/docs/data-sources/template) | data source |
+| [talos_client_configuration.this](https://registry.terraform.io/providers/siderolabs/talos/0.9.0-alpha.0/docs/data-sources/client_configuration) | data source |
+| [talos_image_factory_extensions_versions.controlplane](https://registry.terraform.io/providers/siderolabs/talos/0.9.0-alpha.0/docs/data-sources/image_factory_extensions_versions) | data source |
+| [talos_image_factory_extensions_versions.worker](https://registry.terraform.io/providers/siderolabs/talos/0.9.0-alpha.0/docs/data-sources/image_factory_extensions_versions) | data source |
+| [talos_image_factory_urls.controlplane](https://registry.terraform.io/providers/siderolabs/talos/0.9.0-alpha.0/docs/data-sources/image_factory_urls) | data source |
+| [talos_image_factory_urls.worker](https://registry.terraform.io/providers/siderolabs/talos/0.9.0-alpha.0/docs/data-sources/image_factory_urls) | data source |
+| [talos_machine_configuration.this](https://registry.terraform.io/providers/siderolabs/talos/0.9.0-alpha.0/docs/data-sources/machine_configuration) | data source |
+
+## Inputs
+
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| <a name="input_cilium_config"></a> [cilium\_config](#input\_cilium\_config) | Configuration options for bootstrapping cilium | <pre>object({<br/>    node_network               = string<br/>    kube_version               = string<br/>    cilium_version             = string<br/>    hubble_enabled             = bool<br/>    hubble_ui_enabled          = bool<br/>    relay_enabled              = bool<br/>    relay_pods_rollout         = bool<br/>    ingress_controller_enabled = bool<br/>    ingress_default_controller = bool<br/>    gateway_api_enabled        = bool<br/>    load_balancer_mode         = string<br/>    load_balancer_ip           = string<br/>    load_balancer_start        = number<br/>    load_balancer_stop         = number<br/>  })</pre> | <pre>{<br/>  "cilium_version": "1.17.6",<br/>  "gateway_api_enabled": false,<br/>  "hubble_enabled": false,<br/>  "hubble_ui_enabled": false,<br/>  "ingress_controller_enabled": true,<br/>  "ingress_default_controller": true,<br/>  "kube_version": "1.33.0",<br/>  "load_balancer_ip": "10.3.3.2",<br/>  "load_balancer_mode": "shared",<br/>  "load_balancer_start": 10,<br/>  "load_balancer_stop": 20,<br/>  "node_network": "10.3.3.0/24",<br/>  "relay_enabled": false,<br/>  "relay_pods_rollout": false<br/>}</pre> | no |
+| <a name="input_cluster"></a> [cluster](#input\_cluster) | Cluster configuration | <pre>object({<br/>    name                     = string<br/>    endpoint                 = string<br/>    vip_ip                   = string<br/>    talos_version            = string<br/>    install_disk             = string<br/>    storage_disk             = string<br/>    control_plane_extensions = list(string)<br/>    worker_extensions        = list(string)<br/>    platform                 = string<br/>    tailscale_auth           = string<br/>  })</pre> | n/a | yes |
+| <a name="input_dns_servers"></a> [dns\_servers](#input\_dns\_servers) | DNS servers for the nodes | <pre>object({<br/>    primary   = string<br/>    secondary = string<br/>  })</pre> | <pre>{<br/>  "primary": "1.1.1.1",<br/>  "secondary": "8.8.8.8"<br/>}</pre> | no |
+| <a name="input_environment"></a> [environment](#input\_environment) | operating environment of cluster | `string` | n/a | yes |
+| <a name="input_nodes"></a> [nodes](#input\_nodes) | Configuration for cluster nodes | <pre>map(object({<br/>    machine_type     = string<br/>    allow_scheduling = optional(bool, true)<br/>    node             = string<br/>    ip               = string<br/>    cores            = number<br/>    memory           = number<br/>    datastore_id     = string<br/>    storage_id       = string<br/>    size             = number<br/>    storage_size     = number<br/>  }))</pre> | n/a | yes |
+| <a name="input_pve_config"></a> [pve\_config](#input\_pve\_config) | Proxmox VE configuration options | <pre>object({<br/>    hosts         = list(string)<br/>    pve_endpoint  = string<br/>    igpu          = optional(bool, false)<br/>    iso_datastore = string<br/>    gateway       = string<br/>    password      = string<br/>  })</pre> | n/a | yes |
+
+## Outputs
+
+| Name | Description |
+|------|-------------|
+| <a name="output_client_configuration"></a> [client\_configuration](#output\_client\_configuration) | n/a |
+| <a name="output_kubeclientconfig"></a> [kubeclientconfig](#output\_kubeclientconfig) | n/a |
+| <a name="output_kubeconfig"></a> [kubeconfig](#output\_kubeconfig) | n/a |

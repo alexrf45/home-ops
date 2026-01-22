@@ -1,7 +1,4 @@
-# versions.tf - Provider requirements and configuration
 terraform {
-  required_version = ">= 1.5.0"
-
   required_providers {
     proxmox = {
       source  = "bpg/proxmox"
@@ -19,28 +16,13 @@ terraform {
       source  = "hashicorp/random"
       version = "~> 3.7.0"
     }
-    kubectl = {
-      source  = "gavinbunney/kubectl"
-      version = "~> 1.14"
-    }
     time = {
       source  = "hashicorp/time"
       version = "~> 0.11.0"
     }
-    null = {
-      source  = "hashicorp/null"
-      version = "~> 3.2.0"
-    }
   }
-
-  # Uncomment and configure for remote state
   # backend "s3" {
-  #   bucket         = "terraform-state"
-  #   key            = "talos-cluster/terraform.tfstate"
-  #   region         = "us-east-1"
-  #   encrypt        = true
-  #   dynamodb_table = "terraform-locks"
+  #
   # }
 }
-
 

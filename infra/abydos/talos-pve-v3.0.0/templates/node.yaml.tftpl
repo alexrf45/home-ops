@@ -1,0 +1,67 @@
+machine:
+  systemDiskEncryption:
+    ephemeral:
+      provider: luks2
+      keys:
+        -
+          nodeID: {}
+          slot: 0
+          tpm: {}
+    state:
+      provider: luks2
+      keys:
+        -
+          nodeID: {}
+          slot: 0
+          tpm: {}
+  sysctls:
+    vm.nr_hugepages: "1024"
+  kernel:
+    modules:
+      - name: nvme_tcp
+      - name: vfio_pci
+  files:
+    - path: /etc/cri/conf.d/20-customization.part
+      op: create
+      content: |
+        [plugins."io.containerd.cri.v1.images"]
+          discard_unpacked_layers = false
+        [plugins."io.containerd.cri.v1.runtime"]
+          device_ownership_from_security_context = true
+  time:
+    servers:
+      - time.cloudflare.com
+  kubelet:
+    extraArgs:
+      rotate-server-certificates: true
+    clusterDNS:
+      - 10.43.0.10
+    extraMounts:
+      - destination: ${storage_disk}
+        type: bind
+        source: ${storage_disk}
+        options:
+          - rbind
+          - rshared
+          - rw
+  disks:
+    - device: /dev/vdb
+      partitions:
+        - mountpoint: ${storage_disk}
+  install:
+    disk: ${install_disk}
+    image: ${install_image}
+    extraKernelArgs:
+      - console=ttyS1
+      - panic=10
+      - cpufreq.default_governor=performance
+      - intel_idle.max_cstate=0
+      - disable_ipv6=1
+  network:
+    hostname: ${hostname}
+    nameservers:
+      - ${nameserver1}
+      - ${nameserver2}
+    interfaces:
+    - interface: eth0
+      dhcp: false

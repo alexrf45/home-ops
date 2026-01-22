@@ -1,53 +1,57 @@
-# talos-images.tf - Talos Image Factory resources
+#### talos control plane image schematic
 
-#------------------------------------------------------------------------------
-# Control Plane Image
-#------------------------------------------------------------------------------
 data "talos_image_factory_extensions_versions" "controlplane" {
-  talos_version = var.cluster.talos_version
+  # get the latest talos version
+  talos_version = var.talos.version
   filters = {
-    names = var.cluster.control_plane_extensions
+    names = var.talos.control_plane_extensions
   }
-}
-
-resource "talos_image_factory_schematic" "controlplane" {
-  schematic = yamlencode({
-    customization = {
-      systemExtensions = {
-        officialExtensions = data.talos_image_factory_extensions_versions.controlplane.extensions_info.*.name
-      }
-    }
-  })
 }
 
 data "talos_image_factory_urls" "controlplane" {
-  talos_version = var.cluster.talos_version
+  talos_version = var.talos.version
   schematic_id  = talos_image_factory_schematic.controlplane.id
-  platform      = var.cluster.platform
+  platform      = var.talos.platform
 }
 
-#------------------------------------------------------------------------------
-# Worker Image
-#------------------------------------------------------------------------------
+
+resource "talos_image_factory_schematic" "controlplane" {
+  schematic = yamlencode(
+    {
+      customization = {
+        systemExtensions = {
+          officialExtensions = data.talos_image_factory_extensions_versions.controlplane.extensions_info.*.name
+        }
+      }
+    }
+  )
+}
+#### talos worker image schematic
 data "talos_image_factory_extensions_versions" "worker" {
-  talos_version = var.cluster.talos_version
+  # get the latest talos version
+  talos_version = var.talos.version
   filters = {
-    names = var.cluster.worker_extensions
+    names = var.talos.worker_extensions
   }
 }
 
-resource "talos_image_factory_schematic" "worker" {
-  schematic = yamlencode({
-    customization = {
-      systemExtensions = {
-        officialExtensions = data.talos_image_factory_extensions_versions.worker.extensions_info.*.name
-      }
-    }
-  })
+data "talos_image_factory_urls" "worker" {
+  talos_version = var.talos.version
+  schematic_id  = talos_image_factory_schematic.worker.id
+  platform      = var.talos.platform
 }
 
-data "talos_image_factory_urls" "worker" {
-  talos_version = var.cluster.talos_version
-  schematic_id  = talos_image_factory_schematic.worker.id
-  platform      = var.cluster.platform
+
+resource "talos_image_factory_schematic" "worker" {
+  schematic = yamlencode(
+    {
+      customization = {
+        systemExtensions = {
+          officialExtensions = data.talos_image_factory_extensions_versions.worker.extensions_info.*.name
+        }
+      }
+    }
+  )
 }
+
+

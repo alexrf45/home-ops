@@ -1,27 +1,24 @@
-# pve-images.tf - Proxmox image downloads
-
-resource "proxmox_virtual_environment_download_file" "talos_controlplane_image" {
-  count = length(var.pve_hosts.hosts)
-
+#pve-images.tf - talos image download
+resource "proxmox_virtual_environment_download_file" "talos_control_plane_image" {
+  count                   = length(var.pve.hosts)
   content_type            = "iso"
-  datastore_id            = var.pve_hosts.iso_datastore
-  node_name               = var.pve_hosts.hosts[count.index]
+  datastore_id            = var.pve.iso_datastore
+  node_name               = var.pve.hosts[count.index]
   url                     = data.talos_image_factory_urls.controlplane.urls.disk_image
   decompression_algorithm = "zst"
-  file_name               = "${var.environment}-controlplane-talos-${var.cluster.talos_version}.img"
+  file_name               = "${var.env}-control-plane-talos.img"
   overwrite               = false
-  upload_timeout          = 3600
+  upload_timeout          = 1800
 }
 
 resource "proxmox_virtual_environment_download_file" "talos_worker_image" {
-  count = length(var.pve_hosts.hosts)
-
+  count                   = length(var.pve.hosts)
   content_type            = "iso"
-  datastore_id            = var.pve_hosts.iso_datastore
-  node_name               = var.pve_hosts.hosts[count.index]
+  datastore_id            = var.pve.iso_datastore
+  node_name               = var.pve.hosts[count.index]
   url                     = data.talos_image_factory_urls.worker.urls.disk_image
   decompression_algorithm = "zst"
-  file_name               = "${var.environment}-worker-talos-${var.cluster.talos_version}.img"
+  file_name               = "${var.env}-worker-talos.img"
   overwrite               = false
-  upload_timeout          = 3600
+  upload_timeout          = 1800
 }
