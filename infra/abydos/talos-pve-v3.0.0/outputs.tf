@@ -8,6 +8,13 @@ output "kubeconfig" {
   sensitive = true
 }
 
+
+output "machineconfig" {
+  value     = values(talos_machine_configuration_apply.controlplane)[0].machine_configuration
+  sensitive = true
+}
+
+
 output "post_deployment_instructions" {
   value       = <<-EOT
  

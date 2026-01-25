@@ -35,6 +35,9 @@ data "talos_machine_configuration" "controlplane" {
       nameserver1 = var.nameservers.primary
       nameserver2 = var.nameservers.secondary
     }),
+    templatefile("${path.module}/templates/host_name.yaml.tftpl", {
+      hostname = format("${var.env}-${var.talos.name}-cp-${random_id.this[each.key].hex}")
+    }),
     yamlencode({
       talos = {
         inlineManifests = [
@@ -67,12 +70,14 @@ data "talos_machine_configuration" "worker" {
       install_disk  = var.talos.install_disk
       storage_disk  = var.talos.storage_disk
       install_image = talos_image_factory_schematic.worker.id
-      #hostname      = format("${var.env}-${var.talos.name}-node-${random_id.this[each.key].hex}")
       #node_name     = each.value.node
       talos_name  = var.talos.name
       nameserver1 = var.nameservers.primary
       nameserver2 = var.nameservers.secondary
     }),
+    templatefile("${path.module}/templates/host_name.yaml.tftpl", {
+      hostname = format("${var.env}-${var.talos.name}-node-${random_id.this[each.key].hex}")
+    })
   ]
 }
 
@@ -100,6 +105,7 @@ resource "talos_machine_configuration_apply" "controlplane" {
 resource "talos_machine_configuration_apply" "worker" {
   depends_on = [
     proxmox_virtual_environment_vm.worker,
+    talos_machine_configuration_apply.controlplane,
     data.talos_machine_configuration.worker
   ]
   apply_mode = "auto"

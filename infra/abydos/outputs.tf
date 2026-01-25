@@ -12,6 +12,10 @@ output "talos_config" {
   description = "Talos client configuration (talosconfig)"
 }
 
+output "machineconfig" {
+  value     = module.abydos.machineconfig
+  sensitive = true
+}
 
 output "post_deployment_instructions" {
   value       = <<-EOT
