@@ -108,7 +108,7 @@ provider "registry.terraform.io/hashicorp/time" {
 
 provider "registry.terraform.io/siderolabs/talos" {
   version     = "0.10.1"
-  constraints = "~> 0.10.1"
+  constraints = ">= 0.9.0, 0.10.1"
   hashes = [
     "h1:1/HTp6cDJWQJzRj8preKQvw3x/qffivOJhZx27OmAig=",
     "zh:0fa82a384b25a58b65523e0ea4768fa1212b1f5cfc0c9379d31162454fedcc9d",

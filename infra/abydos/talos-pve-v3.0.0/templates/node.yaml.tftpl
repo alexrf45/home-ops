@@ -1,4 +1,6 @@
-kind: MachineConfig
+version: v1alpha1
+debug: false
+persist: true
 machine:
   systemDiskEncryption:
     ephemeral:
@@ -7,7 +9,6 @@ machine:
         -
           nodeID: {}
           slot: 0
-          tpm: {}
     state:
       provider: luks2
       keys:
@@ -17,6 +18,20 @@ machine:
           tpm: {}
   sysctls:
     vm.nr_hugepages: "1024"
+    net.core.somaxconn: 65535
+    net.core.netdev_max_backlog: 4096
+    net.ipv4.tcp_keepalive_intvl: 60
+    net.ipv4.tcp_keepalive_time: 600
+    net.ipv4.tcp_fin_timeout: 10
+    net.ipv4.tcp_tw_reuse: 1
+    vm.max_map_count: 128000
+  features:
+    rbac: true
+    stableHostname: true
+    apidCheckExtKeyUsage: true
+    hostDNS:
+      enabled: true
+      forwardKubeDNSToHost: false
   kernel:
     modules:
       - name: nvme_tcp
@@ -33,10 +48,16 @@ machine:
     servers:
       - time.cloudflare.com
   kubelet:
+    defaultRuntimeSeccompProfileEnabled: true
     extraArgs:
       rotate-server-certificates: true
+    extraConfig:
+      allowedUnsafeSysctls: [net.core.somaxconn]
     clusterDNS:
       - 10.43.0.10
+    nodeIP:
+      validSubnets:
+        - ${node_subnet}
     extraMounts:
       - destination: ${storage_disk}
         type: bind
@@ -50,6 +71,7 @@ machine:
       partitions:
         - mountpoint: ${storage_disk}
   install:
+    wipe: true
     disk: ${install_disk}
     image: ${install_image}
     extraKernelArgs:
@@ -65,3 +87,17 @@ machine:
     interfaces:
     - interface: eth0
       dhcp: false
+cluster:
+  controlPlane:
+    endpoint: https://${endpoint}:6443
+  discovery:
+    enabled: false
+  network:
+    podSubnets:
+      - 10.42.0.0/16
+    serviceSubnets:
+      - 10.43.0.0/16
+  proxy:
+    disabled: true
+
+

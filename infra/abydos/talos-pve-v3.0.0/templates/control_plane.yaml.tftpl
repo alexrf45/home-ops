@@ -1,26 +1,40 @@
-kind: MachineConfig
+version: v1alpha1
+debug: false
+persist: true
 machine:
-  systemDiskEncryption:
-    ephemeral:
-      provider: luks2
-      keys:
-        -
-          nodeID: {}
-          slot: 0
-          tpm: {}
-    state:
-      provider: luks2
-      keys:
-        -
-          nodeID: {}
-          slot: 0
-          tpm: {}
+  kubelet:
+    extraArgs:
+      rotate-server-certificates: true
+    clusterDNS:
+      - 10.43.0.10
+    nodeIP:
+      validSubnets:
+        - ${node_subnet}
+
+    extraMounts:
+      - destination: ${storage_disk}
+        type: bind
+        source: ${storage_disk}
+        options:
+          - rbind
+          - rshared
+          - rw
   sysctls:
-    vm.nr_hugepages: "1024"
-  kernel:
-    modules:
-      - name: nvme_tcp
-      - name: vfio_pci
+    vm.nr_hugepages: 1024
+    net.core.somaxconn: 65535
+    net.core.netdev_max_backlog: 4096
+  features:
+    hostDNS:
+      enabled: true
+      forwardKubeDNSToHost: false
+    kubernetesTalosAPIAccess:
+      enabled: true
+      allowedRoles:
+        - os:reader
+        - os:admin
+        - os:etcd:backup
+      allowedKubernetesNamespaces:
+        - kube-system
   files:
     - path: /etc/cri/conf.d/20-customization.part
       op: create
@@ -32,19 +46,7 @@ machine:
   time:
     servers:
       - time.cloudflare.com
-  kubelet:
-    extraArgs:
-      rotate-server-certificates: true
-    clusterDNS:
-      - 10.43.0.10
-    extraMounts:
-      - destination: ${storage_disk}
-        type: bind
-        source: ${storage_disk}
-        options:
-          - rbind
-          - rshared
-          - rw
+
   disks:
     - device: /dev/vdb
       partitions:
@@ -69,7 +71,13 @@ machine:
       - ${nameserver1}
       - ${nameserver2}
 cluster:
+  adminKubeconfig:
+    certLifetime: 72h0m0s
   apiServer:
+    resources:
+      requests:
+        cpu: 500m
+        memory: 1Gi
     auditPolicy:
       apiVersion: audit.k8s.io/v1
       kind: Policy
@@ -123,3 +131,21 @@ cluster:
           labels:
             pod-security.kubernetes.io/enforce: "privileged"
             app: "storage"
+---
+apiVersion: v1alpha1
+kind: VolumeConfig
+name: STATE
+encryption:
+  provider: luks2
+  keys:
+    - nodeID: {}
+      slot: 0
+---
+apiVersion: v1alpha1
+kind: VolumeConfig
+name: EPHEMERAL
+encryption:
+  provider: luks2
+  keys:
+    - nodeID: {}
+      slot: 0

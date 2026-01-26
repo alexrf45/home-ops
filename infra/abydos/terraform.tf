@@ -1,6 +1,6 @@
 # terraform.tf
 terraform {
-  required_version = ">= 1.5.0"
+  required_version = ">= 1.10.0"
 
   required_providers {
     proxmox = {
@@ -9,7 +9,7 @@ terraform {
     }
     talos = {
       source  = "siderolabs/talos"
-      version = "~> 0.10.1"
+      version = "0.10.1"
     }
     helm = {
       source  = "hashicorp/helm"
