@@ -176,6 +176,12 @@ data "talos_machine_configuration" "worker" {
   config_patches = [
     <<-EOT
     version: v1alpha1
+    cluster:
+      network:
+        podSubnets:
+          - 10.42.0.0/16
+        serviceSubnets:
+          - 10.43.0.0/16
     machine:
       systemDiskEncryption:
         ephemeral:
@@ -300,7 +306,7 @@ resource "talos_machine_configuration_apply" "worker" {
     apiVersion: v1alpha1
     kind: HostnameConfig
     auto: off
-    hostname: ${var.env}-${var.talos.name}-cp-${random_id.this[each.key].hex}
+    hostname: ${var.env}-${var.talos.name}-node-${random_id.this[each.key].hex}
     EOT
   ]
   timeouts = {
