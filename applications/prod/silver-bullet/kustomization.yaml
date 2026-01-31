@@ -8,4 +8,4 @@ resources:
   - service.yaml
   - pvc.yaml
   - ingress.yaml
- # - gateway.yaml
+  - gateway.yaml
