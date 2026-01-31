@@ -1,35 +1,3 @@
----
-apiVersion: gateway.networking.k8s.io/v1
-kind: Gateway
-metadata:
-  name: silverbullet-gateway
-  namespace: silverbullet
-  labels:
-    app.kubernetes.io/name: silverbullet
-    app.kubernetes.io/component: gateway
-spec:
-  gatewayClassName: cilium  # Cilium's Gateway class
-  listeners:
-    - name: http
-      protocol: HTTP
-      port: 80
-      hostname: "prod.int.silverbullet.home-0ps.com"
-      allowedRoutes:
-        namespaces:
-          from: Same
-    - name: https
-      protocol: HTTPS
-      port: 443
-      hostname: "prod.int.silverbullet.home-0ps.com"
-      tls:
-        mode: Terminate
-        certificateRefs:
-          - name: wildcard-tls
-            kind: Secret
-      allowedRoutes:
-        namespaces:
-          from: Same
----
 # HTTPRoute for routing traffic to SilverBullet
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
@@ -41,16 +9,16 @@ metadata:
     app.kubernetes.io/component: route
 spec:
   parentRefs:
-    - name: silverbullet-gateway
-      namespace: silverbullet
+    - name: prod-app-gateway
+      namespace: networking
       sectionName: https
   hostnames:
     - "prod.int.silverbullet.home-0ps.com"
   rules:
     - matches:
         - path:
-            type: Exact
-            value: /login
+            type: PathPrefix
+            value: /
       backendRefs:
         - name: silverbullet
           port: 80
@@ -70,8 +38,8 @@ metadata:
     app.kubernetes.io/component: route
 spec:
   parentRefs:
-    - name: silverbullet-gateway
-      namespace: silverbullet
+    - name: prod-app-gateway
+      namespace: networking
       sectionName: http
   hostnames:
     - "prod.int.silverbullet.home-0ps.com"
