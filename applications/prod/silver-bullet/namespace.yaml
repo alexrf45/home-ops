@@ -4,5 +4,6 @@ kind: Namespace
 metadata:
   name: silverbullet
   labels:
-    app = "silverbullet"
+    app: "silverbullet"
+    prod-app-gateway: "true"
 ---
