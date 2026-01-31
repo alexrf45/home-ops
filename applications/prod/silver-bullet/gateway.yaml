@@ -50,7 +50,7 @@ spec:
     - matches:
         - path:
             type: Exact
-            value: /
+            value: /login
       backendRefs:
         - name: silverbullet
           port: 80
