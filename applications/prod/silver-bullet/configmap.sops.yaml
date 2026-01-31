@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+    name: silverbullet-config
+    namespace: silverbullet
+    labels:
+        app.kubernetes.io/name: silverbullet
+        app.kubernetes.io/component: config
+data:
+    SB_HOSTNAME: ENC[AES256_GCM,data:qVvcgRc5Tw==,iv:KseMVysi9qyfqn+qo1mw0ueiW06Mtl1hYmyZfr672kA=,tag:Im2SVgZP+tbeUqHanz/0Pw==,type:str]
+    SB_PORT: ENC[AES256_GCM,data:f/CgmA==,iv:yFfDXhzHJmgw4B3330BgoyywRVBlcmY1kMPQInAbXaw=,tag:vxf/05k2/zz7Un7V89OO/Q==,type:str]
+    SB_FOLDER: ENC[AES256_GCM,data:a8h5VaQu,iv:5CZV7lJpKGmPZMo0+B9qGT3X8aeb4PIvt6lh4cI8kHA=,tag:NBHpmnJo4TLmOPp3yf5Nfw==,type:str]
+    SB_INDEX_PAGE: ENC[AES256_GCM,data:NBOKAg==,iv:75ssKI+7X5Ivz94osVYwgYjWNpGqcVvf8pw3DevvC2E=,tag:ldXEUliOOBPKNxDHreKsJg==,type:str]
+    SB_METRICS_PORT: ENC[AES256_GCM,data:NXGr3Q==,iv:p9zyFA0/L3o2cYUwXmnLGBtok/mxMSgxmDph9QU6XfQ=,tag:U8y8xj+qRbj3vPDL4TuEuw==,type:str]
+    SB_SHELL_BACKEND: ENC[AES256_GCM,data:HKbq,iv:56JPOxZG+AhCazeac1HL7DTkoATe6rC0vY9DA+0+Sfw=,tag:6M4QVufXDZ+PRW/3wkXDrQ==,type:str]
+    SB_LOCKOUT_LIMIT: ENC[AES256_GCM,data:a5U=,iv:ZbY/IC3IGL8fVQ2QUeuOD4FU+zIGxPGjjL9cJUPQ8ww=,tag:AchEshWjrV9E0PrK9s2NGA==,type:str]
+    SB_LOCKOUT_TIME: ENC[AES256_GCM,data:1tNi,iv:nZpePd06xnSjy/ohXd6vyhkNweoSm33At2OXIkfsbJ0=,tag:8aYdfE8PJmYm9ZJZfM7ejQ==,type:str]
+    SB_NAME: ENC[AES256_GCM,data:h2NxVR3r,iv:BuzwMeCrzENrD4FW+xMsyr9vSbv58vDWkMKDr/jElaM=,tag:AJ8fdcDpN9ZYKCqGkG3Z0A==,type:str]
+    SB_DESCRIPTION: ENC[AES256_GCM,data:DtIH6DOmGPPSWZA8jrlPKQI8cA==,iv:aKEyFTVxGBJ27KGv4ywj/lgTfUu5xnn+bowpkGDtYGE=,tag:zsk+5xP0NPi2wWkQroxyRg==,type:str]
+    PUID: ENC[AES256_GCM,data:xDq3xw==,iv:y/lCASq+jrQi6dA0EUz+UdBvw1Cymf6B2mfN47y4La0=,tag:JDTibefWAXOA7MYmCNJxcQ==,type:str]
+    PGID: ENC[AES256_GCM,data:2UYMFQ==,iv:D949w6TzxWn43YADYuRB/bOLF5Fymevw8zL11GnShDo=,tag:75zKOvATDtfi+ni0n13ODg==,type:str]
+sops:
+    age:
+        - recipient: age1vml3vk5uzyztj96qgz7n0a6w8ynvtmxfarkp0jdl0hvcj003895qcp6z09
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBEU0Vza3JCNEFQck1hbU1s
+            alBjaEZOUFM3aFVWY1FaSjlsMHpjWnprU1F3CjZkUFJXcXN5TUlnTnJVcW9KYzM0
+            YStMQVFTOVMxWVBDVFJpREdUVGQ2U3cKLS0tIE8vYitJRzJ6dG1HaWFnOG5rV0Y1
+            QmxZSnZSOHlWczQ4WGFzTlpnaWN3Y0EKkuyC+45+QtDwMHQD4/i+hFM96UyXzN6v
+            N8D5koi42UvqBW6cl9GkA59jgkoSy+ehiswr4iaaPo/DmfkZ8xESmg==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2026-01-31T02:40:10Z"
+    mac: ENC[AES256_GCM,data:Awur9aT1I7iHJQZ2JRhkEadppgEpmt5PzWL4ESycnWNy3R84pgs9OXx2IU46uu7F1KHkXLkD0st9si04vBtqtt2dRq/EWnTb8/w+ZXayqBYRX9mgTQe38nV2kSO7DQEhR3IRJvUPhN2p6tuCLlQ9RjkxdEElfIfGuWE3NXFKm1U=,iv:00lwY/HdgbstzwZfh5OLQd5DoUnARyvbdJcAASJNnOw=,tag:OvgXwaWHAfmuA4vd95eKXw==,type:str]
+    encrypted_regex: ^(data|stringData)$
+    version: 3.10.2

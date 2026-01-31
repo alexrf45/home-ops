@@ -1,0 +1,25 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: silverbullet
+  namespace: silverbullet
+  labels:
+    app.kubernetes.io/name: silverbullet
+    app.kubernetes.io/component: tailscale-ingress
+spec:
+  ingressClassName: tailscale
+  tls:
+    - hosts:
+        - prod-silverbullet
+  rules:
+    - host: prod-silverbullet
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: silverbullet
+                port:
+                  number: 80
