@@ -24,7 +24,7 @@ spec:
       tls:
         mode: Terminate
         certificateRefs:
-          - name: silverbullet-tls
+          - name: wildcard-tls
             kind: Secret
       allowedRoutes:
         namespaces:
