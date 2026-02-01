@@ -1,89 +1,89 @@
-variable "environment" {
-  description = "operating environment of cluster"
+variable "env" {
+  description = "Operating env of cluster (dev, test, prod)"
   type        = string
   validation {
-    condition = anytrue([
-      var.environment == "test",
-      var.environment == "dev",
-      var.environment == "prod",
-    ])
-    error_message = "Please use one of the approved environement names: test, dev, prod "
+    condition     = contains(["dev", "test", "prod"], var.env)
+    error_message = "Please use one of the approved environement names: dev, staging, prod, test"
   }
-}
-variable "worker_disk_count" {
-  description = "Number of additional storage disks to attach to worker nodes (1-10)"
-  type        = number
-  default     = 2
-  validation {
-    condition     = var.worker_disk_count >= 1 && var.worker_disk_count <= 10
-    error_message = "Worker storage disk count must be between 1 and 10"
-  }
-}
-variable "encryption" {
-  description = "Disk encryption configuration"
-  type = object({
-    enabled    = bool
-    tpm_based  = bool
-    static_key = optional(string, "")
-  })
-  default = {
-    enabled    = false
-    tpm_based  = true
-    static_key = ""
-  }
-  sensitive = true
 }
 
-variable "pve_hosts" {
+variable "pve" {
   description = "Proxmox VE configuration options"
   type = object({
     hosts         = list(string)
     endpoint      = string
-    iso_datastore = string
+    iso_datastore = optional(string, "local")
     gateway       = string
     password      = string
-  })
-}
 
-variable "cluster" {
+  })
+  sensitive = true
+}
+variable "talos" {
   description = "Cluster configuration"
   type = object({
-    name                     = string
+    name                     = optional(string, "k8s-cluster")
     endpoint                 = string
     vip_ip                   = string
-    talos_version            = string
-    install_disk             = string
-    storage_disk             = string
-    storage_disk_1           = string
-    storage_disk_2           = string
+    version                  = string
+    install_disk             = optional(string, "/dev/vda")
+    storage_disk             = optional(string, "/var/data")
     control_plane_extensions = list(string)
     worker_extensions        = list(string)
-    platform                 = string
-    #    tailscale_auth           = string
+    platform                 = optional(string, "nocloud")
   })
   validation {
-    condition     = can(regex("^[a-zA-Z0-9]+$", var.cluster.name)) && length(var.cluster.name) >= 4
+    condition     = can(regex("^[a-zA-Z0-9]+$", var.talos.name)) && length(var.talos.name) >= 4
     error_message = "Cluster name must contain only alphanumeric characters and be at least 4 characters long."
   }
 }
 
 
-variable "nodes" {
-  description = "Configuration for cluster nodes"
+variable "controlplane_nodes" {
+  description = "Control plane node configurations - changes here won't affect workers"
   type = map(object({
-    machine_type     = string
-    allow_scheduling = optional(bool, true)
     node             = string
     ip               = string
-    cores            = number
-    memory           = number
+    cores            = optional(number, 2)
+    memory           = optional(number, 8192)
+    allow_scheduling = optional(bool, false)
     datastore_id     = optional(string, "local-lvm")
     storage_id       = string
-    size             = number
-    storage_size     = number
+    disk_size        = optional(number, 50)
+    storage_size     = optional(number, 100)
   }))
+  validation {
+    condition     = length(var.controlplane_nodes) >= 1 && length(var.controlplane_nodes) % 2 == 1
+    error_message = "Control plane requires an odd number of nodes (1, 3, or 5) for etcd quorum"
+  }
 }
-variable "dns_servers" {
+
+variable "worker_nodes" {
+  description = "Worker node configurations - can be scaled independently without affecting control plane"
+  type = map(object({
+    node         = string
+    ip           = string
+    cores        = optional(number, 2)
+    memory       = optional(number, 8092)
+    datastore_id = optional(string, "local-lvm")
+    storage_id   = string
+    disk_size    = optional(number, 50)
+    storage_size = optional(number, 200)
+  }))
+  default = {}
+}
+
+
+#permits adding additonal worker nodes
+#and repeating cluster bootstrap
+
+variable "bootstrap_cluster" {
+  description = "Whether to bootstrap the cluster. Set to false after initial deployment to prevent bootstrap failures on re-apply."
+  type        = bool
+  default     = true
+}
+
+variable "nameservers" {
   description = "DNS servers for the nodes"
   type = object({
     primary   = string
@@ -97,27 +97,27 @@ variable "dns_servers" {
 variable "cilium_config" {
   description = "Configuration options for bootstrapping cilium"
   type = object({
-    namespace                  = string
+    namespace                  = optional(string, "networking")
     node_network               = string
     kube_version               = string
     cilium_version             = string
-    hubble_enabled             = bool
-    hubble_ui_enabled          = bool
-    relay_enabled              = bool
-    relay_pods_rollout         = bool
-    ingress_controller_enabled = bool
-    ingress_default_controller = bool
-    gateway_api_enabled        = bool
-    load_balancer_mode         = string
+    hubble_enabled             = optional(bool, false)
+    hubble_ui_enabled          = optional(bool, false)
+    relay_enabled              = optional(bool, false)
+    relay_pods_rollout         = optional(bool, false)
+    ingress_controller_enabled = optional(bool, true)
+    ingress_default_controller = optional(bool, true)
+    gateway_api_enabled        = optional(bool, true)
+    load_balancer_mode         = optional(string, "shared")
     load_balancer_ip           = string
     load_balancer_start        = number
     load_balancer_stop         = number
   })
   default = {
-    namespace                  = "cilium"
-    node_network               = "10.3.3.0/24"
+    namespace                  = "networking"
+    node_network               = "192.168.20.0/24"
     kube_version               = "1.33.0"
-    cilium_version             = "1.17.6"
+    cilium_version             = "1.18.0"
     hubble_enabled             = false
     hubble_ui_enabled          = false
     relay_enabled              = false
@@ -126,8 +126,8 @@ variable "cilium_config" {
     ingress_default_controller = true
     gateway_api_enabled        = false
     load_balancer_mode         = "shared"
-    load_balancer_ip           = "10.3.3.2"
-    load_balancer_start        = 10
-    load_balancer_stop         = 20
+    load_balancer_ip           = "192.168.20.100"
+    load_balancer_start        = 100
+    load_balancer_stop         = 115
   }
 }

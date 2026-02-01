@@ -11,8 +11,6 @@ deploy() {
 
   terraform output -raw kubeconfig >"$HOME/.kube/environments/dev"
 
-  terraform output -raw kubeconfig >"$HOME/.kube/config"
-
   terraform output -raw client_configuration >"$HOME/.talos/dev"
 
   cp ~/.kube/config ~/.kube/config_bk && KUBECONFIG=~/.kube/environments/dev:~/.kube/environments/prod:~/.kube/environments/test kubectl config view --flatten >~/.kube/config_tmp && mv ~/.kube/config_tmp ~/.kube/config

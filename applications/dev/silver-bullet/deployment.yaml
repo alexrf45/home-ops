@@ -99,7 +99,7 @@ spec:
       volumes:
         - name: space
           persistentVolumeClaim:
-            claimName: dev-silverbullet-pvc
+            claimName: test-data
       affinity:
         nodeAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:

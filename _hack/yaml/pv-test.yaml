@@ -1,0 +1,36 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: test-data
+  labels:
+    app: test
+    persistent: "true"
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: iscsi
+  csi:
+    driver: freenas-api-iscsi
+    volumeHandle: test-data  # Must match the zvol name in TrueNAS
+    volumeAttributes:
+      # These match your driver config
+      portal: "192.168.20.106:3260"
+      iqn: "iqn.2005-10.org.freenas.ctl:test-data"
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: test-data
+  namespace: silverbullet
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: iscsi
+  volumeName: test-data  # Explicit binding to the PV
+  resources:
+    requests:
+      storage: 10Gi
