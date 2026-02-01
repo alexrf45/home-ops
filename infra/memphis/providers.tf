@@ -6,9 +6,9 @@ provider "talos" {
 }
 
 provider "proxmox" {
-  endpoint = "https://${var.pve_hosts.endpoint}:8006"
+  endpoint = "https://${var.pve.endpoint}:8006"
   username = "root@pam"
-  password = var.pve_hosts.password
+  password = var.pve.password
   insecure = true
   ssh {
     agent = false

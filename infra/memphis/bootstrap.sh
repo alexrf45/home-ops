@@ -3,7 +3,7 @@
 set -e
 
 deploy() {
-  terraform init -backend-config="remote.tfbackend" -upgrade
+  terraform init -backend-config="remote.tfbackend" -upgrade -reconfigure
 
   terraform plan
 
@@ -11,7 +11,7 @@ deploy() {
 
   terraform output -raw kubeconfig >"$HOME/.kube/environments/dev"
 
-  terraform output -raw client_configuration >"$HOME/.talos/dev"
+  terraform output -raw talos_config >"$HOME/.talos/dev"
 
   cp ~/.kube/config ~/.kube/config_bk && KUBECONFIG=~/.kube/environments/dev:~/.kube/environments/prod:~/.kube/environments/test kubectl config view --flatten >~/.kube/config_tmp && mv ~/.kube/config_tmp ~/.kube/config
 
@@ -40,9 +40,9 @@ destroy() {
 
   terraform destroy
 
-  rm ~/.kube/test
+  rm ~/.kube/environments/dev
 
-  rm ~/.talos/test
+  rm ~/.talos/dev
   #  mv ~/.kube/config_bk ~/.kube/config
 }
 #deploy
