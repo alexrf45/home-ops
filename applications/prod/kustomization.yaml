@@ -6,4 +6,4 @@ resources:
    - ./cert-manager
    - ./prod-app-gateway
    - ./wallabag
-  # - ./silver-bullet
+   - ./silver-bullet
