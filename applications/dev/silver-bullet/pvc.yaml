@@ -17,11 +17,17 @@ spec:
   storageClassName: iscsi
   csi:
     driver: freenas-api-iscsi
+    fsType: "ext4"
     volumeHandle: test-data  # Must match the zvol name in TrueNAS
     volumeAttributes:
       # These match your driver config
+      
+      lun: 0
+      interface: ""
       node_attach_driver: iscsi
+      provisioner_driver: freenas-api-iscsi
       portal: "192.168.20.106:3260"
+      portals: ""
       iqn: "iqn.2005-10.org.freenas.ctl:test-data"
 ---
 apiVersion: v1
