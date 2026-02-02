@@ -6,5 +6,5 @@ resources:
   - ./cert-manager
   - ./dev-app-gateway
   - ./it-tools
-  - ./silver-bullet
+#  - ./silver-bullet
   - ./wallabag
