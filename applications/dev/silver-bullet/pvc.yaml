@@ -22,7 +22,7 @@ spec:
     volumeAttributes:
       # These match your driver config
       
-      lun: 0
+      lun: "0"
       interface: ""
       node_attach_driver: iscsi
       provisioner_driver: freenas-api-iscsi
