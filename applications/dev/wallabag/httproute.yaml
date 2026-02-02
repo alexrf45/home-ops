@@ -5,10 +5,10 @@ metadata:
   namespace: wallabag
 spec:
   parentRefs:
-    - name: prod-app-gateway
+    - name: dev-app-gateway
       namespace: networking
   hostnames:
-    - "prod.init.wallabag.home-0ps.com"
+    - "dev.init.wallabag.home-0ps.com"
   rules:
     - matches:
         - path:
