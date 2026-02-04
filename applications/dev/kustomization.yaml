@@ -8,3 +8,4 @@ resources:
   - ./it-tools
   - ./silver-bullet
   - ./wallabag
+  - ./freshrss
