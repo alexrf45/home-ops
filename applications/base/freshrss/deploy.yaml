@@ -64,7 +64,7 @@ spec:
       volumes:
       - name: config
         persistentVolumeClaim:
-          claimName: dev-freshrss-pv
+          claimName: dev-freshrss-pvc
 
 ---
 # Service
