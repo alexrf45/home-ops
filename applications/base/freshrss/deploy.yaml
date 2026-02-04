@@ -4,21 +4,6 @@ kind: Namespace
 metadata:
   name: freshrss
 ---
-# PersistentVolumeClaim for FreshRSS config
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: freshrss-config-pv
-  namespace: freshrss
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 5Gi
-  storageClassName: local-path
-
----
 # Deployment
 apiVersion: apps/v1
 kind: Deployment
@@ -32,10 +17,12 @@ spec:
   selector:
     matchLabels:
       app: freshrss
+      env: dev
   template:
     metadata:
       labels:
         app: freshrss
+        env: dev
     spec:
       containers:
       - name: freshrss
@@ -77,7 +64,7 @@ spec:
       volumes:
       - name: config
         persistentVolumeClaim:
-          claimName: freshrss-config-pv
+          claimName: dev-freshrss-pv
 
 ---
 # Service
@@ -88,10 +75,12 @@ metadata:
   namespace: freshrss
   labels:
     app: freshrss
+    env: dev
 spec:
   type: ClusterIP
   selector:
     app: freshrss
+    env: dev
   ports:
   - port: 80
     targetPort: 80

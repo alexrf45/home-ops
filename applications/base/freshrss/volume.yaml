@@ -1,0 +1,45 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: dev-freshrss-pv
+  namespace: freshrss
+  labels:
+    env: dev
+    app: freshrss
+    persistent: "true"
+spec:
+  capacity:
+    storage: 2Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: iscsi
+  csi:
+    driver: freenas-api-iscsi
+    fsType: "ext4"
+    volumeHandle: dev-freshrss-pvc  # Must match the zvol name in TrueNAS
+    volumeAttributes:
+      # These match your driver config
+      
+      lun: "0"
+      interface: ""
+      node_attach_driver: iscsi
+      provisioner_driver: freenas-api-iscsi
+      portal: "192.168.20.106:3260"
+      portals: ""
+      iqn: "iqn.2005-10.org.freenas.ctl:dev-freshrss-pv"
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: dev-freshrss-pvc
+  namespace: freshrss
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: iscsi
+  volumeName: dev-freshrss-pv  # Explicit binding to the PV
+  resources:
+    requests:
+      storage: 2Gi
