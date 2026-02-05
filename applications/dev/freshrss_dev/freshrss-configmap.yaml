@@ -1,0 +1,24 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: freshrss-config
+  namespace: freshrss
+  labels:
+    app: freshrss
+data:
+  # Timezone - adjust to your location
+  TZ: "America/New_York"
+  
+  # Cron job to refresh feeds (every 15 minutes)
+  CRON_MIN: "3,18,33,48"
+  
+  # Environment mode
+  FRESHRSS_ENV: "production"
+  
+  # Copy logs to syslog for container logging
+  COPY_LOG_TO_SYSLOG: "On"
+  COPY_SYSLOG_TO_STDERR: "On"
+  
+  # Database type
+  DB_TYPE: "pgsql"

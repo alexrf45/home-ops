@@ -1,0 +1,51 @@
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: freshrss-dev-cluster
+  namespace: freshrss
+  labels:
+    app: "freshrss"
+    node: "worker"
+    env: "dev"
+spec:
+  imageName: ghcr.io/cloudnative-pg/postgresql:18
+  postgresql:
+    pg_hba:
+      - hostssl freshrss freshrss 10.43.0.0/16 scram-sha-256
+  instances: 3
+  superuserSecret:
+    name: freshrss-dev-db-creds
+  storage:
+    size: 10Gi
+    storageClass: local-path
+  walStorage:
+    size: 5Gi
+    storageClass: local-path
+  bootstrap:
+    initdb:
+      database: freshrss
+      owner: freshrss
+      dataChecksums: true
+      secret:
+        name: freshrss-dev-db-creds
+  plugins:
+  - name: barman-cloud.cloudnative-pg.io
+    isWALArchiver: true
+    parameters:
+      barmanObjectName: freshrss-dev-cluster-backup
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: ScheduledBackup
+metadata:
+  name: freshrss-dev-backup
+  namespace: freshrss
+spec:
+  schedule: "0 0 * * *"
+  cluster:
+    name: freshrss-dev-cluster
+  backupOwnerReference: self
+  method: plugin
+  pluginConfiguration:
+    name: barman-cloud.cloudnative-pg.io
+  immediate: true
