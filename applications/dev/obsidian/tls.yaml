@@ -7,7 +7,7 @@ metadata:
 spec:
   secretName: obsidian-livesync-tls
   issuerRef:
-    name: letsencrypt-staging  # Your issuer
+    name: letsencrypt-production  # Your issuer
     kind: ClusterIssuer
   dnsNames:
   - "dev.int.obsidian.home-0ps.com"
