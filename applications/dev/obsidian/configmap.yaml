@@ -44,7 +44,7 @@ data:
 
     echo "Waiting for CouchDB to be ready..."
     for i in $(seq 1 $MAX_RETRIES); do
-      if curl -sf "$COUCHDB_URL/" > /dev/null 2>&1; then
+      if curl -sf -u "${COUCHDB_USER}:${COUCHDB_PASSWORD}" "$COUCHDB_URL/_up" > /dev/null 2>&1; then
         echo "CouchDB is ready."
         break
       fi
