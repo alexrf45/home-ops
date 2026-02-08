@@ -9,3 +9,4 @@ resources:
   - ./silver-bullet
   - ./wallabag
   - ./freshrss
+  - ./obsidian
