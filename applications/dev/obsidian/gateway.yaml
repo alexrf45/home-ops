@@ -3,7 +3,7 @@ apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
 metadata:
   name: obsidian-livesync-gateway
-  namespace: obsidian-livesync
+  namespace: obsidian
   labels:
     app.kubernetes.io/name: obsidian-livesync
     app.kubernetes.io/component: gateway
