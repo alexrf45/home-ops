@@ -9,7 +9,7 @@ resources:
   - deployment.yaml
   - service.yaml
   - httproute.yaml
-  - networkpolicy.yaml
+#  - networkpolicy.yaml
   - init-job.yaml
   - gateway.yaml
   - tls.yaml
