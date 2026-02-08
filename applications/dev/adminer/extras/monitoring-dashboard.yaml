@@ -1,0 +1,210 @@
+---
+# Grafana Dashboard ConfigMap for Adminer
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-dashboard-adminer
+  namespace: monitoring
+  labels:
+    grafana_dashboard: "1"
+data:
+  adminer-dashboard.json: |
+    {
+      "dashboard": {
+        "title": "Adminer Database Management",
+        "tags": ["adminer", "database", "security"],
+        "timezone": "browser",
+        "panels": [
+          {
+            "id": 1,
+            "title": "Database Connections",
+            "type": "graph",
+            "targets": [
+              {
+                "expr": "sum(rate(adminer_events_total{event_type=\"database_connection\"}[5m])) by (db_host)",
+                "legendFormat": "{{ db_host }}"
+              }
+            ],
+            "gridPos": {"x": 0, "y": 0, "w": 12, "h": 8}
+          },
+          {
+            "id": 2,
+            "title": "Database Queries per Second",
+            "type": "graph",
+            "targets": [
+              {
+                "expr": "sum(rate(adminer_events_total{event_type=\"database_query\"}[5m]))",
+                "legendFormat": "Queries/sec"
+              }
+            ],
+            "gridPos": {"x": 12, "y": 0, "w": 12, "h": 8}
+          },
+          {
+            "id": 3,
+            "title": "Security Alerts",
+            "type": "stat",
+            "targets": [
+              {
+                "expr": "sum(adminer_security_alerts_total)",
+                "legendFormat": "Total Alerts"
+              }
+            ],
+            "gridPos": {"x": 0, "y": 8, "w": 6, "h": 4},
+            "fieldConfig": {
+              "defaults": {
+                "thresholds": {
+                  "steps": [
+                    {"value": 0, "color": "green"},
+                    {"value": 1, "color": "yellow"},
+                    {"value": 10, "color": "red"}
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "id": 4,
+            "title": "Authentication Failures",
+            "type": "stat",
+            "targets": [
+              {
+                "expr": "sum(adminer_events_total{event_type=\"auth_failure\"})",
+                "legendFormat": "Auth Failures"
+              }
+            ],
+            "gridPos": {"x": 6, "y": 8, "w": 6, "h": 4},
+            "fieldConfig": {
+              "defaults": {
+                "thresholds": {
+                  "steps": [
+                    {"value": 0, "color": "green"},
+                    {"value": 5, "color": "yellow"},
+                    {"value": 20, "color": "red"}
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "id": 5,
+            "title": "Pod Resource Usage",
+            "type": "graph",
+            "targets": [
+              {
+                "expr": "sum(rate(container_cpu_usage_seconds_total{namespace=\"adminer\",pod=~\"adminer-.*\"}[5m])) by (pod)",
+                "legendFormat": "{{ pod }} CPU"
+              },
+              {
+                "expr": "sum(container_memory_working_set_bytes{namespace=\"adminer\",pod=~\"adminer-.*\"}) by (pod) / 1024 / 1024",
+                "legendFormat": "{{ pod }} Memory (MB)"
+              }
+            ],
+            "gridPos": {"x": 12, "y": 8, "w": 12, "h": 8}
+          },
+          {
+            "id": 6,
+            "title": "Recent Security Events",
+            "type": "logs",
+            "targets": [
+              {
+                "expr": "{namespace=\"adminer\"} |= \"security_alert\"",
+                "refId": "A"
+              }
+            ],
+            "gridPos": {"x": 0, "y": 16, "w": 24, "h": 8}
+          },
+          {
+            "id": 7,
+            "title": "HTTP Response Codes",
+            "type": "graph",
+            "targets": [
+              {
+                "expr": "sum(rate(nginx_http_requests_total{namespace=\"adminer\"}[5m])) by (status)",
+                "legendFormat": "{{ status }}"
+              }
+            ],
+            "gridPos": {"x": 0, "y": 24, "w": 12, "h": 8}
+          },
+          {
+            "id": 8,
+            "title": "Network Traffic",
+            "type": "graph",
+            "targets": [
+              {
+                "expr": "sum(rate(container_network_receive_bytes_total{namespace=\"adminer\"}[5m])) by (pod)",
+                "legendFormat": "{{ pod }} RX"
+              },
+              {
+                "expr": "sum(rate(container_network_transmit_bytes_total{namespace=\"adminer\"}[5m])) by (pod)",
+                "legendFormat": "{{ pod }} TX"
+              }
+            ],
+            "gridPos": {"x": 12, "y": 24, "w": 12, "h": 8}
+          }
+        ],
+        "refresh": "30s",
+        "schemaVersion": 27,
+        "version": 1
+      }
+    }
+---
+# PrometheusRule for Adminer alerts
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: adminer-alerts
+  namespace: monitoring
+spec:
+  groups:
+  - name: adminer
+    interval: 30s
+    rules:
+    - alert: AdminerHighSecurityAlerts
+      expr: sum(rate(adminer_security_alerts_total[5m])) > 0.1
+      for: 5m
+      labels:
+        severity: warning
+        component: adminer
+      annotations:
+        summary: "High number of security alerts from Adminer"
+        description: "Adminer has {{ $value }} security alerts per second in the last 5 minutes"
+    
+    - alert: AdminerPodDown
+      expr: kube_deployment_status_replicas_available{namespace="adminer",deployment="adminer"} < 1
+      for: 2m
+      labels:
+        severity: critical
+        component: adminer
+      annotations:
+        summary: "Adminer pod is down"
+        description: "No Adminer pods are available in namespace adminer"
+    
+    - alert: AdminerHighMemoryUsage
+      expr: sum(container_memory_working_set_bytes{namespace="adminer",pod=~"adminer-.*"}) / sum(container_spec_memory_limit_bytes{namespace="adminer",pod=~"adminer-.*"}) > 0.9
+      for: 5m
+      labels:
+        severity: warning
+        component: adminer
+      annotations:
+        summary: "Adminer is using high memory"
+        description: "Adminer memory usage is at {{ $value | humanizePercentage }}"
+    
+    - alert: AdminerAuthenticationFailures
+      expr: sum(increase(adminer_events_total{event_type="auth_failure"}[5m])) > 10
+      for: 2m
+      labels:
+        severity: warning
+        component: adminer
+      annotations:
+        summary: "Multiple authentication failures in Adminer"
+        description: "{{ $value }} authentication failures detected in the last 5 minutes"
+    
+    - alert: AdminerSQLInjectionAttempt
+      expr: sum(increase(adminer_security_alerts_total{alert_type="potential_sql_injection"}[1m])) > 0
+      for: 1m
+      labels:
+        severity: critical
+        component: adminer
+      annotations:
+        summary: "Potential SQL injection attempt detected"
+        description: "SQL injection pattern detected in Adminer logs"

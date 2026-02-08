@@ -1,0 +1,22 @@
+---
+# Note: Adminer doesn't expose Prometheus metrics by default
+# This ServiceMonitor is a template for when you add a metrics exporter sidecar
+# or if you want to monitor the HTTP endpoint availability
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: adminer
+  namespace: adminer
+  labels:
+    app: adminer
+spec:
+  selector:
+    matchLabels:
+      app: adminer
+  endpoints:
+  - port: http
+    interval: 30s
+    path: /
+    scheme: http
+    # This will monitor HTTP availability, not detailed metrics
+    # Consider adding prometheus-exporter sidecar for detailed metrics

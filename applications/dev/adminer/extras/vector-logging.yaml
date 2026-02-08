@@ -1,0 +1,182 @@
+---
+# Vector configuration for Adminer log aggregation
+# This can be added to your Vector DaemonSet ConfigMap
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: vector-config-adminer
+  namespace: logging
+data:
+  adminer-pipeline.yaml: |
+    # Source: Collect Adminer logs
+    sources:
+      adminer_kubernetes_logs:
+        type: kubernetes_logs
+        namespace_annotation_fields:
+          namespace_labels: ""
+        pod_annotation_fields:
+          pod_labels: ""
+        extra_label_selector: "app=adminer"
+        use_apiserver_cache: true
+    
+    # Transform: Parse and enrich Adminer logs
+    transforms:
+      adminer_parse:
+        type: remap
+        inputs:
+          - adminer_kubernetes_logs
+        source: |
+          # Parse JSON logs if present
+          . = parse_json(.message) ?? .
+          
+          # Add standard fields
+          .namespace = "adminer"
+          .application = "adminer"
+          
+          # Extract database connection info from logs
+          if exists(.message) {
+            if match!(.message, r'Connected to \w+://(.+?):(\d+)') {
+              .db_host = capture!(.message, r'Connected to \w+://(.+?):(\d+)')
+              .db_port = to_int!(capture!(.message, r'Connected to \w+://.+?:(\d+)'))
+              .event_type = "database_connection"
+            }
+            
+            if match!(.message, r'Query:') {
+              .event_type = "database_query"
+              # Sanitize sensitive data
+              .message = redact(.message, r'password\s*=\s*[\'"][^\'"]+[\'"]', replacement: "password=***")
+            }
+            
+            if match!(.message, r'Authentication failed') {
+              .event_type = "auth_failure"
+              .severity = "warning"
+            }
+          }
+          
+          # Add timestamp
+          .timestamp = now()
+      
+      # Transform: Detect suspicious patterns
+      adminer_security:
+        type: remap
+        inputs:
+          - adminer_parse
+        source: |
+          # Detect SQL injection attempts
+          if exists(.message) {
+            if match!(.message, r'(?i)(union\s+select|drop\s+table|xp_cmdshell)') {
+              .security_alert = "potential_sql_injection"
+              .severity = "critical"
+            }
+            
+            # Detect unusual database access patterns
+            if match!(.message, r'information_schema|pg_catalog') {
+              .security_alert = "schema_enumeration"
+              .severity = "warning"
+            }
+            
+            # Detect multiple failed login attempts
+            if .event_type == "auth_failure" {
+              .security_alert = "multiple_auth_failures"
+              .severity = "high"
+            }
+          }
+      
+      # Transform: Metrics extraction
+      adminer_metrics:
+        type: log_to_metric
+        inputs:
+          - adminer_security
+        metrics:
+          - type: counter
+            field: event_type
+            name: adminer_events_total
+            namespace: adminer
+            tags:
+              event_type: "{{ event_type }}"
+              namespace: "{{ namespace }}"
+          
+          - type: counter
+            field: security_alert
+            name: adminer_security_alerts_total
+            namespace: adminer
+            tags:
+              alert_type: "{{ security_alert }}"
+              severity: "{{ severity }}"
+    
+    # Sinks: Send logs to various destinations
+    sinks:
+      # Loki for centralized logging
+      loki:
+        type: loki
+        inputs:
+          - adminer_security
+        endpoint: http://loki.logging.svc.cluster.local:3100
+        encoding:
+          codec: json
+        labels:
+          namespace: "{{ namespace }}"
+          application: "{{ application }}"
+          event_type: "{{ event_type }}"
+        batch:
+          timeout_secs: 5
+      
+      # External syslog server
+      external_syslog:
+        type: syslog
+        inputs:
+          - adminer_security
+        address: "syslog.external.local:514"  # Replace with your syslog server
+        mode: tcp
+        encoding:
+          codec: json
+      
+      # S3 for long-term storage
+      s3_archive:
+        type: aws_s3
+        inputs:
+          - adminer_security
+        bucket: "k8s-logs-archive"
+        region: "us-east-1"
+        key_prefix: "adminer/%Y/%m/%d/"
+        compression: gzip
+        encoding:
+          codec: json
+        batch:
+          timeout_secs: 300
+        
+      # Prometheus metrics
+      prometheus_metrics:
+        type: prometheus_exporter
+        inputs:
+          - adminer_metrics
+        address: "0.0.0.0:9090"
+      
+      # Alerting for security events
+      security_alerts:
+        type: http
+        inputs:
+          - adminer_security
+        uri: http://alertmanager.monitoring.svc.cluster.local:9093/api/v2/alerts
+        encoding:
+          codec: json
+        # Only send if security alert is present
+        filter:
+          type: check_fields
+          fields:
+            security_alert: exists
+---
+# Prometheus ServiceMonitor for Vector metrics
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: vector-adminer-metrics
+  namespace: logging
+spec:
+  selector:
+    matchLabels:
+      app: vector
+  endpoints:
+  - port: metrics
+    interval: 30s
+    path: /metrics

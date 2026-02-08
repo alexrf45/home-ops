@@ -1,0 +1,91 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: adminer
+  namespace: adminer
+  labels:
+    app: adminer
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
+  selector:
+    matchLabels:
+      app: adminer
+  template:
+    metadata:
+      labels:
+        app: adminer
+      annotations:
+        # Trivy scanning annotation
+        trivy.security.devops.com/medium: "0"
+        trivy.security.devops.com/low: "0"
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+      - name: adminer
+        # Using SHA256 digest for immutable image reference
+        # To get the digest: docker pull adminer:4.8.1 && docker inspect --format='{{index .RepoDigests 0}}' adminer:4.8.1
+        # Or: skopeo inspect docker://docker.io/adminer:4.8.1 | jq -r '.Digest'
+        image: adminer:4.8.1@sha256:b3025d9191b6e29b327c69394a7ebee20e25e98a0f68b570f23e0e860655a4fb
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: http
+          containerPort: 8080
+          protocol: TCP
+        env:
+        - name: ADMINER_DEFAULT_SERVER
+          value: ""  # Leave empty to allow user selection
+        - name: ADMINER_DESIGN
+          value: "pepa-linha-dark"  # Optional: dark theme
+        resources:
+          requests:
+            cpu: 50m
+            memory: 128Mi
+          limits:
+            cpu: 200m
+            memory: 256Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+          runAsUser: 1000
+          capabilities:
+            drop:
+            - ALL
+        livenessProbe:
+          httpGet:
+            path: /
+            port: http
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /
+            port: http
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 3
+        volumeMounts:
+        - name: tmp
+          mountPath: /tmp
+        - name: adminer-cache
+          mountPath: /var/www/html/tmp
+      volumes:
+      - name: tmp
+        emptyDir: {}
+      - name: adminer-cache
+        emptyDir: {}

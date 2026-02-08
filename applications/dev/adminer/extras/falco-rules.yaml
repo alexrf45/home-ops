@@ -1,0 +1,114 @@
+---
+# Falco Custom Rules for Adminer Runtime Security
+# Place this in your Falco rules directory or ConfigMap
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: falco-rules-adminer
+  namespace: falco-system
+data:
+  adminer-rules.yaml: |
+    - rule: Suspicious Database Connection from Adminer
+      desc: Detect when Adminer connects to unusual database ports or IPs
+      condition: >
+        container.name = "adminer" and
+        evt.type = connect and
+        fd.sip != "127.0.0.1" and
+        fd.sport not in (3306, 5432, 27017, 1433, 5984)
+      output: >
+        Adminer connecting to unusual database port
+        (user=%user.name command=%proc.cmdline connection=%fd.name
+        container=%container.name image=%container.image.repository)
+      priority: WARNING
+      tags: [database, adminer, network]
+    
+    - rule: File Write in Adminer Container
+      desc: Detect unexpected file writes in read-only Adminer container
+      condition: >
+        container.name = "adminer" and
+        evt.type in (open, openat, openat2) and
+        evt.is_open_write = true and
+        fd.name not startswith /tmp and
+        fd.name not startswith /var/www/html/tmp
+      output: >
+        Unexpected file write in Adminer container
+        (user=%user.name command=%proc.cmdline file=%fd.name
+        container=%container.name image=%container.image.repository)
+      priority: WARNING
+      tags: [filesystem, adminer, integrity]
+    
+    - rule: Suspicious Process Spawn in Adminer
+      desc: Detect unexpected process execution in Adminer container
+      condition: >
+        container.name = "adminer" and
+        spawned_process and
+        not proc.name in (php-fpm, php, apache2, httpd)
+      output: >
+        Suspicious process spawned in Adminer container
+        (user=%user.name command=%proc.cmdline parent=%proc.pname
+        container=%container.name image=%container.image.repository)
+      priority: WARNING
+      tags: [process, adminer, suspicious]
+    
+    - rule: Privilege Escalation Attempt in Adminer
+      desc: Detect attempts to escalate privileges in Adminer container
+      condition: >
+        container.name = "adminer" and
+        (proc.name in (sudo, su, setuid, setgid) or
+        spawned_process and proc.args contains "chmod +s")
+      output: >
+        Privilege escalation attempt in Adminer
+        (user=%user.name command=%proc.cmdline
+        container=%container.name image=%container.image.repository)
+      priority: CRITICAL
+      tags: [privilege_escalation, adminer, security]
+    
+    - rule: Sensitive File Access from Adminer
+      desc: Detect when Adminer tries to access sensitive files
+      condition: >
+        container.name = "adminer" and
+        evt.type in (open, openat) and
+        (fd.name startswith /etc/shadow or
+         fd.name startswith /etc/sudoers or
+         fd.name contains /ssh/id_rsa or
+         fd.name contains /.kube/config)
+      output: >
+        Adminer accessing sensitive file
+        (user=%user.name command=%proc.cmdline file=%fd.name
+        container=%container.name image=%container.image.repository)
+      priority: CRITICAL
+      tags: [filesystem, adminer, sensitive_files]
+    
+    - rule: Database Credential Exposure via Adminer
+      desc: Detect potential credential exposure through Adminer logs
+      condition: >
+        container.name = "adminer" and
+        evt.type = write and
+        (fd.name contains "password" or
+         fd.name contains "credential" or
+         fd.name contains "secret")
+      output: >
+        Potential credential exposure in Adminer
+        (user=%user.name command=%proc.cmdline file=%fd.name
+        container=%container.name image=%container.image.repository)
+      priority: HIGH
+      tags: [credentials, adminer, data_leak]
+---
+# FalcoSidekick configuration to send alerts to your logging system
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: falcosidekick-config
+  namespace: falco-system
+data:
+  config.yaml: |
+    webhook:
+      address: "http://vector.logging.svc.cluster.local:8080/falco"
+    
+    loki:
+      hostport: "http://loki.logging.svc.cluster.local:3100"
+      minimumpriority: "warning"
+    
+    slack:
+      webhookurl: ""  # Add your Slack webhook for critical alerts
+      minimumpriority: "critical"

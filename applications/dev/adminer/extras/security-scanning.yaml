@@ -1,0 +1,36 @@
+---
+# Optional: Trivy vulnerability scan configuration
+# Apply this to scan the Adminer image before deployment
+apiVersion: aquasecurity.github.io/v1alpha1
+kind: VulnerabilityReport
+metadata:
+  name: adminer-scan
+  namespace: adminer
+spec:
+  image: adminer:4.8.1
+  # This will be automatically populated by Trivy Operator
+---
+# Optional: Policy to block high/critical vulnerabilities
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: restrict-vulnerable-images
+spec:
+  validationFailureAction: enforce
+  rules:
+  - name: check-vulnerability-score
+    match:
+      any:
+      - resources:
+          kinds:
+          - Pod
+          namespaces:
+          - adminer
+    validate:
+      message: "Image has critical or high vulnerabilities"
+      deny:
+        conditions:
+          any:
+          - key: "{{ images.*.vulnerabilitySeverity }}"
+            operator: In
+            value: ["CRITICAL", "HIGH"]
