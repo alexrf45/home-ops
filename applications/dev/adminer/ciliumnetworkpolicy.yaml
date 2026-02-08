@@ -1,0 +1,128 @@
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: adminer
+  namespace: adminer
+spec:
+  endpointSelector:
+    matchLabels:
+      app: adminer
+  ingress:
+  - fromEndpoints:
+    - matchLabels:
+        io.kubernetes.pod.namespace: networking
+        io.cilium.k8s.policy.serviceaccount: cilium-gateway
+    toPorts:
+    - ports:
+      - port: "8080"
+        protocol: TCP
+      rules:
+        http:
+        - method: "GET"
+        - method: "POST"
+        - method: "HEAD"
+  
+  egress:
+  - toEndpoints:
+    - matchLabels:
+        io.kubernetes.pod.namespace: kube-system
+        k8s-app: kube-dns
+    toPorts:
+    - ports:
+      - port: "53"
+        protocol: UDP
+      rules:
+        dns:
+        - matchPattern: "*"
+  
+  # Allow connections to PostgreSQL databases with Layer 7 inspection
+  - toEndpoints:
+    - matchLabels:
+        app.kubernetes.io/component: database
+        app.kubernetes.io/name: postgresql
+    toPorts:
+    - ports:
+      - port: "5432"
+        protocol: TCP
+  
+  # Allow connections to CloudNativePG clusters
+  - toEndpoints:
+    - matchLabels:
+        cnpg.io/cluster: "*"  # Matches any CloudNativePG cluster
+    toPorts:
+    - ports:
+      - port: "5432"
+        protocol: TCP
+  
+  # Allow connections to MySQL databases
+  - toEndpoints:
+    - matchLabels:
+        app.kubernetes.io/component: database
+        app.kubernetes.io/name: mysql
+    toPorts:
+    - ports:
+      - port: "3306"
+        protocol: TCP
+  
+  # Allow connections to MongoDB
+  - toEndpoints:
+    - matchLabels:
+        app.kubernetes.io/component: database
+        app.kubernetes.io/name: mongodb
+    toPorts:
+    - ports:
+      - port: "27017"
+        protocol: TCP
+  
+  - toFQDNs:
+    - matchPattern: "*.database.external.local"
+    toPorts:
+    - ports:
+      - port: "5432"
+        protocol: TCP
+      - port: "3306"
+        protocol: TCP
+---
+apiVersion: cilium.io/v2
+kind: CiliumClusterwideNetworkPolicy
+metadata:
+  name: adminer-database-access
+spec:
+  endpointSelector:
+    matchLabels:
+      app: adminer
+  egress:
+  - toEndpoints:
+    - {}
+    toPorts:
+    - ports:
+      - port: "5432"
+        protocol: TCP
+      - port: "3306"
+        protocol: TCP
+      - port: "27017"
+        protocol: TCP
+      - port: "1433"
+        protocol: TCP
+      - port: "5984"
+        protocol: TCP  # CouchDB
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: adminer-audit
+  namespace: adminer
+  annotations:
+    policy.cilium.io/enforcement-mode: "audit"
+spec:
+  endpointSelector:
+    matchLabels:
+      app: adminer
+  egress:
+  - toEndpoints:
+    - {}
+    toPorts:
+    - ports:
+      - port: "1-65535"
+        protocol: TCP
