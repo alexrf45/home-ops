@@ -1,0 +1,19 @@
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-gateway-to-couchdb
+  namespace: obsidian
+spec:
+  endpointSelector:
+    matchLabels:
+      app.kubernetes.io/name: obsidian-livesync
+      app.kubernetes.io/component: database
+  ingress:
+    - fromEntities:
+        - host
+        - ingress
+        - remote-node
+      toPorts:
+        - ports:
+            - port: "5984"
+              protocol: TCP

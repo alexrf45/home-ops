@@ -13,3 +13,4 @@ resources:
   - init-job.yaml
   - gateway.yaml
   - tls.yaml
+  - ciliumnetworkpolicy.yaml
