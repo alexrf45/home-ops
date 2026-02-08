@@ -1,0 +1,49 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: couchdb-network-policy
+  namespace: obsidian
+  labels:
+    app.kubernetes.io/name: obsidian-livesync
+    app.kubernetes.io/component: security
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: obsidian-livesync
+      app.kubernetes.io/component: database
+  policyTypes:
+    - Ingress
+    - Egress
+  ingress:
+    # Allow traffic from Cilium gateway controller
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: networking
+      ports:
+        - protocol: TCP
+          port: 5984
+    # Allow traffic from init job within same namespace
+    - from:
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/name: obsidian-livesync
+      ports:
+        - protocol: TCP
+          port: 5984
+  egress:
+    # Allow DNS resolution
+    - to: []
+      ports:
+        - protocol: UDP
+          port: 53
+        - protocol: TCP
+          port: 53
+    # Allow iSCSI traffic to TrueNAS
+    - to:
+        - ipBlock:
+            cidr: 192.168.20.106/32
+      ports:
+        - protocol: TCP
+          port: 3260

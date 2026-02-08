@@ -1,0 +1,34 @@
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: couchdb-data-pvc
+  namespace: obsidian
+  labels:
+    app.kubernetes.io/name: obsidian-livesync
+    app.kubernetes.io/component: storage
+spec:
+  volumeName: "dev-obsidian-livesync"
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: iscsi
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: couchdb-config-pvc
+  namespace: obsidian
+  labels:
+    app.kubernetes.io/name: obsidian-livesync
+    app.kubernetes.io/component: storage
+spec:
+  volumeName: "dev-obsidian-livesync-config"
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: iscsi
+  resources:
+    requests:
+      storage: 1Gi

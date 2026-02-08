@@ -1,0 +1,71 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: couchdb-config
+  namespace: obsidian
+  labels:
+    app.kubernetes.io/name: obsidian-livesync
+    app.kubernetes.io/component: config
+data:
+  local.ini: |
+    [couchdb]
+    single_node=true
+    max_document_size = 50000000
+
+    [chttpd]
+    require_valid_user = true
+    max_http_request_size = 4294967296
+    enable_cors = true
+    bind_address = 0.0.0.0
+
+    [chttpd_auth]
+    require_valid_user = true
+    authentication_redirect = /_utils/session.html
+
+    [httpd]
+    WWW-Authenticate = Basic realm="couchdb"
+    bind_address = 0.0.0.0
+
+    [cors]
+    origins = app://obsidian.md, capacitor://localhost, http://localhost
+    credentials = true
+    headers = accept, authorization, content-type, origin, referer
+    methods = GET, PUT, POST, HEAD, DELETE
+    max_age = 3600
+
+  init-couchdb.sh: |
+    #!/bin/bash
+    set -euo pipefail
+
+    COUCHDB_URL="${COUCHDB_URL:-http://couchdb.obsidian.svc.cluster.local:5984}"
+    MAX_RETRIES=30
+    RETRY_INTERVAL=2
+
+    echo "Waiting for CouchDB to be ready..."
+    for i in $(seq 1 $MAX_RETRIES); do
+      if curl -sf "$COUCHDB_URL/" > /dev/null 2>&1; then
+        echo "CouchDB is ready."
+        break
+      fi
+      if [ "$i" -eq "$MAX_RETRIES" ]; then
+        echo "ERROR: CouchDB failed to start after $MAX_RETRIES attempts."
+        exit 1
+      fi
+      echo "Attempt $i/$MAX_RETRIES - waiting ${RETRY_INTERVAL}s..."
+      sleep $RETRY_INTERVAL
+    done
+
+    echo "Initializing CouchDB system databases..."
+    for db in _users _replicator _global_changes; do
+      status=$(curl -sf -o /dev/null -w "%{http_code}" \
+        -u "${COUCHDB_USER}:${COUCHDB_PASSWORD}" \
+        -X PUT "$COUCHDB_URL/$db" 2>/dev/null || true)
+      case $status in
+        201) echo "  Created $db" ;;
+        412) echo "  $db already exists" ;;
+        *)   echo "  WARNING: $db returned status $status" ;;
+      esac
+    done
+
+    echo "CouchDB initialization complete."

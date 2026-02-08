@@ -1,0 +1,118 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: couchdb
+  namespace: obsidian
+  labels:
+    app.kubernetes.io/name: obsidian-livesync
+    app.kubernetes.io/component: database
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate  # Required for RWO PVC
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: obsidian-livesync
+      app.kubernetes.io/component: database
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: obsidian-livesync
+        app.kubernetes.io/component: database
+    spec:
+      securityContext:
+        runAsUser: 5984
+        runAsGroup: 5984
+        fsGroup: 5984
+        fsGroupChangePolicy: OnRootMismatch
+      initContainers:
+        - name: init-config
+          image: busybox:1.37
+          command:
+            - sh
+            - -c
+            - |
+              echo "Setting up CouchDB config directory..."
+              cp /config-readonly/local.ini /opt/couchdb/etc/local.d/local.ini
+              chown 5984:5984 /opt/couchdb/etc/local.d/local.ini
+              echo "Config initialized."
+          securityContext:
+            runAsUser: 0
+            allowPrivilegeEscalation: false
+          volumeMounts:
+            - name: couchdb-config
+              mountPath: /opt/couchdb/etc/local.d
+            - name: couchdb-config-readonly
+              mountPath: /config-readonly
+      containers:
+        - name: couchdb
+          image: couchdb:3.4
+          ports:
+            - containerPort: 5984
+              name: http
+              protocol: TCP
+          env:
+            - name: COUCHDB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: couchdb-credentials
+                  key: COUCHDB_USER
+            - name: COUCHDB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: couchdb-credentials
+                  key: COUCHDB_PASSWORD
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: false
+            capabilities:
+              drop:
+                - ALL
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+          volumeMounts:
+            - name: couchdb-data
+              mountPath: /opt/couchdb/data
+            - name: couchdb-config
+              mountPath: /opt/couchdb/etc/local.d
+          livenessProbe:
+            httpGet:
+              path: /_up
+              port: 5984
+            initialDelaySeconds: 30
+            periodSeconds: 30
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /_up
+              port: 5984
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 3
+          startupProbe:
+            httpGet:
+              path: /_up
+              port: 5984
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            failureThreshold: 12
+      volumes:
+        - name: couchdb-data
+          persistentVolumeClaim:
+            claimName: couchdb-data-pvc
+        - name: couchdb-config
+          persistentVolumeClaim:
+            claimName: couchdb-config-pvc
+        - name: couchdb-config-readonly
+          configMap:
+            name: couchdb-config
+            items:
+              - key: local.ini
+                path: local.ini

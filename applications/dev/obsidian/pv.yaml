@@ -1,0 +1,59 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: dev-obsidian-livesync
+  namespace: obsidian
+  labels:
+    env: dev
+    app: obsidian
+    persistent: "true"
+spec:
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: iscsi
+  csi:
+    driver: freenas-api-iscsi
+    fsType: "ext4"
+    volumeHandle: dev-obsidian-livesync  # Must match the zvol name in TrueNAS
+    volumeAttributes:
+      lun: "0"
+      interface: ""
+      node_attach_driver: iscsi
+      provisioner_driver: freenas-api-iscsi
+      portal: "192.168.20.106:3260"
+      portals: ""
+      iqn: "iqn.2005-10.org.freenas.ctl:dev-obsidian-livesync"
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: dev-obsidian-livesync-config
+  namespace: obsidian
+  labels:
+    env: dev
+    app: obsidian
+    persistent: "true"
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: iscsi
+  csi:
+    driver: freenas-api-iscsi
+    fsType: "ext4"
+    volumeHandle: dev-obsidian-livesync-config  # Must match the zvol name in TrueNAS
+    volumeAttributes:
+      lun: "0"
+      interface: ""
+      node_attach_driver: iscsi
+      provisioner_driver: freenas-api-iscsi
+      portal: "192.168.20.106:3260"
+      portals: ""
+      iqn: "iqn.2005-10.org.freenas.ctl:dev-obsidian-livesync-config"
+

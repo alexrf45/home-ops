@@ -1,0 +1,66 @@
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: couchdb-init
+  namespace: obsidian
+  labels:
+    app.kubernetes.io/name: obsidian-livesync
+    app.kubernetes.io/component: init
+  annotations:
+    # Re-run by deleting the job: kubectl delete job couchdb-init -n obsidian
+spec:
+  backoffLimit: 5
+  ttlSecondsAfterFinished: 300
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: obsidian-livesync
+        app.kubernetes.io/component: init
+    spec:
+      restartPolicy: OnFailure
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        runAsNonRoot: true
+      containers:
+        - name: init-couchdb
+          image: curlimages/curl:8.11.1
+          command:
+            - /bin/sh
+            - /scripts/init-couchdb.sh
+          env:
+            - name: COUCHDB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: couchdb-credentials
+                  key: COUCHDB_USER
+            - name: COUCHDB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: couchdb-credentials
+                  key: COUCHDB_PASSWORD
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
+          resources:
+            requests:
+              cpu: 50m
+              memory: 32Mi
+            limits:
+              cpu: 100m
+              memory: 64Mi
+          volumeMounts:
+            - name: init-script
+              mountPath: /scripts
+      volumes:
+        - name: init-script
+          configMap:
+            name: couchdb-config
+            defaultMode: 0555
+            items:
+              - key: init-couchdb.sh
+                path: init-couchdb.sh
