@@ -19,7 +19,7 @@ spec:
           from: Same
     - name: https
       protocol: HTTPS
-      port: 5984
+      port: 443
       hostname: "dev.int.obsidian.home-0ps.com"
       tls:
         mode: Terminate
