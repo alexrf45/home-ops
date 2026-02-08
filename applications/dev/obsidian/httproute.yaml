@@ -10,8 +10,8 @@ metadata:
     app.kubernetes.io/component: route
 spec:
   parentRefs:
-    - name: dev-app-gateway  # Change to prod-app-gateway for production
-      namespace: networking
+    - name: obsidian-livesync-gateway  # Change to prod-app-gateway for production
+      namespace: obsidian
       sectionName: https
   hostnames:
     - "dev.int.obsidian.home-0ps.com"  # Adjust to match your domain convention
@@ -39,8 +39,8 @@ metadata:
     app.kubernetes.io/component: route
 spec:
   parentRefs:
-    - name: dev-app-gateway
-      namespace: networking
+    - name: obsidian-livesync-gateway
+      namespace: obsidian
       sectionName: http
   hostnames:
     - "dev.int.obsidian.home-0ps.com"
