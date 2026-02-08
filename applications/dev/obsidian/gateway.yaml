@@ -1,0 +1,31 @@
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: obsidian-livesync-gateway
+  namespace: obsidian-livesync
+  labels:
+    app.kubernetes.io/name: obsidian-livesync
+    app.kubernetes.io/component: gateway
+spec:
+  gatewayClassName: cilium  # Cilium's Gateway class
+  listeners:
+    - name: http
+      protocol: HTTP
+      port: 80
+      hostname: "dev.int.obsidian.home-0ps.com"
+      allowedRoutes:
+        namespaces:
+          from: Same
+    - name: https
+      protocol: HTTPS
+      port: 5984
+      hostname: "dev.int.obsidian.home-0ps.com"
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - name: obsidian-livesync-tls
+            kind: Secret
+      allowedRoutes:
+        namespaces:
+          from: Same

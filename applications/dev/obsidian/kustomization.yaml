@@ -11,3 +11,5 @@ resources:
   - httproute.yaml
   - networkpolicy.yaml
   - init-job.yaml
+  - gateway.yaml
+  - tls.yaml
