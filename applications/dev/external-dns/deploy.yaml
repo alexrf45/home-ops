@@ -57,7 +57,7 @@ spec:
           timeoutSeconds: 5
     extraArgs:
       - --ignore-ingress-tls-spec
-    policy: sync
+    policy: upsert-only
     sources: ["ingress", "service", "gateway-httproute"]
     txtOwnerId: default
     txtPrefix: k8s.
