@@ -16,11 +16,18 @@ spec:
     - Ingress
     - Egress
   ingress:
-    # Allow traffic from Cilium gateway controller
+    # Allow traffic from Cilium gateway/envoy proxy (kube-system)
     - from:
         - namespaceSelector:
             matchLabels:
               kubernetes.io/metadata.name: networking
+          podSelector:
+            matchLabels:
+              app.kubernetes.io/name: cilium-envoy
+      ports:
+        - protocol: TCP
+          port: 5984
+    # Allow traffic from within the obsidian namespace (init job, etc.)
       ports:
         - protocol: TCP
           port: 5984
