@@ -85,7 +85,7 @@ spec:
       galeraLibPath: /usr/lib/galera/libgalera_smm.so
       mariadbDefaultVersion: "11.8"
       mariadbImage: docker-registry1.mariadb.com/library/mariadb:11.8.2
-      maxscaleImage: docker-registry2.mariadb.com/mariadb/maxscale:23.08.5
+      maxscaleImage: docker-registry2.mariadb.com/mariadb/maxscale:23.08.12
       exporterImage: prom/mysqld-exporter:v0.15.1
       exporterMaxscaleImage: docker-registry2.mariadb.com/mariadb/maxscale-prometheus-exporter-ubi:v0.0.1
 
