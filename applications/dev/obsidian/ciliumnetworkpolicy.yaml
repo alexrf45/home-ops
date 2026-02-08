@@ -16,6 +16,7 @@ spec:
     - fromEntities:
         - host
         - remote-node
+        - ingress
         - world
       toPorts:
         - ports:
