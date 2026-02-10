@@ -26,7 +26,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: onepassword-connect
-      version: "2.0.5"
+      version: "2.3.0"
   upgrade:
     cleanupOnFail: true
     remediation:
