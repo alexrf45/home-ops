@@ -87,5 +87,5 @@ spec:
       mariadbImage: docker-registry1.mariadb.com/library/mariadb:11.8.2
       maxscaleImage: docker-registry2.mariadb.com/mariadb/maxscale:23.08.5
       exporterImage: prom/mysqld-exporter:v0.15.1
-      exporterMaxscaleImage: docker-registry2.mariadb.com/mariadb/maxscale-prometheus-exporter-ubi:v0.0.1
+      exporterMaxscaleImage: docker-registry2.mariadb.com/mariadb/maxscale-prometheus-exporter-ubi:1.1.0
 
