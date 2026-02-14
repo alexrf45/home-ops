@@ -40,11 +40,11 @@ destroy() {
 
   terraform destroy
 
-  rm ~/.kube/test
+  rm ~/.kube/environments/prod
 
-  rm ~/.talos/test
+  rm ~/.talos/prod
   #  mv ~/.kube/config_bk ~/.kube/config
 }
 #deploy
-flux-deploy
-#destroy
+#flux-deploy
+destroy

@@ -46,5 +46,5 @@ destroy() {
   #  mv ~/.kube/config_bk ~/.kube/config
 }
 #deploy
-flux-deploy
-#destroy
+#flux-deploy
+destroy

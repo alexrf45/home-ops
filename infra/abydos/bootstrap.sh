@@ -47,6 +47,6 @@ destroy() {
   rm ~/.talos/test
   #  mv ~/.kube/config_bk ~/.kube/config
 }
-deploy
+#deploy
 #flux-deploy
-#destroy
+destroy
